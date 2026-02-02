@@ -1,0 +1,3880 @@
+{
+  "stocks": [
+    {
+      "symbol": "AKFGY",
+      "name": "Akfen GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "AKFYE",
+      "name": "Akfen Yenilenebilir Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "AKENR",
+      "name": "Akenerji Elektrik",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "ADESE",
+      "name": "Adese AVM",
+      "sector": "Perakende Ticaret",
+      "indexes": []
+    },
+    {
+      "symbol": "AHGAZ",
+      "name": "Ahlatcı Doğalgaz",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "A1CAP",
+      "name": "A1 Capital Yatırım",
+      "sector": "Aracı Kurumlar",
+      "indexes": []
+    },
+    {
+      "symbol": "ADEL",
+      "name": "Adel Kalemcilik",
+      "sector": "Kırtasiye",
+      "indexes": []
+    },
+    {
+      "symbol": "AKSA",
+      "name": "Aksa Akrilik",
+      "sector": "Kimya",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "AEFES",
+      "name": "Anadolu Efes",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "AKCNS",
+      "name": "Akçansa Çimento",
+      "sector": "Çimento",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "AGROT",
+      "name": "Agrotech Tarım",
+      "sector": "Tarım",
+      "indexes": []
+    },
+    {
+      "symbol": "AKBNK",
+      "name": "Akbank",
+      "sector": "Bankacılık",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "AFYON",
+      "name": "Afyon Çimento",
+      "sector": "Çimento",
+      "indexes": []
+    },
+    {
+      "symbol": "AGHOL",
+      "name": "AG Anadolu Grubu Holding",
+      "sector": "Holding",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "AGYO",
+      "name": "Atakule GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "ACSEL",
+      "name": "Acıselsan Acıpayam Selüloz",
+      "sector": "Kağıt ve Kağıt Ürünleri",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "AKMGY",
+      "name": "Akmerkez GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "AKSEN",
+      "name": "Aksa Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "AGESA",
+      "name": "Agesa Hayat ve Emeklilik",
+      "sector": "Sigorta",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "AKGRT",
+      "name": "Aksigorta",
+      "sector": "Sigorta",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "AKSGY",
+      "name": "Akiş GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "AKYHO",
+      "name": "Akdeniz Yatırım Holding",
+      "sector": "Holding",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "AKSUE",
+      "name": "Aksu Enerji",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "ALFAS",
+      "name": "Alfa Solar Enerji",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "ALBRK",
+      "name": "Albaraka Türk",
+      "sector": "Bankacılık",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ALARK",
+      "name": "Alarko Holding",
+      "sector": "Holding",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "ALGYO",
+      "name": "Alarko GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "ALCTL",
+      "name": "Alcatel Lucent Teletaş",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ALVES",
+      "name": "Alves Kablo",
+      "sector": "Metal Eşya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ALCAR",
+      "name": "Alarko Carrier",
+      "sector": "Makine",
+      "indexes": []
+    },
+    {
+      "symbol": "ALTNY",
+      "name": "Altınyağ",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ALKA",
+      "name": "Alkim Kağıt",
+      "sector": "Kağıt ve Kağıt Ürünleri",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ARENA",
+      "name": "Arena Bilgisayar",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "ARDYZ",
+      "name": "Ard Grup Bilişim",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ANSGR",
+      "name": "Anadolu Sigorta",
+      "sector": "Sigorta",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "ARSAN",
+      "name": "Arsan Tekstil",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "ARTMS",
+      "name": "Artemis Halı",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "ARCLK",
+      "name": "Arçelik",
+      "sector": "Dayanıklı Tüketim",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "ANHYT",
+      "name": "Anadolu Hayat Emeklilik",
+      "sector": "Sigorta",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "ARZUM",
+      "name": "Arzum Elektrikli Ev Aletleri",
+      "sector": "Dayanıklı Tüketim",
+      "indexes": []
+    },
+    {
+      "symbol": "ASGYO",
+      "name": "Aşçıoğlu GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "ASTOR",
+      "name": "Astor Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "ALKIM",
+      "name": "Alkim Kimya",
+      "sector": "Kimya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ASELS",
+      "name": "Aselsan",
+      "sector": "Savunma",
+      "indexes": [
+        "BIST100",
+        "BIST30",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ATATP",
+      "name": "ATP Bilgisayar",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "AVOD",
+      "name": "A.V.O.D. Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": []
+    },
+    {
+      "symbol": "AVHOL",
+      "name": "Avrupa Yatırım Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "ATAKP",
+      "name": "Atakey Patates",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "AVGYO",
+      "name": "Avrasya GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "AYDEM",
+      "name": "Aydem Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "AVTUR",
+      "name": "Avrasya Petrol",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "ATSYH",
+      "name": "Atlantis Yatırım Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "AYCES",
+      "name": "Altınyunus Çeşme",
+      "sector": "Turizm",
+      "indexes": []
+    },
+    {
+      "symbol": "AYEN",
+      "name": "Ayen Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ASUZU",
+      "name": "Anadolu Isuzu",
+      "sector": "Otomotiv",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "ATEKS",
+      "name": "Akal Tekstil",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "ATLAS",
+      "name": "Atlas Yatırım Ortaklığı",
+      "sector": "Yatırım Ortaklığı",
+      "indexes": []
+    },
+    {
+      "symbol": "AZTEK",
+      "name": "Aztek Teknoloji",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "AYES",
+      "name": "Ayes Çelik Hasır",
+      "sector": "Metal Ana",
+      "indexes": []
+    },
+    {
+      "symbol": "AYGAZ",
+      "name": "Aygaz",
+      "sector": "Enerji",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "BAGFS",
+      "name": "Bagfaş",
+      "sector": "Kimya",
+      "indexes": []
+    },
+    {
+      "symbol": "ATAGY",
+      "name": "Ata GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "BAKAB",
+      "name": "Bak Ambalaj",
+      "sector": "Ambalaj",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BANVT",
+      "name": "Banvit",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BARMA",
+      "name": "Barış Maden İşletmeleri",
+      "sector": "Madencilik",
+      "indexes": []
+    },
+    {
+      "symbol": "BEYAZ",
+      "name": "Beyaz Filo",
+      "sector": "Ulaştırma",
+      "indexes": []
+    },
+    {
+      "symbol": "BFREN",
+      "name": "Bosch Fren Sistemleri",
+      "sector": "Otomotiv",
+      "indexes": []
+    },
+    {
+      "symbol": "BERA",
+      "name": "Bera Holding",
+      "sector": "Holding",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BIGCH",
+      "name": "Bigchefs",
+      "sector": "Gıda ve İçecek",
+      "indexes": []
+    },
+    {
+      "symbol": "BIENY",
+      "name": "Bien Yapı",
+      "sector": "İnşaat",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BNTAS",
+      "name": "Bantaş",
+      "sector": "Ambalaj",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BIZIM",
+      "name": "Bizim Toptan",
+      "sector": "Perakende Ticaret",
+      "indexes": []
+    },
+    {
+      "symbol": "BMSTL",
+      "name": "BMS Çelik",
+      "sector": "Metal Ana",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BMSCH",
+      "name": "Bosch San. Tic.",
+      "sector": "Makine",
+      "indexes": []
+    },
+    {
+      "symbol": "BIOEN",
+      "name": "Biotrend Çevre ve Enerji",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "BOBET",
+      "name": "Boğaziçi Beton",
+      "sector": "Çimento",
+      "indexes": []
+    },
+    {
+      "symbol": "BOSSA",
+      "name": "Bossa",
+      "sector": "Tekstil",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BLCYT",
+      "name": "Bilici Yatırım",
+      "sector": "Yatırım Ortaklığı",
+      "indexes": []
+    },
+    {
+      "symbol": "BRKO",
+      "name": "Birko Mensucat",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "BIMAS",
+      "name": "BİM Mağazalar",
+      "sector": "Perakende Ticaret",
+      "indexes": [
+        "BIST100",
+        "BIST30",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BRISA",
+      "name": "Brisa",
+      "sector": "Otomotiv",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BRKVY",
+      "name": "Berkay Yazılım",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "BRLSM",
+      "name": "Birleşim Mühendislik",
+      "sector": "Makine",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BRSAN",
+      "name": "Borusan Mannesmann",
+      "sector": "Metal Ana",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "BSOKE",
+      "name": "Batısöke Çimento",
+      "sector": "Çimento",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BRYAT",
+      "name": "Borusan Yatırım",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "BURCE",
+      "name": "Burçelik",
+      "sector": "Metal Ana",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BTCIM",
+      "name": "Batıçim",
+      "sector": "Çimento",
+      "indexes": []
+    },
+    {
+      "symbol": "BUCIM",
+      "name": "Bursa Çimento",
+      "sector": "Çimento",
+      "indexes": []
+    },
+    {
+      "symbol": "BURVA",
+      "name": "Burçelik Vana",
+      "sector": "Metal Eşya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BVSAN",
+      "name": "Biovarsam İlaç",
+      "sector": "İlaç",
+      "indexes": []
+    },
+    {
+      "symbol": "CANTE",
+      "name": "Can2 Termik",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "CEMAS",
+      "name": "Çemaş Döküm",
+      "sector": "Metal Ana",
+      "indexes": []
+    },
+    {
+      "symbol": "CCOLA",
+      "name": "Coca-Cola İçecek",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "CELHA",
+      "name": "Çelik Halat",
+      "sector": "Metal Eşya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "CMBTN",
+      "name": "Çimbeton",
+      "sector": "Çimento",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "CONSE",
+      "name": "Consus Enerji",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "CWENE",
+      "name": "CW Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DAGI",
+      "name": "Dagi Giyim",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "CLEBI",
+      "name": "Çelebi Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "CEMTS",
+      "name": "Çemtaş Çelik",
+      "sector": "Metal Ana",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "CIMSA",
+      "name": "Çimsa Çimento",
+      "sector": "Çimento",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DARDL",
+      "name": "Dardanel",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DAPGM",
+      "name": "DAP Gayrimenkul",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DCTTR",
+      "name": "Directa Teknoloji",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DERIM",
+      "name": "Derimod",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "DENGE",
+      "name": "Denge Yatırım Holding",
+      "sector": "Holding",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DESPC",
+      "name": "Despec Bilgisayar",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DGGYO",
+      "name": "Doğuş GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "DGATE",
+      "name": "D-Gate Bilişim",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DITAS",
+      "name": "Ditaş Doğan",
+      "sector": "Otomotiv",
+      "indexes": []
+    },
+    {
+      "symbol": "DEVA",
+      "name": "Deva Holding",
+      "sector": "İlaç",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "DMSAS",
+      "name": "Demisaş Döküm",
+      "sector": "Metal Ana",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DOAS",
+      "name": "Doğuş Otomotiv",
+      "sector": "Otomotiv",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "DOCO",
+      "name": "Do & Co",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "DURDO",
+      "name": "Duran Doğan Basım",
+      "sector": "Kağıt ve Kağıt Ürünleri",
+      "indexes": []
+    },
+    {
+      "symbol": "DYOBY",
+      "name": "Dyo Boya",
+      "sector": "Kimya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DOHOL",
+      "name": "Doğan Holding",
+      "sector": "Holding",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "EGEPO",
+      "name": "Egepo Polyester",
+      "sector": "Kimya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DOKTA",
+      "name": "Döktaş",
+      "sector": "Metal Ana",
+      "indexes": []
+    },
+    {
+      "symbol": "ECZYT",
+      "name": "Eczacıbaşı Yatırım",
+      "sector": "Holding",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "EGSER",
+      "name": "Ege Seramik",
+      "sector": "Taş ve Toprağa Dayalı",
+      "indexes": []
+    },
+    {
+      "symbol": "EKSUN",
+      "name": "Eksun Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "EKIZ",
+      "name": "Ekiz Kimya",
+      "sector": "Kimya",
+      "indexes": []
+    },
+    {
+      "symbol": "ECILC",
+      "name": "Eczacıbaşı İlaç",
+      "sector": "İlaç",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "EMKEL",
+      "name": "Emek Elektrik",
+      "sector": "Elektrik Malzemeleri",
+      "indexes": []
+    },
+    {
+      "symbol": "ELITE",
+      "name": "Elite Naturel",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "EGEEN",
+      "name": "Ege Endüstri",
+      "sector": "Otomotiv",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "ENJSA",
+      "name": "Enerjisa Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "BIST100",
+        "BIST30",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "EKGYO",
+      "name": "Emlak Konut GYO",
+      "sector": "GYO",
+      "indexes": [
+        "BIST100",
+        "BIST30",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ESCAR",
+      "name": "Escar Filo",
+      "sector": "Ulaştırma",
+      "indexes": []
+    },
+    {
+      "symbol": "FADE",
+      "name": "Fade Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ERBOS",
+      "name": "Erbosan",
+      "sector": "Metal Ana",
+      "indexes": []
+    },
+    {
+      "symbol": "EUPWR",
+      "name": "Europower Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "FENER",
+      "name": "Fenerbahçe Futbol",
+      "sector": "Spor",
+      "indexes": []
+    },
+    {
+      "symbol": "ENKAI",
+      "name": "Enka İnşaat",
+      "sector": "İnşaat",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "FMIZP",
+      "name": "F-M İzmit Piston",
+      "sector": "Otomotiv",
+      "indexes": []
+    },
+    {
+      "symbol": "FONET",
+      "name": "Fonet Bilgi Teknolojileri",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "EREGL",
+      "name": "Ereğli Demir Çelik",
+      "sector": "Metal Ana",
+      "indexes": [
+        "BIST100",
+        "BIST30",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "FORTE",
+      "name": "Forte Bilgi İletişim",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "FORMT",
+      "name": "Formet Metal",
+      "sector": "Metal Eşya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "GEDZA",
+      "name": "Gediz Ambalaj",
+      "sector": "Ambalaj",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "GLBMD",
+      "name": "Global MD",
+      "sector": "Madencilik",
+      "indexes": []
+    },
+    {
+      "symbol": "GOKNR",
+      "name": "Göknur Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "GENIL",
+      "name": "Gen İlaç",
+      "sector": "İlaç",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "GOZDE",
+      "name": "Gözde Girişim",
+      "sector": "Holding",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "GARFA",
+      "name": "Garanti Faktoring",
+      "sector": "Finansal Kiralama",
+      "indexes": []
+    },
+    {
+      "symbol": "GESAN",
+      "name": "Giresun Makina",
+      "sector": "Makine",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "FRIGO",
+      "name": "Frigo-Pak Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": []
+    },
+    {
+      "symbol": "GEREL",
+      "name": "Gersan Elektrik",
+      "sector": "Elektrik Malzemeleri",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "GEDIK",
+      "name": "Gedik Yatırım",
+      "sector": "Aracı Kurumlar",
+      "indexes": []
+    },
+    {
+      "symbol": "GLYHO",
+      "name": "Global Yatırım Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "GARAN",
+      "name": "Garanti BBVA",
+      "sector": "Bankacılık",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "GSDHO",
+      "name": "GSD Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "GOODY",
+      "name": "Goodyear",
+      "sector": "Otomotiv",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "GENTS",
+      "name": "Gentaş",
+      "sector": "Mobilya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "FROTO",
+      "name": "Ford Otosan",
+      "sector": "Otomotiv",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "GOLTS",
+      "name": "Goldaş Kuyumculuk",
+      "sector": "Madencilik",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "GSRAY",
+      "name": "Galatasaray Spor",
+      "sector": "Spor",
+      "indexes": []
+    },
+    {
+      "symbol": "HATEK",
+      "name": "Hateks",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "HALKB",
+      "name": "Halkbank",
+      "sector": "Bankacılık",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "GWIND",
+      "name": "Galata Wind Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "HATSN",
+      "name": "Hatsan Av Tüfekleri",
+      "sector": "Savunma",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "GUBRF",
+      "name": "Gübre Fabrikaları",
+      "sector": "Kimya",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "HEDEF",
+      "name": "Hedef Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "HTTBT",
+      "name": "Hitit Bilgisayar",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "HKTM",
+      "name": "Hidropar Hareket",
+      "sector": "Makine",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "HUNER",
+      "name": "Hun Yenilenebilir Enerji",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "ICBCT",
+      "name": "ICBC Turkey Bank",
+      "sector": "Bankacılık",
+      "indexes": []
+    },
+    {
+      "symbol": "IHEVA",
+      "name": "İhlas Ev Aletleri",
+      "sector": "Dayanıklı Tüketim",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "HURGZ",
+      "name": "Hürriyet Gazetecilik",
+      "sector": "Medya",
+      "indexes": []
+    },
+    {
+      "symbol": "HLGYO",
+      "name": "Halk GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "HUBVC",
+      "name": "Hub Girişim",
+      "sector": "Holding",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "HEKTS",
+      "name": "Hektaş",
+      "sector": "Kimya",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "IHLAS",
+      "name": "İhlas Holding",
+      "sector": "Holding",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "IHLGM",
+      "name": "İhlas Gayrimenkul",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "IZMDC",
+      "name": "İzmir Demir Çelik",
+      "sector": "Metal Ana",
+      "indexes": []
+    },
+    {
+      "symbol": "INVEO",
+      "name": "İnveo Yatırım Holding",
+      "sector": "Holding",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "KAPLM",
+      "name": "Kaplamin Ambalaj",
+      "sector": "Ambalaj",
+      "indexes": []
+    },
+    {
+      "symbol": "IMASM",
+      "name": "İmaş Makina",
+      "sector": "Makine",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "INVES",
+      "name": "İnvestco Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "IPEKE",
+      "name": "İpek Doğal Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "INFO",
+      "name": "Info Yatırım",
+      "sector": "Aracı Kurumlar",
+      "indexes": []
+    },
+    {
+      "symbol": "INTEM",
+      "name": "İntem İnşaat",
+      "sector": "İnşaat",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KAREL",
+      "name": "Karel Elektronik",
+      "sector": "Teknoloji",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "INDES",
+      "name": "İndeks Bilgisayar",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "ISSEN",
+      "name": "İş Yatırım Menkul",
+      "sector": "Aracı Kurumlar",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ISCTR",
+      "name": "İş Bankası",
+      "sector": "Bankacılık",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "KARTN",
+      "name": "Kartonsan",
+      "sector": "Kağıt ve Kağıt Ürünleri",
+      "indexes": []
+    },
+    {
+      "symbol": "ISGYO",
+      "name": "İş GYO",
+      "sector": "GYO",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "JANTS",
+      "name": "Jantsa Jant",
+      "sector": "Otomotiv",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ISMEN",
+      "name": "İş Finansal Kiralama",
+      "sector": "Finansal Kiralama",
+      "indexes": []
+    },
+    {
+      "symbol": "KATMR",
+      "name": "Katmerciler",
+      "sector": "Otomotiv",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KARSN",
+      "name": "Karsan Otomotiv",
+      "sector": "Otomotiv",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KAYSE",
+      "name": "Kayseri Ulaşım",
+      "sector": "Ulaştırma",
+      "indexes": []
+    },
+    {
+      "symbol": "KENT",
+      "name": "Kent Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": []
+    },
+    {
+      "symbol": "KCAER",
+      "name": "Kocaer Çelik",
+      "sector": "Metal Ana",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KFEIN",
+      "name": "Kafein Yazılım",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "KCHOL",
+      "name": "Koç Holding",
+      "sector": "Holding",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "KLKIM",
+      "name": "Kalekim Kimyevi Maddeler",
+      "sector": "Kimya",
+      "indexes": []
+    },
+    {
+      "symbol": "KLGYO",
+      "name": "Kiler GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "KLRHO",
+      "name": "Kiler Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "KLNMA",
+      "name": "Türkiye Kalkınma ve Yatırım Bankası",
+      "sector": "Bankacılık",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "KMPUR",
+      "name": "Kimberly-Clark",
+      "sector": "Kağıt ve Kağıt Ürünleri",
+      "indexes": []
+    },
+    {
+      "symbol": "KLMSN",
+      "name": "Klimasan Klima",
+      "sector": "Dayanıklı Tüketim",
+      "indexes": []
+    },
+    {
+      "symbol": "KLSER",
+      "name": "Kaleseramik",
+      "sector": "Taş ve Toprağa Dayalı",
+      "indexes": []
+    },
+    {
+      "symbol": "KNFRT",
+      "name": "Konfrut Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KONTR",
+      "name": "Kontrolmatik",
+      "sector": "Teknoloji",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KRSTL",
+      "name": "Kristal Kola",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KOPOL",
+      "name": "Koza Polyester",
+      "sector": "Kimya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KRVGD",
+      "name": "Kervan Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KOZAA",
+      "name": "Koza Anadolu Metal",
+      "sector": "Madencilik",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "KRONT",
+      "name": "Kron Telekomünikasyon",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KRGYO",
+      "name": "Körfez GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KTLEV",
+      "name": "Katılımevim",
+      "sector": "Finansal Kiralama",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KRPLS",
+      "name": "Koroplast",
+      "sector": "Kimya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "LIDER",
+      "name": "Lider Faktoring",
+      "sector": "Finansal Kiralama",
+      "indexes": []
+    },
+    {
+      "symbol": "KRDMB",
+      "name": "Kardemir (B)",
+      "sector": "Metal Ana",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KRDMD",
+      "name": "Kardemir (D)",
+      "sector": "Metal Ana",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KTSKR",
+      "name": "Kütahya Şeker",
+      "sector": "Gıda ve İçecek",
+      "indexes": []
+    },
+    {
+      "symbol": "KUYAS",
+      "name": "Kuyumcukent Gayrimenkul",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KRDMA",
+      "name": "Kardemir (A)",
+      "sector": "Metal Ana",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KORDS",
+      "name": "Kordsa Teknik Tekstil",
+      "sector": "Tekstil",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "KOZAL",
+      "name": "Koza Altın",
+      "sector": "Madencilik",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "KONYA",
+      "name": "Konya Çimento",
+      "sector": "Çimento",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KUTPO",
+      "name": "Kütahya Porselen",
+      "sector": "Taş ve Toprağa Dayalı",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "LILAK",
+      "name": "Lila Kağıt",
+      "sector": "Kağıt ve Kağıt Ürünleri",
+      "indexes": []
+    },
+    {
+      "symbol": "MAKIM",
+      "name": "Makina Takım",
+      "sector": "Makine",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "LINK",
+      "name": "Link Bilgisayar",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "MAGEN",
+      "name": "Margün Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "MACKO",
+      "name": "Mackolik",
+      "sector": "Medya",
+      "indexes": []
+    },
+    {
+      "symbol": "LKMNH",
+      "name": "Lokman Hekim",
+      "sector": "Sağlık",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "MEGAP",
+      "name": "Mega Polietilen",
+      "sector": "Kimya",
+      "indexes": []
+    },
+    {
+      "symbol": "MANAS",
+      "name": "Manas Enerji",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "MERCN",
+      "name": "Mercan Kimya",
+      "sector": "Kimya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "MERIT",
+      "name": "Merit Turizm",
+      "sector": "Turizm",
+      "indexes": []
+    },
+    {
+      "symbol": "MEDTR",
+      "name": "Meditera Tıbbi Malzeme",
+      "sector": "Sağlık",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "MEPET",
+      "name": "Mepet Metro",
+      "sector": "Turizm",
+      "indexes": []
+    },
+    {
+      "symbol": "MERKO",
+      "name": "Merko Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": []
+    },
+    {
+      "symbol": "MARKA",
+      "name": "Marka Yatırım Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "LOGO",
+      "name": "Logo Yazılım",
+      "sector": "Teknoloji",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "MAVI",
+      "name": "Mavi Giyim",
+      "sector": "Tekstil",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "LUKSK",
+      "name": "Lüks Kadife",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "MARTI",
+      "name": "Martı Otel",
+      "sector": "Turizm",
+      "indexes": []
+    },
+    {
+      "symbol": "METRO",
+      "name": "Metro Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "MOBTL",
+      "name": "Mobiltel İletişim",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "MNDRS",
+      "name": "Menderes Tekstil",
+      "sector": "Tekstil",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "MNDTR",
+      "name": "Mondi Tire",
+      "sector": "Kağıt ve Kağıt Ürünleri",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "MRGYO",
+      "name": "Marti GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "MPARK",
+      "name": "MLP Sağlık",
+      "sector": "Sağlık",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "NIBAS",
+      "name": "Niğbaş Niğde Beton",
+      "sector": "Çimento",
+      "indexes": []
+    },
+    {
+      "symbol": "NTHOL",
+      "name": "Net Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "MRSHL",
+      "name": "Marshall",
+      "sector": "Kimya",
+      "indexes": []
+    },
+    {
+      "symbol": "NATEN",
+      "name": "Naturel Enerji",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "NUGYO",
+      "name": "Nurol GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "MGROS",
+      "name": "Migros",
+      "sector": "Perakende Ticaret",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "NTGAZ",
+      "name": "Naturelgaz",
+      "sector": "Enerji",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "NETAS",
+      "name": "Netaş Telekomünikasyon",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "MTRKS",
+      "name": "Matriks Bilgi Dağıtım",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "MSGYO",
+      "name": "Mistral GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "MIATK",
+      "name": "Mia Teknoloji",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "ODAS",
+      "name": "Odaş Elektrik",
+      "sector": "Enerji",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "NUHCM",
+      "name": "Nuh Çimento",
+      "sector": "Çimento",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "PARSN",
+      "name": "Parsan",
+      "sector": "Metal Ana",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "OSTIM",
+      "name": "Ostim Endüstriyel",
+      "sector": "Holding",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "PENTA",
+      "name": "Penta Teknoloji",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "PGSUS",
+      "name": "Pegasus",
+      "sector": "Ulaştırma",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "ONCSM",
+      "name": "Oncosem Onkolojik Sistemler",
+      "sector": "Sağlık",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "PEKGY",
+      "name": "Peker GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "PASEU",
+      "name": "Pasifik Eurasia",
+      "sector": "Ulaştırma",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "PAPIL",
+      "name": "Papilon Savunma",
+      "sector": "Savunma",
+      "indexes": []
+    },
+    {
+      "symbol": "OYYAT",
+      "name": "Oyak Yatırım",
+      "sector": "Aracı Kurumlar",
+      "indexes": []
+    },
+    {
+      "symbol": "ORGE",
+      "name": "Orge Enerji Elektrik",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "PENGD",
+      "name": "Penguen Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "OZGYO",
+      "name": "Özderici GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "PETUN",
+      "name": "Pınar Et",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "PETKM",
+      "name": "Petkim",
+      "sector": "Kimya",
+      "indexes": [
+        "BIST100",
+        "BIST30",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "OTKAR",
+      "name": "Otokar",
+      "sector": "Otomotiv",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "PAMEL",
+      "name": "Pamel Yenilenebilir Enerji",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "PAGYO",
+      "name": "Pera GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "OYAKC",
+      "name": "Oyak Çimento",
+      "sector": "Çimento",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "OZKGY",
+      "name": "Özak GYO",
+      "sector": "GYO",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "PINSU",
+      "name": "Pınar Su",
+      "sector": "Gıda ve İçecek",
+      "indexes": []
+    },
+    {
+      "symbol": "PKART",
+      "name": "Plastikkart",
+      "sector": "Kimya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "PLTUR",
+      "name": "Platform Turizm",
+      "sector": "Turizm",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "PKENT",
+      "name": "Petrokent Turizm",
+      "sector": "Turizm",
+      "indexes": []
+    },
+    {
+      "symbol": "PNSUT",
+      "name": "Pınar Süt",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "RAYSG",
+      "name": "Ray Sigorta",
+      "sector": "Sigorta",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "REEDR",
+      "name": "Reeder Teknoloji",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "POLHO",
+      "name": "Polisan Holding",
+      "sector": "Holding",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "PRKME",
+      "name": "Park Elektrik",
+      "sector": "Madencilik",
+      "indexes": []
+    },
+    {
+      "symbol": "PSGYO",
+      "name": "Pasifik GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "RUBNS",
+      "name": "Rubenis",
+      "sector": "Tekstil",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "QUAGR",
+      "name": "QUA Granite",
+      "sector": "Taş ve Toprağa Dayalı",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "RGYAS",
+      "name": "Regnum GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "PRKAB",
+      "name": "Türk Prysmian Kablo",
+      "sector": "Elektrik Malzemeleri",
+      "indexes": []
+    },
+    {
+      "symbol": "ROYAL",
+      "name": "Royal Halı",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "RYSAS",
+      "name": "Reysaş Taşımacılık",
+      "sector": "Ulaştırma",
+      "indexes": []
+    },
+    {
+      "symbol": "RYGYO",
+      "name": "Reysaş GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "SAFKR",
+      "name": "Safkar Ege Soğutmacılık",
+      "sector": "Dayanıklı Tüketim",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SAYAS",
+      "name": "Say Yenilenebilir Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SANEL",
+      "name": "Sanel Mühendislik",
+      "sector": "Elektrik Malzemeleri",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SNKRN",
+      "name": "Senkron Güvenlik",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "SMRTG",
+      "name": "Smart Güneş Teknoloji",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SAMAT",
+      "name": "Saray Matbaacılık",
+      "sector": "Kağıt ve Kağıt Ürünleri",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SMART",
+      "name": "Smart Güneş Enerjisi",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SDTTR",
+      "name": "SDT Space and Defence",
+      "sector": "Savunma",
+      "indexes": []
+    },
+    {
+      "symbol": "SASA",
+      "name": "Sasa Polyester",
+      "sector": "Kimya",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "SOKM",
+      "name": "Şok Marketler",
+      "sector": "Perakende Ticaret",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "SKTAS",
+      "name": "Söktaş Tekstil",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "SELVA",
+      "name": "Selva Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SARKY",
+      "name": "Sarkuysan",
+      "sector": "Metal Ana",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SNICA",
+      "name": "Şenocak",
+      "sector": "Dayanıklı Tüketim",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SELEC",
+      "name": "Selçuk Ecza",
+      "sector": "İlaç",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SNGYO",
+      "name": "Sinpaş GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SISE",
+      "name": "Şişecam",
+      "sector": "Cam",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "SKBNK",
+      "name": "Şekerbank",
+      "sector": "Bankacılık",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "SRVGY",
+      "name": "Servet GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SUNTK",
+      "name": "Sun Tekstil",
+      "sector": "Tekstil",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SAHOL",
+      "name": "Sabancı Holding",
+      "sector": "Holding",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "SUMAS",
+      "name": "Sumaş Motorları",
+      "sector": "Makine",
+      "indexes": []
+    },
+    {
+      "symbol": "TABGD",
+      "name": "Tab Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "SUWEN",
+      "name": "Suwen Tekstil",
+      "sector": "Tekstil",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "TATGD",
+      "name": "Tat Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": []
+    },
+    {
+      "symbol": "TDGYO",
+      "name": "Trend GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "TEKTU",
+      "name": "Tek-Art Turizm",
+      "sector": "Turizm",
+      "indexes": []
+    },
+    {
+      "symbol": "TKNSA",
+      "name": "Teknosa İç ve Dış Ticaret",
+      "sector": "Perakende Ticaret",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "TCELL",
+      "name": "Turkcell",
+      "sector": "Telekomünikasyon",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "TAVHL",
+      "name": "TAV Havalimanları",
+      "sector": "Ulaştırma",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "TMSN",
+      "name": "Tümosan Motor",
+      "sector": "Makine",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "TBORG",
+      "name": "T. Tuborg",
+      "sector": "Gıda ve İçecek",
+      "indexes": []
+    },
+    {
+      "symbol": "TRILC",
+      "name": "Turk İlaç ve Serum",
+      "sector": "İlaç",
+      "indexes": []
+    },
+    {
+      "symbol": "THYAO",
+      "name": "Türk Hava Yolları",
+      "sector": "Ulaştırma",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "TLMAN",
+      "name": "Trabzon Liman",
+      "sector": "Ulaştırma",
+      "indexes": []
+    },
+    {
+      "symbol": "TSGYO",
+      "name": "TSKB GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "TRCAS",
+      "name": "Turcas Petrol",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "TRGYO",
+      "name": "Torunlar GYO",
+      "sector": "GYO",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "TOASO",
+      "name": "Tofaş Oto Fabrikası",
+      "sector": "Otomotiv",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "TSPOR",
+      "name": "Trabzonspor Sportif",
+      "sector": "Spor",
+      "indexes": []
+    },
+    {
+      "symbol": "TTKOM",
+      "name": "Türk Telekom",
+      "sector": "Telekomünikasyon",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "TSKB",
+      "name": "Türkiye Sınai Kalkınma Bankası",
+      "sector": "Bankacılık",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "TUKAS",
+      "name": "Tukaş Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "TKFEN",
+      "name": "Tekfen Holding",
+      "sector": "Holding",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "TURSG",
+      "name": "Turkland Sigorta",
+      "sector": "Sigorta",
+      "indexes": []
+    },
+    {
+      "symbol": "TUPRS",
+      "name": "Tüpraş",
+      "sector": "Enerji",
+      "indexes": [
+        "BIST100",
+        "BIST30",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ULUFA",
+      "name": "Ulusal Faktoring",
+      "sector": "Finansal Kiralama",
+      "indexes": []
+    },
+    {
+      "symbol": "ULKER",
+      "name": "Ülker Bisküvi",
+      "sector": "Gıda ve İçecek",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "ULUSE",
+      "name": "Ulusoy Elektrik",
+      "sector": "Elektrik Malzemeleri",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "UNLU",
+      "name": "Ünlü Yatırım Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "ULUUN",
+      "name": "Ulusoy Un Sanayi",
+      "sector": "Gıda ve İçecek",
+      "indexes": []
+    },
+    {
+      "symbol": "USAK",
+      "name": "Uşak Seramik",
+      "sector": "Taş ve Toprağa Dayalı",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "VAKBN",
+      "name": "Vakıfbank",
+      "sector": "Bankacılık",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "VAKFN",
+      "name": "Vakıf Finansal Kiralama",
+      "sector": "Finansal Kiralama",
+      "indexes": []
+    },
+    {
+      "symbol": "VAKKO",
+      "name": "Vakko Tekstil",
+      "sector": "Tekstil",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "VERUS",
+      "name": "Verusaturk Girişim",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "VKGYO",
+      "name": "Vakıf GYO",
+      "sector": "GYO",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "VESTL",
+      "name": "Vestel Elektronik",
+      "sector": "Dayanıklı Tüketim",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "TTRAK",
+      "name": "Türk Traktör",
+      "sector": "Makine",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "YATAS",
+      "name": "Yataş",
+      "sector": "Mobilya",
+      "indexes": [
+        "BIST100",
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "YAYLA",
+      "name": "Yayla Agro Gıda",
+      "sector": "Gıda ve İçecek",
+      "indexes": []
+    },
+    {
+      "symbol": "YAPRK",
+      "name": "Yaprak Süt",
+      "sector": "Gıda ve İçecek",
+      "indexes": []
+    },
+    {
+      "symbol": "VESBE",
+      "name": "Vestel Beyaz Eşya",
+      "sector": "Dayanıklı Tüketim",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "YEOTK",
+      "name": "Yeo Teknoloji Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "YKBNK",
+      "name": "Yapı Kredi Bankası",
+      "sector": "Bankacılık",
+      "indexes": [
+        "BIST100",
+        "BIST30"
+      ]
+    },
+    {
+      "symbol": "YGGYO",
+      "name": "Yeşil GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "ZOREN",
+      "name": "Zorlu Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "YKSLN",
+      "name": "Yüksel İnşaat",
+      "sector": "İnşaat",
+      "indexes": []
+    },
+    {
+      "symbol": "ZRGYO",
+      "name": "Ziraat GYO",
+      "sector": "GYO",
+      "indexes": [
+        "BIST100"
+      ]
+    },
+    {
+      "symbol": "BALAT",
+      "name": "Balatacilar Balatacilik",
+      "sector": "Otomotiv",
+      "indexes": []
+    },
+    {
+      "symbol": "YUNSA",
+      "name": "Yünsa",
+      "sector": "Tekstil",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BASGZ",
+      "name": "Basgas Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BORLS",
+      "name": "Borlu Saglik",
+      "sector": "Saglik",
+      "indexes": []
+    },
+    {
+      "symbol": "BORSK",
+      "name": "Bor Seker",
+      "sector": "Gida",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BRKSN",
+      "name": "Berkosan",
+      "sector": "Insaat",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "CEOEM",
+      "name": "CEO Event Medya",
+      "sector": "Medya",
+      "indexes": []
+    },
+    {
+      "symbol": "CRFSA",
+      "name": "Carrefoursa",
+      "sector": "Perakende",
+      "indexes": []
+    },
+    {
+      "symbol": "CUSAN",
+      "name": "Cuhadaroglu",
+      "sector": "Metal Urunleri",
+      "indexes": []
+    },
+    {
+      "symbol": "COSMO",
+      "name": "Cosmos Yatirim",
+      "sector": "Yatirim",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DERHL",
+      "name": "Derimod",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "DIRIT",
+      "name": "Diriteks",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "DGNMO",
+      "name": "Doganlar Mobilya",
+      "sector": "Mobilya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DNISI",
+      "name": "Deniz Insaat",
+      "sector": "Insaat",
+      "indexes": []
+    },
+    {
+      "symbol": "EDIP",
+      "name": "Edip Gayrimenkul",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "EDATA",
+      "name": "E-Data Teknoloji",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DOGUB",
+      "name": "Dogusan",
+      "sector": "Metal Urunleri",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "EMNIS",
+      "name": "Eminis Ambalaj",
+      "sector": "Ambalaj",
+      "indexes": []
+    },
+    {
+      "symbol": "ENERY",
+      "name": "Enerya Enerji",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "CASA",
+      "name": "Casa Emtia",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "CATES",
+      "name": "Cates Elektrik",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "EGGUB",
+      "name": "Ege Gubre",
+      "sector": "Kimya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "EGPRO",
+      "name": "Ege Pro",
+      "sector": "Plastik",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "CRDFA",
+      "name": "Credit Factoring",
+      "sector": "Finans",
+      "indexes": []
+    },
+    {
+      "symbol": "ENSRI",
+      "name": "Ensari",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "EPLAS",
+      "name": "Egeplast",
+      "sector": "Plastik",
+      "indexes": []
+    },
+    {
+      "symbol": "ERSU",
+      "name": "Ersu Meyve",
+      "sector": "Gida",
+      "indexes": []
+    },
+    {
+      "symbol": "EUHOL",
+      "name": "Euro Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "FLAP",
+      "name": "Flap Kongre",
+      "sector": "Turizm",
+      "indexes": []
+    },
+    {
+      "symbol": "GUNDG",
+      "name": "Gundogdu",
+      "sector": "Holding",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ESCOM",
+      "name": "Escort Teknoloji",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ERCB",
+      "name": "Erciyas Celik",
+      "sector": "Metal Urunleri",
+      "indexes": []
+    },
+    {
+      "symbol": "GSDDE",
+      "name": "GSD Denizcilik",
+      "sector": "Ulastirma",
+      "indexes": []
+    },
+    {
+      "symbol": "EUKYO",
+      "name": "Euro Kapital GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "EYGYO",
+      "name": "Eyup GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ETILR",
+      "name": "Etiler Gida",
+      "sector": "Gida",
+      "indexes": []
+    },
+    {
+      "symbol": "ETYAT",
+      "name": "Euro Yatirim",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "GRNYO",
+      "name": "Garanti Yatirim Ortakligi",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "GLCVY",
+      "name": "Gelecek Varlik",
+      "sector": "Finans",
+      "indexes": []
+    },
+    {
+      "symbol": "EUYO",
+      "name": "Euro Yonetim",
+      "sector": "Finans",
+      "indexes": []
+    },
+    {
+      "symbol": "GRSEL",
+      "name": "GurSel Tarim",
+      "sector": "Gida",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "GMTAS",
+      "name": "Gimat",
+      "sector": "Lojistik",
+      "indexes": []
+    },
+    {
+      "symbol": "GZNMI",
+      "name": "Gazianep Un",
+      "sector": "Gida",
+      "indexes": []
+    },
+    {
+      "symbol": "HDFGS",
+      "name": "Hedef Girisim",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "FZLGY",
+      "name": "Fuzul GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ESEN",
+      "name": "Esenler Yapi",
+      "sector": "Insaat",
+      "indexes": []
+    },
+    {
+      "symbol": "IHGZT",
+      "name": "Ihlas GZT",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "IEYHO",
+      "name": "Isiklar Enerji",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "IHAAS",
+      "name": "Ihlas Gazetecilik",
+      "sector": "Medya",
+      "indexes": []
+    },
+    {
+      "symbol": "IHYAY",
+      "name": "Ihlas Yayin",
+      "sector": "Medya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "INGRM",
+      "name": "Ingram",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "ISGSY",
+      "name": "Is Girisim",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "ISBTR",
+      "name": "Is Bankasi B",
+      "sector": "Banka",
+      "indexes": []
+    },
+    {
+      "symbol": "ISDMR",
+      "name": "Iskenderun Demir",
+      "sector": "Metal Urunleri",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "IZENR",
+      "name": "Izmir Enerji",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "ISKPL",
+      "name": "Iskele Plastik",
+      "sector": "Plastik",
+      "indexes": []
+    },
+    {
+      "symbol": "KLSYN",
+      "name": "Kale Savunma",
+      "sector": "Savunma",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ICUGS",
+      "name": "ICU Girisim",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "IZFAS",
+      "name": "Izmir Fuar",
+      "sector": "Hizmetler",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KONKA",
+      "name": "Konak Kablo",
+      "sector": "Elektrik",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ISKUR",
+      "name": "Is Kur",
+      "sector": "Finans",
+      "indexes": []
+    },
+    {
+      "symbol": "ISFIN",
+      "name": "Is Finansal",
+      "sector": "Finans",
+      "indexes": []
+    },
+    {
+      "symbol": "KRTEK",
+      "name": "Karsu Tekstil",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "ISATR",
+      "name": "Is Bankasi Yatirim",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "ISBIR",
+      "name": "Isbir Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "KERVN",
+      "name": "Kervansaray",
+      "sector": "Turizm",
+      "indexes": []
+    },
+    {
+      "symbol": "KBORU",
+      "name": "Kuzey Boru",
+      "sector": "Metal Urunleri",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KUVVA",
+      "name": "Kuvva Gida",
+      "sector": "Gida",
+      "indexes": []
+    },
+    {
+      "symbol": "KOCMT",
+      "name": "Kocaer Metal",
+      "sector": "Metal Urunleri",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "MAKTK",
+      "name": "Makina Takim",
+      "sector": "Makina",
+      "indexes": []
+    },
+    {
+      "symbol": "MHRGY",
+      "name": "Mhr GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "KOTON",
+      "name": "Koton",
+      "sector": "Tekstil",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KSTUR",
+      "name": "Kustur",
+      "sector": "Turizm",
+      "indexes": []
+    },
+    {
+      "symbol": "ISYAT",
+      "name": "Is Yatirim Ortakligi",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "MTRYO",
+      "name": "Metro YO",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "MOGAN",
+      "name": "Mogan Enerji",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "LRSHO",
+      "name": "Loras Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "ODINE",
+      "name": "Odin Energy",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "LMKDC",
+      "name": "Limak Cimento",
+      "sector": "Cimento",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ORMA",
+      "name": "Orma Orman",
+      "sector": "Mobilya",
+      "indexes": []
+    },
+    {
+      "symbol": "OZSUB",
+      "name": "Ozsu Balik",
+      "sector": "Gida",
+      "indexes": []
+    },
+    {
+      "symbol": "ORCAY",
+      "name": "Orcay",
+      "sector": "Metal Urunleri",
+      "indexes": []
+    },
+    {
+      "symbol": "OZRDN",
+      "name": "Ozerden",
+      "sector": "Plastik",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "MEKAG",
+      "name": "Meka Agac",
+      "sector": "Mobilya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "OTTO",
+      "name": "Otto Holding",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "PATEK",
+      "name": "Patek",
+      "sector": "Metal Urunleri",
+      "indexes": []
+    },
+    {
+      "symbol": "MZHLD",
+      "name": "Mazhar Zorlu",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "OSMEN",
+      "name": "Osmanli Menkul",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "PCILT",
+      "name": "PC Iletisim",
+      "sector": "Perakende",
+      "indexes": []
+    },
+    {
+      "symbol": "OYAYO",
+      "name": "Oyayo",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "OBASE",
+      "name": "Obase Bilisim",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "OFSYM",
+      "name": "Ofs Yem",
+      "sector": "Gida",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "PRZMA",
+      "name": "Prizma Pres",
+      "sector": "Metal Urunleri",
+      "indexes": []
+    },
+    {
+      "symbol": "POLTK",
+      "name": "Politek",
+      "sector": "Plastik",
+      "indexes": []
+    },
+    {
+      "symbol": "RALYH",
+      "name": "Ral Yatirim",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "PRDGS",
+      "name": "Pardus Girisim",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "PSDTC",
+      "name": "Pesudo Tech",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "RODRG",
+      "name": "Rodrigo Tekstil",
+      "sector": "Tekstil",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "RTALB",
+      "name": "RTA Lab",
+      "sector": "Saglik",
+      "indexes": []
+    },
+    {
+      "symbol": "SEKFK",
+      "name": "Seker Faktoring",
+      "sector": "Finans",
+      "indexes": []
+    },
+    {
+      "symbol": "SEKUR",
+      "name": "Sekuro",
+      "sector": "Plastik",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SANFM",
+      "name": "Sanifoam",
+      "sector": "Plastik",
+      "indexes": []
+    },
+    {
+      "symbol": "SANKO",
+      "name": "Sanko",
+      "sector": "Tekstil",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "PNLSN",
+      "name": "Panelsan",
+      "sector": "Insaat",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SEYKM",
+      "name": "Seyitler Kimya",
+      "sector": "Kimya",
+      "indexes": []
+    },
+    {
+      "symbol": "TEZOL",
+      "name": "Tezol",
+      "sector": "Ambalaj",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "TARKM",
+      "name": "Tarkim",
+      "sector": "Kimya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "TERA",
+      "name": "Tera Yatirim",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "SEGYO",
+      "name": "Seker GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "SILVR",
+      "name": "Silver Dis",
+      "sector": "Saglik",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "TATEN",
+      "name": "Tat Enerji",
+      "sector": "Enerji",
+      "indexes": []
+    },
+    {
+      "symbol": "SNPAM",
+      "name": "Sunpet",
+      "sector": "Ambalaj",
+      "indexes": []
+    },
+    {
+      "symbol": "SEGMN",
+      "name": "Segmen Boru",
+      "sector": "Metal Urunleri",
+      "indexes": []
+    },
+    {
+      "symbol": "TURGG",
+      "name": "Turker Proje",
+      "sector": "Insaat",
+      "indexes": []
+    },
+    {
+      "symbol": "SONME",
+      "name": "Sonmez",
+      "sector": "Tekstil",
+      "indexes": []
+    },
+    {
+      "symbol": "TUREX",
+      "name": "Tureks",
+      "sector": "Madencilik",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "TMPOL",
+      "name": "Temapol",
+      "sector": "Kimya",
+      "indexes": []
+    },
+    {
+      "symbol": "SURGY",
+      "name": "Sur GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "UFUK",
+      "name": "Ufuk Yatirim",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "TUCLK",
+      "name": "Tugcelik",
+      "sector": "Metal Urunleri",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "TGSAS",
+      "name": "Tugs Asa",
+      "sector": "Ulastirma",
+      "indexes": []
+    },
+    {
+      "symbol": "SODSN",
+      "name": "Sodas Sodyum",
+      "sector": "Kimya",
+      "indexes": []
+    },
+    {
+      "symbol": "VBTYZ",
+      "name": "VBT",
+      "sector": "Teknoloji",
+      "indexes": []
+    },
+    {
+      "symbol": "SKYMD",
+      "name": "Skymd",
+      "sector": "Saglik",
+      "indexes": []
+    },
+    {
+      "symbol": "VERTU",
+      "name": "Vertu",
+      "sector": "Turizm",
+      "indexes": []
+    },
+    {
+      "symbol": "VANGD",
+      "name": "Vanet Gida",
+      "sector": "Gida",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ZEDUR",
+      "name": "Zedur Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "YYAPI",
+      "name": "Yesil Yapi",
+      "sector": "Insaat",
+      "indexes": []
+    },
+    {
+      "symbol": "YGYO",
+      "name": "Yesil GYO",
+      "sector": "GYO",
+      "indexes": []
+    },
+    {
+      "symbol": "TNZTP",
+      "name": "Tenzile",
+      "sector": "Tekstil",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "UMPAS",
+      "name": "Umpas",
+      "sector": "Holding",
+      "indexes": []
+    },
+    {
+      "symbol": "VRGYO",
+      "name": "Vera GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "VKFYO",
+      "name": "Vakif YO",
+      "sector": "Yatirim",
+      "indexes": []
+    },
+    {
+      "symbol": "YONGA",
+      "name": "Yonga Mobilya",
+      "sector": "Mobilya",
+      "indexes": []
+    },
+    {
+      "symbol": "VKING",
+      "name": "Viking Kagit",
+      "sector": "Ambalaj",
+      "indexes": []
+    },
+    {
+      "symbol": "MARBL",
+      "name": "Marmaris Beton",
+      "sector": "Cimento",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BEGYO",
+      "name": "Beginyo GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KIMMR",
+      "name": "Kimmr",
+      "sector": "Sanayi",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "RNPOL",
+      "name": "Reysas Poliuretan",
+      "sector": "Kimya",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "IZINV",
+      "name": "Iz Yatirim",
+      "sector": "Yatirim",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ULAS",
+      "name": "Ulas Nakliyat",
+      "sector": "Ulastirma",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ANGEN",
+      "name": "Angen Medikal",
+      "sector": "Saglik",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "DOFER",
+      "name": "Dofer Demir Celik",
+      "sector": "Demir-Celik",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BAHKM",
+      "name": "Bahkim Gida",
+      "sector": "Gida",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "OZYSR",
+      "name": "Ozyasar",
+      "sector": "Sanayi",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "SOKE",
+      "name": "Soke Degirmencilik",
+      "sector": "Gida",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "AHSGY",
+      "name": "Ahlatci Holding GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ALKLC",
+      "name": "Alkaloid Ilac",
+      "sector": "Ilac",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "ARASE",
+      "name": "Aras Elektrik",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "AVPGY",
+      "name": "Avrasya Petrol GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BINBN",
+      "name": "Binom Bilisim",
+      "sector": "Teknoloji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "BINHO",
+      "name": "Binom Holding",
+      "sector": "Holding",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "CEMZY",
+      "name": "Cementash",
+      "sector": "Cimento",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "CVKMD",
+      "name": "CVK Maden",
+      "sector": "Madencilik",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "EBEBK",
+      "name": "Ebebek",
+      "sector": "Perakende",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "EFOR",
+      "name": "Efor Enerji",
+      "sector": "Enerji",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "GLRMK",
+      "name": "Gulermark",
+      "sector": "Makine",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "GRTHO",
+      "name": "Grainturk Holding",
+      "sector": "Holding",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "HOROZ",
+      "name": "Horoz Lojistik",
+      "sector": "Ulastirma",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "HRKET",
+      "name": "Hareket Proje",
+      "sector": "Insaat",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "IDGYO",
+      "name": "Idealist GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "KZBGY",
+      "name": "Kuzey Boru GYO",
+      "sector": "GYO",
+      "indexes": [
+        "KATILIM"
+      ]
+    },
+    {
+      "symbol": "OBAMS",
+      "name": "Oba Makarnacilik",
+      "sector": "Gida",
+      "indexes": [
+        "KATILIM"
+      ]
+    }
+  ],
+  "sectors": [
+    "Aracı Kurumlar",
+    "Ambalaj",
+    "Bankacılık",
+    "Cam",
+    "Çimento",
+    "Dayanıklı Tüketim",
+    "Dış Ticaret",
+    "Elektrik Malzemeleri",
+    "Enerji",
+    "Finansal Kiralama",
+    "Gıda ve İçecek",
+    "GYO",
+    "Holding",
+    "İlaç",
+    "İnşaat",
+    "Kağıt ve Kağıt Ürünleri",
+    "Kimya",
+    "Madencilik",
+    "Makine",
+    "Medya",
+    "Metal Ana",
+    "Metal Eşya",
+    "Mobilya",
+    "Otomotiv",
+    "Perakende Ticaret",
+    "Sağlık",
+    "Savunma",
+    "Sigorta",
+    "Spor",
+    "Tarım",
+    "Taş ve Toprağa Dayalı",
+    "Teknoloji",
+    "Tekstil",
+    "Telekomünikasyon",
+    "Turizm",
+    "Ulaştırma",
+    "Yatırım Ortaklığı"
+  ],
+  "indexes": [
+    {
+      "id": "BIST30",
+      "name": "BIST 30",
+      "description": "En yüksek işlem hacimli 30 hisse"
+    },
+    {
+      "id": "BIST100",
+      "name": "BIST 100",
+      "description": "En yüksek işlem hacimli 100 hisse"
+    },
+    {
+      "id": "KATILIM",
+      "name": "Katılım Endeksi",
+      "description": "Faizsiz yatırıma uygun hisseler"
+    }
+  ]
+}
