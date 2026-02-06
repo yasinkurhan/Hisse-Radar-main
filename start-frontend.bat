@@ -1,6 +1,6 @@
 @echo off
 title HisseRadar Frontend
-cd /d C:\Users\kurha\Desktop\HisseRadar\frontend
+cd /d %~dp0frontend
 echo ========================================
 echo    HisseRadar Frontend Baslatiliyor
 echo ========================================

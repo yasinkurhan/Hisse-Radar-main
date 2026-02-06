@@ -70,28 +70,46 @@ export default function BacktestPage() {
 
   const fetchAllData = async () => {
     setLoading(true);
+
+    // Default market condition
+    const defaultMarket: MarketCondition = {
+      condition: 'neutral',
+      trend: 'Yatay',
+      volatility: 'Normal',
+      recommendation: 'Piyasa verisi yükleniyor...',
+      details: { rsi: 50, trend_direction: 'neutral', above_sma20: false, above_sma50: false }
+    };
+
     try {
-      const [perfRes, activeRes, recentRes, marketRes] = await Promise.all([
-        fetch('http://localhost:8000/api/backtest/performance'),
-        fetch('http://localhost:8000/api/backtest/active-signals'),
-        fetch('http://localhost:8000/api/backtest/recent-results?limit=20'),
-        fetch('http://localhost:8000/api/backtest/market-condition')
-      ]);
-      
+      // Fetch each endpoint with individual error handling
+      const fetchWithTimeout = async (url: string, timeoutMs = 10000) => {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), timeoutMs);
+        try {
+          const res = await fetch(url, { signal: controller.signal });
+          clearTimeout(timeout);
+          return res.ok ? await res.json() : null;
+        } catch {
+          clearTimeout(timeout);
+          return null;
+        }
+      };
+
       const [perfData, activeData, recentData, marketData] = await Promise.all([
-        perfRes.json(),
-        activeRes.json(),
-        recentRes.json(),
-        marketRes.json()
+        fetchWithTimeout('http://localhost:8000/api/backtest/performance'),
+        fetchWithTimeout('http://localhost:8000/api/backtest/active-signals'),
+        fetchWithTimeout('http://localhost:8000/api/backtest/recent-results?limit=20'),
+        fetchWithTimeout('http://localhost:8000/api/backtest/market-condition', 15000)
       ]);
-      
-      setPerformance(perfData);
-      setActiveSignals(activeData);
-      setRecentResults(recentData);
-      setMarketCondition(marketData);
+
+      if (perfData) setPerformance(perfData);
+      if (activeData) setActiveSignals(activeData);
+      if (recentData) setRecentResults(recentData);
+      setMarketCondition(marketData || defaultMarket);
       setLastRefresh(new Date().toLocaleTimeString('tr-TR'));
     } catch (error) {
       console.error('Veri yuklenemedi:', error);
+      setMarketCondition(defaultMarket);
     } finally {
       setLoading(false);
     }
@@ -104,7 +122,7 @@ export default function BacktestPage() {
       const refreshRes = await fetch('http://localhost:8000/api/backtest/refresh');
       const refreshData = await refreshRes.json();
       console.log('Refresh sonucu:', refreshData);
-      
+
       // Sonra tüm verileri tekrar çek
       await fetchAllData();
     } catch (error) {
@@ -156,14 +174,13 @@ export default function BacktestPage() {
             )}
           </div>
           <div className="flex gap-4">
-            <button 
-              onClick={refreshSignals} 
+            <button
+              onClick={refreshSignals}
               disabled={refreshing}
-              className={`px-4 py-2 rounded flex items-center gap-2 ${
-                refreshing 
-                  ? 'bg-yellow-600 cursor-wait' 
+              className={`px-4 py-2 rounded flex items-center gap-2 ${refreshing
+                  ? 'bg-yellow-600 cursor-wait'
                   : 'bg-green-600 hover:bg-green-700'
-              }`}
+                }`}
             >
               <span className={refreshing ? 'animate-spin' : ''}>🔄</span>
               {refreshing ? 'Güncelleniyor...' : 'Sinyalleri Güncelle'}
@@ -185,8 +202,8 @@ export default function BacktestPage() {
               <div className="bg-gray-700 rounded p-4">
                 <p className="text-gray-400 text-sm">Genel Durum</p>
                 <p className={`text-2xl font-bold ${getConditionColor(marketCondition.condition)}`}>
-                  {marketCondition.condition === 'bullish' ? '🐂 Boğa' : 
-                   marketCondition.condition === 'bearish' ? '🐻 Ayı' : '➡️ Yatay'}
+                  {marketCondition.condition === 'bullish' ? '🐂 Boğa' :
+                    marketCondition.condition === 'bearish' ? '🐻 Ayı' : '➡️ Yatay'}
                 </p>
               </div>
               <div className="bg-gray-700 rounded p-4">
@@ -270,13 +287,13 @@ export default function BacktestPage() {
 
         {/* Tabs */}
         <div className="flex gap-2 mb-6">
-          <button 
+          <button
             onClick={() => setActiveTab('active')}
             className={`px-6 py-2 rounded ${activeTab === 'active' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
           >
             Aktif Sinyaller ({activeSignals.length})
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('history')}
             className={`px-6 py-2 rounded ${activeTab === 'history' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
           >
@@ -375,16 +392,15 @@ export default function BacktestPage() {
                         </td>
                         <td className="py-3 px-4 text-gray-400">{result.days_held}</td>
                         <td className="py-3 px-4">
-                          <span className={`px-3 py-1 rounded text-sm ${
-                            result.exit_reason === 'kar_al' 
-                              ? 'bg-green-900/50 text-green-400' 
+                          <span className={`px-3 py-1 rounded text-sm ${result.exit_reason === 'kar_al'
+                              ? 'bg-green-900/50 text-green-400'
                               : result.exit_reason === 'zarar_kes'
-                              ? 'bg-red-900/50 text-red-400'
-                              : 'bg-yellow-900/50 text-yellow-400'
-                          }`}>
-                            {result.exit_reason === 'kar_al' ? '✓ Kar Al' : 
-                             result.exit_reason === 'zarar_kes' ? '✗ Stop' : 
-                             '⏱ Süre Aşımı'}
+                                ? 'bg-red-900/50 text-red-400'
+                                : 'bg-yellow-900/50 text-yellow-400'
+                            }`}>
+                            {result.exit_reason === 'kar_al' ? '✓ Kar Al' :
+                              result.exit_reason === 'zarar_kes' ? '✗ Stop' :
+                                '⏱ Süre Aşımı'}
                           </span>
                         </td>
                       </tr>

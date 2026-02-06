@@ -137,12 +137,25 @@ export default function MarketOverviewPage() {
             <div className="bg-surface rounded-lg p-6">
               <h3 className="text-lg font-semibold mb-4">Genel Sinyal</h3>
               {(() => {
-                const signalValue = typeof marketData.overall_signal === 'object' 
-                  ? (marketData.overall_signal?.signal || '') 
-                  : (marketData.overall_signal || '');
-                const signalStr = String(signalValue).toLowerCase();
-                const isBullish = signalStr.includes('bullish') || signalStr.includes('al') || signalStr.includes('yüksel');
-                const isBearish = signalStr.includes('bearish') || signalStr.includes('sat') || signalStr.includes('düş');
+                // Sinyal değerini güvenli şekilde çıkar - v2
+                let signalValue = 'Belirsiz';
+                let signalRecommendation = '';
+                let signalScore: number | null = null;
+                
+                const sig = marketData.overall_signal;
+                if (sig) {
+                  if (typeof sig === 'string') {
+                    signalValue = sig;
+                  } else if (sig && typeof sig === 'object') {
+                    signalValue = (sig as any).signal || (sig as any).label || 'Belirsiz';
+                    signalRecommendation = (sig as any).recommendation || '';
+                    signalScore = (sig as any).score ?? null;
+                  }
+                }
+                
+                const signalLower = String(signalValue).toLowerCase();
+                const isBullish = signalLower.includes('al') || signalLower.includes('bullish') || signalLower.includes('güçlü');
+                const isBearish = signalLower.includes('sat') || signalLower.includes('bearish') || signalLower.includes('zayıf');
                 
                 return (
                   <div className={`p-4 rounded-lg border ${
@@ -156,13 +169,13 @@ export default function MarketOverviewPage() {
                     <div className={`text-xl font-bold ${
                       isBullish ? 'text-up' : isBearish ? 'text-down' : 'text-yellow-400'
                     }`}>
-                      {signalValue || 'Belirsiz'}
+                      {signalValue}
                     </div>
-                    {typeof marketData.overall_signal === 'object' && marketData.overall_signal?.recommendation && (
-                      <div className="text-sm text-muted mt-2">{marketData.overall_signal.recommendation}</div>
+                    {signalRecommendation && (
+                      <div className="text-sm text-muted mt-2">{signalRecommendation}</div>
                     )}
-                    {typeof marketData.overall_signal === 'object' && marketData.overall_signal?.score !== undefined && (
-                      <div className="text-sm text-muted mt-1">Skor: {marketData.overall_signal.score.toFixed(1)}</div>
+                    {signalScore !== null && (
+                      <div className="text-sm text-muted mt-1">Skor: {signalScore.toFixed(1)}</div>
                     )}
                   </div>
                 );

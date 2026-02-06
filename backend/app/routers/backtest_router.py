@@ -8,6 +8,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import Optional
 from ..services.smart_scoring import BacktestEngine, MarketConditionAnalyzer
+from ..services.yahoo_fetcher import get_yahoo_fetcher
 import yfinance as yf
 
 router = APIRouter(prefix="/api/backtest", tags=["backtest"])
@@ -19,13 +20,22 @@ backtest_engine = BacktestEngine()
 def get_current_prices(symbols: list) -> dict:
     """Sembollerin guncel fiyatlarini al"""
     prices = {}
+    fetcher = get_yahoo_fetcher()
+    
     for symbol in symbols:
         try:
-            ticker = yf.Ticker(f"{symbol}.IS")
-            hist = ticker.history(period="1d")
-            if not hist.empty:
-                prices[symbol] = hist['Close'].iloc[-1]
-        except:
+            # Sembol formatini ayarla
+            search_symbol = f"{symbol}.IS" if not symbol.endswith(".IS") else symbol
+            
+            # Guvenilir olmasi icin 5 gunluk veri iste, sonuncuyu al
+            hist = fetcher.get_history(search_symbol, period="5d", interval="1d")
+            
+            if hist is not None and not hist.empty:
+                prices[symbol] = float(hist['Close'].iloc[-1])
+            else:
+                print(f"Fiyat bulunamadi: {symbol}")
+        except Exception as e:
+            print(f"Fiyat cekme hatasi {symbol}: {e}")
             continue
     return prices
 
@@ -88,18 +98,34 @@ async def refresh_signals():
 @router.get("/market-condition")
 async def get_market_condition():
     """Genel piyasa kosulunu analiz et (BIST100 bazli)"""
+    # Default response
+    default_response = {
+        "condition": "neutral",
+        "trend": "Yatay",
+        "volatility": "Normal",
+        "recommendation": "Piyasa verisi alınamadı, dikkatli olun.",
+        "details": {
+            "rsi": 50,
+            "trend_direction": "neutral",
+            "above_sma20": False,
+            "above_sma50": False
+        }
+    }
+    
     try:
-        # XU100 (BIST100) verisini al
+        import asyncio
+        # XU100 (BIST100) verisini al - timeout ile
         xu100 = yf.Ticker("XU100.IS")
         df = xu100.history(period="3mo", interval="1d")
         
         if df.empty:
-            return {"condition": "neutral", "description": "Veri alinamadi"}
+            return default_response
         
         result = MarketConditionAnalyzer.analyze_market_condition(df)
         return result
     except Exception as e:
-        return {"condition": "neutral", "description": f"Hata: {str(e)}"}
+        print(f"Market condition hatası: {e}")
+        return default_response
 
 
 class RecordSignalRequest(BaseModel):
