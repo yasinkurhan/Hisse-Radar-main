@@ -1,9 +1,89 @@
 """
 HisseRadar API - Ana Uygulama
 ==============================
-BIST Hisse Analiz Platformu Backend
 
-Gelistirici: HisseRadar Team
+Bu Uygulama Ne İş Yapıyor?
+---------------------------
+
+HisseRadar, Borsa İstanbul (BIST) hisselerini analiz eden kapsamlı bir backend API'dir.
+
+TEMEL İŞLEVLER:
+---------------
+
+1. HİSSE VERİLERİ (Data Fetching)
+   - Yahoo Finance API üzerinden 500+ BIST hissesinin verilerini çeker
+   - Fiyat geçmişi (OHLCV - Açılış, Yüksek, Düşük, Kapanış, Hacim)
+   - Gerçek zamanlı veri (15-20 dk gecikme ile)
+
+2. TEKNİK ANALİZ (Technical Analysis)
+   - RSI (Relative Strength Index): Aşırı alım/satım tespiti
+   - MACD (Moving Average Convergence Divergence): Trend yönü
+   - Bollinger Bands: Volatilite bandları
+   - Hareketli Ortalamalar (SMA, EMA): Destek/direnç seviyeleri
+   - Fibonacci: Fiyat hedefleri
+   - Mum Formasyonları: Grafik desenleri
+   - ADX, OBV, Ichimoku ve 20+ teknik gösterge
+   → AL/SAT/BEKLE sinyalleri üretir
+
+3. TEMEL ANALİZ (Fundamental Analysis)
+   - Değerleme Oranları: F/K, PD/DD, F/S, PEG
+   - Karlılık: ROE, ROA, Kar marjları
+   - Temettü: Temettü verimi, dağıtım oranı
+   - Bilanço: Borç/Özkaynak, Cari oran, Asit-test
+   → Hissenin "değerli", "makul" veya "pahalı" olduğunu belirler
+
+4. AKILLI ÖZELLİKLER (Smart Features)
+   - Otomatik skorlama sistemi (0-100 puan)
+   - Backtest: Geçmiş sinyallerin performansı
+   - Formasyon tespiti (çift dip/tepe, üçgen, baş-omuz)
+   - Piyasa genişlik analizi
+   - Sektor rotasyonu takibi
+
+5. KULLANICI ÖZELLİKLERİ (User Features)
+   - Watchlist: İzleme listeleri
+   - Alarmlar: Fiyat ve sinyal bildirimleri
+   - Portföy: Sanal portföy takibi
+   - Backtest: Performans istatistikleri
+
+6. YAPAY ZEKA (AI)
+   - Fiyat tahminleri
+   - Sinyal birleştirme
+   - Sentiment analizi (haber bazlı)
+
+7. HABERLER & DUYURULAR
+   - KAP (Kamuyu Aydınlatma Platformu) duyuruları
+   - Piyasa haberleri
+   - Sentiment analizi
+
+VERİ AKIŞI:
+-----------
+Frontend → FastAPI → yfinance API → Veri İşleme → Analiz → Sonuç
+
+TEKNOLOJİ STACK:
+----------------
+- FastAPI: Modern, hızlı web framework
+- yfinance: Yahoo Finance API wrapper
+- pandas: Veri işleme ve manipülasyon
+- pandas-ta: Teknik analiz göstergeleri
+- Python 3.11+
+
+API ENDPOINT KATEGORİLERİ:
+--------------------------
+- /api/stocks - Hisse listesi ve arama
+- /api/price - Fiyat verileri
+- /api/technical - Teknik analiz
+- /api/fundamental - Temel analiz
+- /api/analysis - Günlük/haftalık analizler
+- /api/user - Kullanıcı özellikleri
+- /api/backtest - Performans takibi
+- /api/pro - PRO özellikler
+- /api/news - Haberler ve duyurular
+- /api/ai - Yapay zeka tahminleri
+
+MALİYET: %100 Ücretsiz (yfinance API ücretsiz tier)
+
+BIST Hisse Analiz Platformu Backend
+Geliştirici: HisseRadar Team
 Versiyon: 2.0.0
 """
 

@@ -2,9 +2,36 @@
 
 ## BIST Borsa Analiz Platformu
 
+> **📊 Bu Uygulama Ne İş Yapıyor?**
+> 
+> **HisseRadar**, Borsa İstanbul'da (BIST) işlem gören hisse senetlerini analiz eden ücretsiz bir web platformudur. Yatırımcılara hisse seçimi ve alım-satım kararları için:
+> - 📈 **Teknik analiz** (grafik desenleri, göstergeler, sinyaller)
+> - 💰 **Temel analiz** (mali tablolar, değerleme oranları, karlılık)
+> - 🔔 **Otomatik alarmlar** ve **portföy takibi**
+> - 🤖 **Yapay zeka destekli** tahminler ve öneriler
+> 
+> sunar. Tüm bu özellikler tamamen **ücretsiz** ve **açık kaynak** olarak öğrenci ve bireysel yatırımcılara sunulmaktadır.
+> 
+> 👉 **[Detaylı Açıklama için NEDIR.md dosyasına bakın](NEDIR.md)**
+
+---
+
 Borsa İstanbul (BIST) hisseleri için kapsamlı teknik ve temel analiz platformu. Öğrenci bütçesine uygun, tamamen ücretsiz ve açık kaynak.
 
 ![HisseRadar Banner](https://via.placeholder.com/1200x400/0ea5e9/ffffff?text=HisseRadar+-+BIST+Analiz+Platformu)
+
+## 📑 İçindekiler
+
+- [🌟 Özellikler](#-özellikler)
+- [🛠️ Teknoloji Stack](#️-teknoloji-stack)
+- [📁 Proje Yapısı](#-proje-yapısı)
+- [🚀 Kurulum](#-kurulum)
+- [📡 API Endpoint'leri](#-api-endpointleri)
+- [💰 Maliyet](#-maliyet-öğrenci-bütçesi)
+- [🚀 Deploy](#-deploy)
+- [⚠️ Yasal Uyarı](#️-yasal-uyarı)
+- [📝 Lisans](#-lisans)
+- [🤝 Katkıda Bulunma](#-katkıda-bulunma)
 
 ## 🌟 Özellikler
 

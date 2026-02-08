@@ -3,6 +3,22 @@
 /**
  * HisseRadar Ana Sayfa
  * =====================
+ * 
+ * Bu Uygulama Ne İş Yapıyor?
+ * ---------------------------
+ * HisseRadar, Borsa İstanbul (BIST) hisselerini analiz eden ücretsiz bir web platformudur.
+ * 
+ * Temel İşlevler:
+ * - 📊 Teknik Analiz: RSI, MACD, Bollinger, Fibonacci gibi göstergelerle AL/SAT sinyalleri
+ * - 💰 Temel Analiz: F/K, ROE, temettü gibi mali oranlarla değerleme
+ * - 🔔 Alarmlar: Fiyat hedeflerinize ulaşıldığında bildirim
+ * - 📈 Portföy Takibi: Sanal portföy simülasyonu
+ * - 🤖 AI Tahminleri: Yapay zeka destekli fiyat öngörüleri
+ * - 📰 Haberler: KAP duyuruları ve piyasa haberleri
+ * 
+ * Veri Kaynağı: Yahoo Finance API (15-20 dk gecikme)
+ * Maliyet: %100 Ücretsiz
+ * 
  * BIST hisse analiz platformunun ana sayfası
  */
 
