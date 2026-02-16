@@ -1,0 +1,35 @@
+# HisseRadar Backend Bağımlılıkları
+# ===================================
+
+# Web Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+
+# Veri Çekme ve İşleme - borsapy (Türk piyasası)
+borsapy>=0.7.2
+pandas>=2.2.0
+numpy>=1.26.0
+
+# Machine Learning (AI Tahmin için)
+scikit-learn>=1.4.0
+
+# Facebook Prophet (opsiyonel - zaman serisi tahmini)
+# prophet>=1.1.0  # Kurulumu zor olabilir, opsiyonel bırakıldı
+
+# API ve Validasyon
+pydantic==2.5.3
+pydantic-settings>=2.0.0
+python-dotenv==1.0.0
+
+# CORS
+python-multipart==0.0.6
+
+# Cache (opsiyonel - performans için)
+cachetools==5.3.2
+requests-cache==1.1.1
+
+# Haber Servisleri
+feedparser>=6.0.0
+beautifulsoup4>=4.12.0
+aiohttp>=3.9.0
+
