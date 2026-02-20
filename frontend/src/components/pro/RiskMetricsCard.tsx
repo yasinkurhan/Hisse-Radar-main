@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import type { RiskMetrics } from '@/types';
@@ -16,11 +16,11 @@ export default function RiskMetricsCard({ metrics, symbol }: RiskMetricsCardProp
   };
 
   return (
-    <div className="bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-700">
+    <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-white flex items-center gap-2">
+        <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
           <span>⚠️</span> Risk Analizi
-          <span className="text-base font-normal text-slate-400">- {symbol}</span>
+          <span className="text-base font-normal text-gray-500">- {symbol}</span>
         </h3>
         <div className={`px-4 py-2 rounded-lg font-bold ${
           metrics.risk_level?.includes('düşük') ? 'bg-emerald-500/30 text-emerald-400' :
@@ -32,9 +32,9 @@ export default function RiskMetricsCard({ metrics, symbol }: RiskMetricsCardProp
       </div>
 
       {/* Risk Score */}
-      <div className="bg-slate-700/50 rounded-lg p-5 mb-6 border border-slate-600">
+      <div className="bg-gray-50 rounded-lg p-5 mb-6 border border-gray-200">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-slate-400">Risk Skoru</span>
+          <span className="text-gray-500">Risk Skoru</span>
           <span className={`text-4xl font-bold ${
             metrics.risk_score < 40 ? 'text-emerald-400' :
             metrics.risk_score < 70 ? 'text-amber-400' : 'text-red-400'
@@ -42,7 +42,7 @@ export default function RiskMetricsCard({ metrics, symbol }: RiskMetricsCardProp
             {metrics.risk_score || 0}
           </span>
         </div>
-        <div className="h-4 bg-slate-800 rounded-full overflow-hidden">
+        <div className="h-4 bg-white rounded-full overflow-hidden">
           <div
             className={`h-full transition-all duration-500 ${
               metrics.risk_score < 40 ? 'bg-emerald-500' :
@@ -56,8 +56,8 @@ export default function RiskMetricsCard({ metrics, symbol }: RiskMetricsCardProp
       {/* Ana Metrikler */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {/* Sharpe Ratio */}
-        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-          <div className="text-sm text-slate-400 mb-1">Sharpe Oranı</div>
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <div className="text-sm text-gray-500 mb-1">Sharpe Oranı</div>
           <div className={`text-2xl font-bold ${getInterpretationColor(metrics.sharpe_ratio?.interpretation)}`}>
             {metrics.sharpe_ratio?.sharpe_ratio?.toFixed(2) || '-'}
           </div>
@@ -67,8 +67,8 @@ export default function RiskMetricsCard({ metrics, symbol }: RiskMetricsCardProp
         </div>
 
         {/* Sortino Ratio */}
-        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-          <div className="text-sm text-slate-400 mb-1">Sortino Oranı</div>
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <div className="text-sm text-gray-500 mb-1">Sortino Oranı</div>
           <div className={`text-2xl font-bold ${getInterpretationColor(metrics.sortino_ratio?.interpretation)}`}>
             {metrics.sortino_ratio?.sortino_ratio?.toFixed(2) || '-'}
           </div>
@@ -78,8 +78,8 @@ export default function RiskMetricsCard({ metrics, symbol }: RiskMetricsCardProp
         </div>
 
         {/* Calmar Ratio */}
-        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-          <div className="text-sm text-slate-400 mb-1">Calmar Oranı</div>
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <div className="text-sm text-gray-500 mb-1">Calmar Oranı</div>
           <div className={`text-2xl font-bold ${getInterpretationColor(metrics.calmar_ratio?.interpretation)}`}>
             {metrics.calmar_ratio?.calmar_ratio?.toFixed(2) || '-'}
           </div>
@@ -89,8 +89,8 @@ export default function RiskMetricsCard({ metrics, symbol }: RiskMetricsCardProp
         </div>
 
         {/* Max Drawdown */}
-        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-          <div className="text-sm text-slate-400 mb-1">Max Drawdown</div>
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <div className="text-sm text-gray-500 mb-1">Max Drawdown</div>
           <div className="text-2xl font-bold text-red-400">
             %{metrics.max_drawdown?.max_drawdown_pct?.toFixed(1) || 0}
           </div>
@@ -100,8 +100,8 @@ export default function RiskMetricsCard({ metrics, symbol }: RiskMetricsCardProp
         </div>
 
         {/* VaR 95% */}
-        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-          <div className="text-sm text-slate-400 mb-1">VaR (95%)</div>
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <div className="text-sm text-gray-500 mb-1">VaR (95%)</div>
           <div className="text-2xl font-bold text-amber-400">
             %{metrics.var_95?.var_pct?.toFixed(2) || 0}
           </div>
@@ -111,8 +111,8 @@ export default function RiskMetricsCard({ metrics, symbol }: RiskMetricsCardProp
         </div>
 
         {/* VaR 99% */}
-        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-          <div className="text-sm text-slate-400 mb-1">VaR (99%)</div>
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <div className="text-sm text-gray-500 mb-1">VaR (99%)</div>
           <div className="text-2xl font-bold text-red-400">
             %{metrics.var_99?.var_pct?.toFixed(2) || 0}
           </div>
@@ -122,8 +122,8 @@ export default function RiskMetricsCard({ metrics, symbol }: RiskMetricsCardProp
         </div>
 
         {/* Beta */}
-        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-          <div className="text-sm text-slate-400 mb-1">Beta</div>
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <div className="text-sm text-gray-500 mb-1">Beta</div>
           <div className={`text-2xl font-bold ${
             (metrics.beta_analysis?.beta || 1) > 1.2 ? 'text-red-400' :
             (metrics.beta_analysis?.beta || 1) < 0.8 ? 'text-emerald-400' : 'text-amber-400'
@@ -136,8 +136,8 @@ export default function RiskMetricsCard({ metrics, symbol }: RiskMetricsCardProp
         </div>
 
         {/* Volatilite */}
-        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-          <div className="text-sm text-slate-400 mb-1">Volatilite (Yıllık)</div>
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <div className="text-sm text-gray-500 mb-1">Volatilite (Yıllık)</div>
           <div className={`text-2xl font-bold ${
             (metrics.volatility?.annualized_pct || 0) > 30 ? 'text-red-400' :
             (metrics.volatility?.annualized_pct || 0) > 20 ? 'text-amber-400' : 'text-emerald-400'
@@ -152,9 +152,9 @@ export default function RiskMetricsCard({ metrics, symbol }: RiskMetricsCardProp
 
       {/* VaR Açıklama */}
       {metrics.var_95?.explanation && (
-        <div className="bg-slate-700/50 rounded-lg p-4 mb-4 border border-slate-600">
-          <h4 className="font-bold text-white mb-2">📊 VaR Açıklaması</h4>
-          <p className="text-sm text-slate-300">{metrics.var_95.explanation}</p>
+        <div className="bg-gray-50 rounded-lg p-4 mb-4 border border-gray-200">
+          <h4 className="font-bold text-gray-900 mb-2">📊 VaR Açıklaması</h4>
+          <p className="text-sm text-gray-600">{metrics.var_95.explanation}</p>
         </div>
       )}
 
@@ -165,10 +165,10 @@ export default function RiskMetricsCard({ metrics, symbol }: RiskMetricsCardProp
           metrics.risk_level?.includes('orta') ? 'bg-amber-500/20 border-amber-500/30' :
           'bg-red-500/20 border-red-500/30'
         }`}>
-          <h4 className="font-bold text-white mb-2 flex items-center gap-2">
+          <h4 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
             <span>💡</span> Öneri
           </h4>
-          <p className="text-slate-200">{metrics.recommendation}</p>
+          <p className="text-gray-700">{metrics.recommendation}</p>
         </div>
       )}
     </div>

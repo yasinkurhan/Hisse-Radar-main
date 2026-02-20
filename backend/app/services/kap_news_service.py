@@ -102,6 +102,12 @@ class KAPService:
         
         conn.commit()
         conn.close()
+        
+        # Mevcut bozuk tarihleri düzelt (bir kez çalışır)
+        try:
+            self.fix_existing_dates()
+        except Exception:
+            pass
     
     def _analyze_sentiment(self, title: str, summary: str = "") -> Dict[str, Any]:
         """Haber sentiment analizi (Gelişmiş)"""
@@ -207,14 +213,43 @@ class KAPService:
             print(f"KAP haber çekme hatası ({symbol}): {e}")
             return []
     
+    @staticmethod
+    def _normalize_date_to_iso(date_val) -> str:
+        """Tarih değerini ISO formatına (YYYY-MM-DD HH:MM:SS) dönüştür"""
+        if not date_val:
+            return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        date_str = str(date_val).strip()
+        
+        # DD.MM.YYYY HH:MM:SS formatı (borsapy KAP formatı)
+        if "." in date_str and len(date_str) >= 10 and not date_str[:4].isdigit():
+            try:
+                parts = date_str.split(" ")
+                date_part = parts[0]
+                time_part = parts[1] if len(parts) > 1 else "00:00:00"
+                day, month, year = date_part.split(".")
+                return f"{year}-{month.zfill(2)}-{day.zfill(2)} {time_part}"
+            except Exception:
+                pass
+        
+        # Zaten YYYY-MM-DD formatındaysa (ISO)
+        if date_str[:4].isdigit() and len(date_str) >= 10:
+            return date_str
+        
+        # Hiçbir formata uymuyorsa şimdiki zamanı kullan
+        return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
     def save_news_to_db(self, news_list: List[Dict[str, Any]]) -> int:
-        """Haberleri veritabanına kaydet"""
+        """Haberleri veritabanına kaydet (tarihler ISO formatına normalize edilir)"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
         saved_count = 0
         for news in news_list:
             try:
+                # Tarihi ISO formatına dönüştür
+                publish_date = self._normalize_date_to_iso(news.get("publish_date", ""))
+                
                 cursor.execute('''
                     INSERT OR IGNORE INTO kap_news 
                     (symbol, title, summary, category, importance, publish_date, url, 
@@ -226,7 +261,7 @@ class KAPService:
                     news.get("summary", ""),
                     news.get("category", "DIGER"),
                     news.get("importance", "low"),
-                    news["publish_date"],
+                    publish_date,
                     news.get("url", ""),
                     news.get("sentiment_score", 0),
                     news.get("sentiment_label", "neutral"),
@@ -243,6 +278,30 @@ class KAPService:
         conn.commit()
         conn.close()
         return saved_count
+    
+    def fix_existing_dates(self) -> int:
+        """Mevcut DB'deki DD.MM.YYYY formatındaki tarihleri ISO formatına dönüştür"""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        # DD.MM.YYYY formatında olan tüm kayıtları bul
+        # ISO formatı YYYY-MM-DD: 5. karakter '-' olmalı
+        # DD.MM.YYYY: 3. karakter '.' olacak
+        cursor.execute("SELECT id, publish_date FROM kap_news WHERE publish_date LIKE '__.%'")
+        rows = cursor.fetchall()
+        
+        fixed = 0
+        for row_id, old_date in rows:
+            new_date = self._normalize_date_to_iso(old_date)
+            if new_date != old_date:
+                cursor.execute("UPDATE kap_news SET publish_date = ? WHERE id = ?", (new_date, row_id))
+                fixed += 1
+        
+        conn.commit()
+        conn.close()
+        if fixed > 0:
+            print(f"DB tarih düzeltme: {fixed}/{len(rows)} kayıt güncellendi")
+        return fixed
     
     def get_news_for_symbol(self, symbol: str, limit: int = 20, days: int = 30) -> List[Dict[str, Any]]:
         """Veritabanından hisse haberlerini getir"""
@@ -390,7 +449,7 @@ class KAPService:
             WHERE publish_date >= ?
             GROUP BY symbol
             HAVING COUNT(*) >= ?
-            ORDER BY avg_sentiment DESC
+            ORDER BY (AVG(sentiment_score) * COUNT(*)) DESC
         ''', (cutoff_date, min_news))
         
         rows = cursor.fetchall()

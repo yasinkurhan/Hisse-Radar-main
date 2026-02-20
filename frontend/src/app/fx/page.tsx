@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -45,21 +45,21 @@ export default function FXPage() {
         try {
             // Döviz kurları
             const fxPromises = CURRENCIES.map(c =>
-                fetch(`http://localhost:8000/api/fx/current/${c.code}`)
+                fetch(`http://localhost:8001/api/fx/current/${c.code}?t=${Date.now()}`, { cache: 'no-store' })
                     .then(r => r.ok ? r.json() : null)
                     .catch(() => null)
             );
 
             // Altın fiyatları
             const goldPromises = GOLD_TYPES.map(g =>
-                fetch(`http://localhost:8000/api/fx/gold?gold_type=${g.code}`)
+                fetch(`http://localhost:8001/api/fx/gold?gold_type=${g.code}&t=${Date.now()}`, { cache: 'no-store' })
                     .then(r => r.ok ? r.json() : null)
                     .catch(() => null)
             );
 
             // Banka kurları (USD ve EUR)
             const bankPromises = ['USD', 'EUR'].map(c =>
-                fetch(`http://localhost:8000/api/fx/bank-rates/${c}`)
+                fetch(`http://localhost:8001/api/fx/bank-rates/${c}?t=${Date.now()}`, { cache: 'no-store' })
                     .then(r => r.ok ? r.json() : null)
                     .catch(() => null)
             );
@@ -118,7 +118,7 @@ export default function FXPage() {
         return String(v);
     };
 
-    if (loading) {
+    if (loading && Object.keys(fxData).length === 0) {
         return (
             <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
                 <div className="text-center">
@@ -141,8 +141,21 @@ export default function FXPage() {
                         <p className="text-gray-400 mt-1">Canlı döviz kurları, altın fiyatları ve banka kurları</p>
                     </div>
                     <div className="flex gap-3">
-                        <button onClick={fetchAllData} className="bg-amber-600 hover:bg-amber-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                            🔄 Yenile
+                        <button 
+                            onClick={fetchAllData} 
+                            disabled={loading}
+                            className={`bg-amber-600 hover:bg-amber-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${loading ? 'opacity-75 cursor-not-allowed' : ''}`}
+                        >
+                            {loading ? (
+                                <>
+                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                                    Yenileniyor...
+                                </>
+                            ) : (
+                                <>
+                                    🔄 Yenile
+                                </>
+                            )}
                         </button>
                         <Link href="/" className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition-colors">
                             Ana Sayfa

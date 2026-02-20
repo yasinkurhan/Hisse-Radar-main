@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -30,7 +30,7 @@ export default function WatchlistPage() {
 
   const fetchWatchlist = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/user/watchlist');
+      const res = await fetch('http://localhost:8001/api/user/watchlist');
       const data = await res.json();
       setWatchlist(data);
     } catch (error) {
@@ -46,7 +46,7 @@ export default function WatchlistPage() {
     if (!newSymbol.trim()) return;
     setAdding(true);
     try {
-      const res = await fetch('http://localhost:8000/api/user/watchlist/add', {
+      const res = await fetch('http://localhost:8001/api/user/watchlist/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ symbol: newSymbol.toUpperCase(), list_id: 'default', note: '' })
@@ -60,7 +60,7 @@ export default function WatchlistPage() {
 
   const removeFromWatchlist = async (symbol: string) => {
     try {
-      await fetch('http://localhost:8000/api/user/watchlist/remove?symbol=' + symbol, { method: 'POST' });
+      await fetch('http://localhost:8001/api/user/watchlist/remove?symbol=' + symbol, { method: 'POST' });
       fetchWatchlist();
     } catch (error) { alert('Hata olustu'); }
   };
@@ -94,7 +94,7 @@ export default function WatchlistPage() {
             <div className="space-y-2">
               {watchlist?.stocks.map((stock) => (
                 <div key={stock.symbol} className="flex items-center justify-between bg-gray-700 rounded p-4">
-                  <Link href={'/stocks/' + stock.symbol} className="text-blue-400 hover:underline font-semibold text-lg">
+                  <Link href={'/stock/' + stock.symbol} className="text-blue-400 hover:underline font-semibold text-lg">
                     {stock.symbol}
                   </Link>
                   <div className="flex items-center gap-4">

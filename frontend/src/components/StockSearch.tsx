@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 /**
  * HisseRadar Hisse Arama Bileşeni
@@ -79,7 +79,7 @@ export default function StockSearch({
       onSelect(stock);
     } else {
       // Varsayılan davranış: hisse sayfasına git
-      window.location.href = `/stocks/${stock.symbol}`;
+      window.location.href = `/stock/${stock.symbol}`;
     }
   };
 

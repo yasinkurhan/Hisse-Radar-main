@@ -151,7 +151,12 @@ export default function HomePage() {
       <section className="py-8 sm:py-12 bg-gradient-to-r from-blue-900 to-purple-900 text-white">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <h2 className="text-xl sm:text-2xl font-bold text-center mb-6 sm:mb-8">🚀 Yeni Özellikler</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4">
+            <Link href="/screener" className="bg-white/10 hover:bg-white/20 rounded-xl p-3 sm:p-6 text-center transition">
+              <Zap className="w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 sm:mb-3 text-violet-400" />
+              <h3 className="font-semibold text-sm sm:text-base mb-0.5 sm:mb-1">Gelişmiş Tarama</h3>
+              <p className="text-xs text-gray-300 hidden sm:block">Teknik & temel tarama</p>
+            </Link>
             <Link href="/heatmap" className="bg-white/10 hover:bg-white/20 rounded-xl p-3 sm:p-6 text-center transition">
               <PieChart className="w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 sm:mb-3 text-orange-400" />
               <h3 className="font-semibold text-sm sm:text-base mb-0.5 sm:mb-1">Isı Haritası</h3>
@@ -177,11 +182,46 @@ export default function HomePage() {
               <h3 className="font-semibold text-sm sm:text-base mb-0.5 sm:mb-1">Fiyat Alarmları</h3>
               <p className="text-xs text-gray-300 hidden sm:block">Fiyat değişimleri</p>
             </Link>
+            <Link href="/news" className="bg-white/10 hover:bg-white/20 rounded-xl p-3 sm:p-6 text-center transition">
+              <Newspaper className="w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 sm:mb-3 text-amber-400" />
+              <h3 className="font-semibold text-sm sm:text-base mb-0.5 sm:mb-1">KAP Haberleri</h3>
+              <p className="text-xs text-gray-300 hidden sm:block">Güncel bildirimler</p>
+            </Link>
             <Link href="/backtest" className="bg-white/10 hover:bg-white/20 rounded-xl p-3 sm:p-6 text-center transition">
               <History className="w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 sm:mb-3 text-blue-400" />
               <h3 className="font-semibold text-sm sm:text-base mb-0.5 sm:mb-1">Backtest</h3>
               <p className="text-xs text-gray-300 hidden sm:block">Sinyal performansı</p>
             </Link>
+          </div>
+          
+          {/* Yeni Stok Detay Özellikleri */}
+          <div className="mt-8 bg-white/5 rounded-xl p-4 sm:p-6 border border-white/10">
+            <h3 className="text-lg font-semibold text-center mb-4">✨ Yeni: Gelişmiş Stok Analizi</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="text-center p-3 bg-white/5 rounded-lg">
+                <div className="text-2xl mb-1">🌍</div>
+                <div className="text-sm font-medium">ETF Sahipliği</div>
+                <div className="text-xs text-gray-400">Yabancı ETF portföyleri</div>
+              </div>
+              <div className="text-center p-3 bg-white/5 rounded-lg">
+                <div className="text-2xl mb-1">🎯</div>
+                <div className="text-sm font-medium">Analist Tahminleri</div>
+                <div className="text-xs text-gray-400">Hedef fiyat & öneriler</div>
+              </div>
+              <div className="text-center p-3 bg-white/5 rounded-lg">
+                <div className="text-2xl mb-1">📡</div>
+                <div className="text-sm font-medium">Teknik Sinyaller</div>
+                <div className="text-xs text-gray-400">AL/SAT/NÖTR sinyalleri</div>
+              </div>
+              <div className="text-center p-3 bg-white/5 rounded-lg">
+                <div className="text-2xl mb-1">📊</div>
+                <div className="text-sm font-medium">Osilatör Analizi</div>
+                <div className="text-xs text-gray-400">RSI, MACD, Stochastic</div>
+              </div>
+            </div>
+            <p className="text-xs text-gray-400 text-center mt-3">
+              Herhangi bir hisseye tıklayıp &quot;Analist &amp; ETF&quot; ve &quot;Teknik Sinyaller&quot; sekmelerini kullanabilirsiniz
+            </p>
           </div>
         </div>
       </section>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -42,7 +42,7 @@ export default function StockList({ showSectorFilter = true, limit }: StockListP
   useEffect(() => {
     const fetchStocks = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/stocks/');
+        const response = await fetch('http://localhost:8001/api/stocks/');
         const data = await response.json();
         setStocks(data.stocks);
         setSectors(data.sectors);
@@ -388,7 +388,7 @@ export default function StockList({ showSectorFilter = true, limit }: StockListP
                 <tr
                   key={stock.symbol}
                   className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
-                  onClick={() => window.location.href = `/stocks/${stock.symbol}`}
+                  onClick={() => window.location.href = `/stock/${stock.symbol}`}
                 >
                   <td className="px-4 py-3">
                     <span className="font-mono font-bold text-blue-600 dark:text-blue-400">

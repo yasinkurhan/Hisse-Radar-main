@@ -15,14 +15,14 @@ from pathlib import Path
 class SmartScoring:
     """Akilli Skor Sistemi - Dinamik agirliklar ve sektor bazli degerlenirme"""
     
-    # Sektor bazli agirliklar
+    # Sektor bazli agirliklar (news_sentiment eklendi)
     SECTOR_WEIGHTS = {
-        "Banka": {"rsi": 0.15, "macd": 0.20, "bollinger": 0.10, "ma": 0.15, "stoch": 0.10, "volume": 0.10, "adx": 0.10, "fundamental": 0.10},
-        "Holding": {"rsi": 0.15, "macd": 0.15, "bollinger": 0.15, "ma": 0.15, "stoch": 0.10, "volume": 0.10, "adx": 0.10, "fundamental": 0.10},
-        "Teknoloji": {"rsi": 0.20, "macd": 0.20, "bollinger": 0.15, "ma": 0.10, "stoch": 0.10, "volume": 0.15, "adx": 0.05, "fundamental": 0.05},
-        "Insaat": {"rsi": 0.15, "macd": 0.15, "bollinger": 0.15, "ma": 0.15, "stoch": 0.10, "volume": 0.10, "adx": 0.10, "fundamental": 0.10},
-        "Enerji": {"rsi": 0.10, "macd": 0.15, "bollinger": 0.10, "ma": 0.20, "stoch": 0.10, "volume": 0.10, "adx": 0.10, "fundamental": 0.15},
-        "default": {"rsi": 0.15, "macd": 0.15, "bollinger": 0.15, "ma": 0.15, "stoch": 0.10, "volume": 0.10, "adx": 0.10, "fundamental": 0.10}
+        "Banka": {"rsi": 0.13, "macd": 0.17, "bollinger": 0.10, "ma": 0.13, "stoch": 0.09, "volume": 0.09, "adx": 0.09, "fundamental": 0.10, "news_sentiment": 0.10},
+        "Holding": {"rsi": 0.13, "macd": 0.13, "bollinger": 0.13, "ma": 0.13, "stoch": 0.09, "volume": 0.09, "adx": 0.09, "fundamental": 0.10, "news_sentiment": 0.11},
+        "Teknoloji": {"rsi": 0.17, "macd": 0.17, "bollinger": 0.13, "ma": 0.08, "stoch": 0.09, "volume": 0.13, "adx": 0.05, "fundamental": 0.05, "news_sentiment": 0.13},
+        "Insaat": {"rsi": 0.13, "macd": 0.13, "bollinger": 0.13, "ma": 0.13, "stoch": 0.09, "volume": 0.09, "adx": 0.09, "fundamental": 0.10, "news_sentiment": 0.11},
+        "Enerji": {"rsi": 0.08, "macd": 0.13, "bollinger": 0.10, "ma": 0.17, "stoch": 0.09, "volume": 0.09, "adx": 0.09, "fundamental": 0.13, "news_sentiment": 0.12},
+        "default": {"rsi": 0.13, "macd": 0.13, "bollinger": 0.13, "ma": 0.13, "stoch": 0.09, "volume": 0.09, "adx": 0.09, "fundamental": 0.10, "news_sentiment": 0.11}
     }
     
     # Piyasa kosulu carpanlari
@@ -39,7 +39,8 @@ class SmartScoring:
         market_condition: str = "neutral",
         fundamental_score: int = 50,
         adx_data: Dict = None,
-        patterns: List[Dict] = None
+        patterns: List[Dict] = None,
+        news_sentiment_score: float = 0.0
     ) -> Dict[str, Any]:
         """
         Akilli skor hesaplama
@@ -156,6 +157,16 @@ class SmartScoring:
         
         # Temel analiz skoru
         score_breakdown["fundamental"] = {"score": fundamental_score, "weight": weights["fundamental"]}
+        
+        # Haber/Sentiment skoru (news_sentiment_score: -1 ile +1 arasi)
+        # Olumlu haberler = yuksek skor, olumsuz haberler = dusuk skor
+        if news_sentiment_score != 0:
+            # -1..+1 arasini 0..100 arasina ceviriyoruz
+            ns_score = 50 + (news_sentiment_score * 40)  # -1->10, 0->50, +1->90
+            ns_score = max(10, min(90, ns_score))
+        else:
+            ns_score = 50  # Haber yoksa notr
+        score_breakdown["news_sentiment"] = {"score": round(ns_score, 1), "weight": weights["news_sentiment"]}
         
         # Agirlikli toplam
         weighted_score = sum(
@@ -359,7 +370,7 @@ class BacktestEngine:
         trades = []
         position = None
         
-        # Son 200 gunu test et (ilk 60 gun indikatörler için)
+        # Son 200 gunu test et (ilk 60 gun indikatï¿½rler iï¿½in)
         test_start = 60
         
         for i in range(test_start, len(df) - 5):

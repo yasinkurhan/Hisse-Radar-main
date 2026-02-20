@@ -135,22 +135,76 @@ class AnalysisService:
         }
 
     def _fetch_sentiment_sync(self, symbol: str, stock_name: str = None) -> Dict[str, Any]:
-        """Senkron olarak sentiment verisi çek (feedparser ile direkt)"""
+        """
+        Senkron olarak sentiment verisi çek.
+        Öncelik sırası:
+          1) KAP veritabanındaki hisse-spesifik haberler (gerçek KAP bildirimleri)
+          2) Google News RSS (fallback)
+        Gelişmiş SentimentAnalyzer kullanılır.
+        """
         try:
+            # --- 1) KAP DB'den hisse-spesifik haberler ---
+            kap_news = []
+            try:
+                from .kap_news_service import get_kap_service
+                kap_service = get_kap_service()
+                kap_news = kap_service.get_news_for_symbol(symbol, limit=20, days=30)
+            except Exception:
+                pass
+
+            if kap_news and len(kap_news) >= 1:
+                # KAP haberlerini gelişmiş SentimentAnalyzer ile analiz et
+                total_score = 0
+                positive_count = 0
+                negative_count = 0
+                news_count = len(kap_news)
+
+                for news_item in kap_news:
+                    title = news_item.get("title", "")
+                    summary = news_item.get("summary", "")
+                    text = f"{title} {summary}".strip()
+
+                    result = SentimentAnalyzer.analyze_text(text)
+                    score = result["score"]
+                    total_score += score
+
+                    if score > 0.1:
+                        positive_count += 1
+                    elif score < -0.1:
+                        negative_count += 1
+
+                avg_score = total_score / news_count if news_count > 0 else 0
+
+                if avg_score > 0.15:
+                    label = "📈 Olumlu"
+                elif avg_score < -0.15:
+                    label = "📉 Olumsuz"
+                else:
+                    label = "➖ Nötr"
+
+                return {
+                    "score": round(avg_score, 3),
+                    "label": label,
+                    "news_count": news_count,
+                    "positive": positive_count,
+                    "negative": negative_count,
+                    "has_data": True,
+                    "source": "kap_db"
+                }
+
+            # --- 2) Fallback: Google News RSS ---
             import feedparser
             from urllib.parse import quote
-            
-            # bist_stocks.json'dan gelen ismi kullan, yoksa sembolü kullan
+
             if not stock_name:
                 stock_info = next((s for s in self._stocks if s["symbol"] == symbol), None)
                 stock_name = stock_info["name"] if stock_info else symbol
             search_query = f"{stock_name} hisse borsa"
             encoded_query = quote(search_query)
             url = f"https://news.google.com/rss/search?q={encoded_query}&hl=tr&gl=TR&ceid=TR:tr"
-            
-            # RSS feed'i parse et
+
             feed = feedparser.parse(url)
-            
+
             if not feed.entries:
                 return {
                     "score": 0,
@@ -158,49 +212,45 @@ class AnalysisService:
                     "news_count": 0,
                     "positive": 0,
                     "negative": 0,
-                    "has_data": False
+                    "has_data": False,
+                    "source": "none"
                 }
-            
-            # Basit sentiment analizi
-            positive_words = ['yüksel', 'artı', 'kar', 'büyü', 'rekor', 'başarı', 'olumlu', 'güçlü', 'yatırım', 'talep']
-            negative_words = ['düş', 'azal', 'zarar', 'kayıp', 'olumsuz', 'risk', 'kriz', 'endişe', 'darbe', 'iptal']
-            
+
             total_score = 0
             positive_count = 0
             negative_count = 0
             news_count = min(len(feed.entries), 10)
-            
+
             for entry in feed.entries[:10]:
-                title = entry.get('title', '').lower()
-                
-                pos = sum(1 for w in positive_words if w in title)
-                neg = sum(1 for w in negative_words if w in title)
-                
-                if pos > neg:
+                title = entry.get('title', '')
+                result = SentimentAnalyzer.analyze_text(title)
+                score = result["score"]
+                total_score += score
+
+                if score > 0.1:
                     positive_count += 1
-                    total_score += 0.3
-                elif neg > pos:
+                elif score < -0.1:
                     negative_count += 1
-                    total_score -= 0.3
-            
+
             avg_score = total_score / news_count if news_count > 0 else 0
-            
-            if avg_score > 0.1:
+
+            if avg_score > 0.15:
                 label = "📈 Olumlu"
-            elif avg_score < -0.1:
+            elif avg_score < -0.15:
                 label = "📉 Olumsuz"
             else:
                 label = "➖ Nötr"
-            
+
             return {
                 "score": round(avg_score, 3),
                 "label": label,
                 "news_count": news_count,
                 "positive": positive_count,
                 "negative": negative_count,
-                "has_data": news_count > 0
+                "has_data": news_count > 0,
+                "source": "google_news"
             }
-            
+
         except Exception as e:
             print(f"Sentiment hatası ({symbol}): {e}")
             return {
@@ -209,7 +259,8 @@ class AnalysisService:
                 "news_count": 0,
                 "positive": 0,
                 "negative": 0,
-                "has_data": False
+                "has_data": False,
+                "source": "error"
             }
 
     def _calculate_score(self, rsi, macd, bollinger, mas, stochastic, current_price, vol_analysis, sentiment_data: Dict = None) -> int:
@@ -627,48 +678,98 @@ class AnalysisService:
         
         return all_results
     
-    def _add_sentiment_to_top_picks(self, results: List[Dict], top_count: int = 20) -> List[Dict]:
-        """Sadece en iyi hisseler için sentiment ekle (performans için)"""
-        print(f"Top {top_count} hisse için sentiment analizi yapılıyor...")
+    def _add_sentiment_to_top_picks(self, results: List[Dict], top_count: int = 30) -> List[Dict]:
+        """
+        Tüm hisseler için KAP DB'den sentiment ekle (hızlı).
+        KAP verisi bulunamayan top hisseler için Google News RSS fallback.
+        """
+        print(f"Tüm hisseler için KAP DB sentiment analizi yapılıyor...")
         
-        # İlk top_count hisse için sentiment çek
-        for i, stock in enumerate(results[:top_count]):
-            try:
-                symbol = stock.get("symbol", "")
-                name = stock.get("name", symbol)
-                sentiment_data = self._fetch_sentiment_sync(symbol, stock_name=name)
-                stock["sentiment"] = sentiment_data
+        # --- Adım 1: KAP DB'den tüm hisseler için toplu sentiment ---
+        kap_sentiment_map = {}
+        try:
+            from .kap_news_service import get_kap_service
+            kap_service = get_kap_service()
+            
+            # Son 30 günün sentiment özetini çek (tek sorgu, hızlı)
+            sentiment_summary = kap_service.get_sentiment_summary(days=30, min_news=1)
+            
+            for item in sentiment_summary:
+                sym = item["symbol"]
+                avg_score = item.get("avg_sentiment", 0)
+                total_news = item.get("total_news", 0)
+                pos_count = item.get("positive_count", 0)
+                neg_count = item.get("negative_count", 0)
                 
-                # Sentiment varsa skoru güncelle
-                if sentiment_data and sentiment_data.get("has_data"):
-                    old_score = stock.get("score", 50)
-                    sentiment_score = sentiment_data.get("score", 0)
-                    news_count = sentiment_data.get("news_count", 0)
-                    
-                    # Sentiment etkisi hesapla
-                    if news_count >= 3:
-                        sentiment_impact = int(sentiment_score * 10)
-                        if sentiment_score > 0.3:
-                            sentiment_impact += 3
-                        elif sentiment_score < -0.3:
-                            sentiment_impact -= 3
-                        
-                        new_score = max(0, min(100, old_score + sentiment_impact))
-                        stock["score"] = new_score
-                        stock["score_before_sentiment"] = old_score
+                if avg_score > 0.15:
+                    label = "📈 Olumlu"
+                elif avg_score < -0.15:
+                    label = "📉 Olumsuz"
+                else:
+                    label = "➖ Nötr"
                 
-                if (i + 1) % 5 == 0:
-                    print(f"  Sentiment: {i + 1}/{min(top_count, len(results))} tamamlandı")
+                kap_sentiment_map[sym] = {
+                    "score": round(avg_score, 3),
+                    "label": label,
+                    "news_count": total_news,
+                    "positive": pos_count,
+                    "negative": neg_count,
+                    "has_data": True,
+                    "source": "kap_db"
+                }
+            
+            print(f"  KAP DB'den {len(kap_sentiment_map)} hisse için sentiment bulundu")
+        except Exception as e:
+            print(f"  KAP DB sentiment hatası: {e}")
+        
+        # --- Adım 2: Tüm hisselere KAP sentiment ata ---
+        stocks_without_kap = []
+        for i, stock in enumerate(results):
+            symbol = stock.get("symbol", "")
+            if symbol in kap_sentiment_map:
+                stock["sentiment"] = kap_sentiment_map[symbol]
+            else:
+                # KAP verisi yok, top hisse ise RSS fallback listesine ekle
+                if i < top_count:
+                    stocks_without_kap.append((i, stock))
+                else:
+                    stock["sentiment"] = {"has_data": False, "score": 0, "label": "Haber Yok", "source": "none"}
+        
+        # --- Adım 3: KAP'ta olmayan top hisseler için Google News RSS fallback ---
+        if stocks_without_kap:
+            print(f"  {len(stocks_without_kap)} hisse için Google News RSS fallback yapılıyor...")
+            for idx, (i, stock) in enumerate(stocks_without_kap):
+                try:
+                    symbol = stock.get("symbol", "")
+                    name = stock.get("name", symbol)
+                    sentiment_data = self._fetch_sentiment_sync(symbol, stock_name=name)
+                    stock["sentiment"] = sentiment_data
+                except Exception as e:
+                    print(f"  RSS sentiment hatası ({stock.get('symbol', '?')}): {e}")
+                    stock["sentiment"] = {"has_data": False, "score": 0, "label": "Veri Yok", "source": "error"}
+        
+        # --- Adım 4: Sentiment skoru güncelle (has_data olan tüm hisseler için) ---
+        updated_count = 0
+        for stock in results:
+            sentiment_data = stock.get("sentiment", {})
+            if sentiment_data and sentiment_data.get("has_data"):
+                old_score = stock.get("score", 50)
+                sentiment_score = sentiment_data.get("score", 0)
+                news_count = sentiment_data.get("news_count", 0)
+                
+                if news_count >= 2:
+                    sentiment_impact = int(sentiment_score * 10)
+                    if sentiment_score > 0.3:
+                        sentiment_impact += 3
+                    elif sentiment_score < -0.3:
+                        sentiment_impact -= 3
                     
-            except Exception as e:
-                print(f"Sentiment hatası ({stock.get('symbol', '?')}): {e}")
-                stock["sentiment"] = {"has_data": False, "score": 0, "label": "Veri Yok"}
+                    new_score = max(0, min(100, old_score + sentiment_impact))
+                    stock["score"] = new_score
+                    stock["score_before_sentiment"] = old_score
+                    updated_count += 1
         
-        # Kalan hisseler için boş sentiment
-        for stock in results[top_count:]:
-            if "sentiment" not in stock:
-                stock["sentiment"] = {"has_data": False, "score": 0, "label": "Henüz Analiz Edilmedi"}
-        
+        print(f"  Sentiment analizi tamamlandı: {updated_count} hisse skoru güncellendi")
         return results
 
     def run_daily_analysis(self, index_filter: Optional[str] = None, sector_filter: Optional[str] = None, limit: int = 50, include_sentiment: bool = True) -> Dict[str, Any]:

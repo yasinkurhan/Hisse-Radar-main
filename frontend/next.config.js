@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Turbopack root dizini - çoklu lockfile uyarısını önlemek için
+  turbopack: {
+    root: __dirname,
+  },
   // Resim optimizasyonu
   images: {
     remotePatterns: [

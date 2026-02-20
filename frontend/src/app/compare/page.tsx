@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import { createChart, ColorType, IChartApi, Time } from 'lightweight-charts';
@@ -56,7 +56,7 @@ export default function ComparePage() {
     try {
       const symbolsParam = selectedSymbols.join(',');
       const response = await fetch(
-        `/api/charts/compare?symbols=${symbolsParam}&period=${period}`
+        `http://localhost:8001/api/charts/compare?symbols=${symbolsParam}&period=${period}`
       );
       const data = await response.json();
 

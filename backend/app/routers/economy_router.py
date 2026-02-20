@@ -26,6 +26,7 @@ async def get_bonds():
             raise HTTPException(status_code=404, detail="Tahvil verileri bulunamadı")
         
         if hasattr(result, 'to_dict'):
+            result = result.fillna(0)
             result = result.to_dict(orient="records")
         
         return {
@@ -69,6 +70,7 @@ async def get_inflation():
             raise HTTPException(status_code=404, detail="Enflasyon verileri bulunamadı")
         
         if hasattr(result, 'to_dict'):
+            result = result.fillna(0)
             result = result.to_dict(orient="records")
         
         return {
@@ -119,11 +121,27 @@ async def get_economic_calendar(
             return {"events": [], "count": 0}
         
         if hasattr(result, 'to_dict'):
+            # NaN içeren satırları temizle veya dönüştür
+            result = result.fillna(0) # Veya uygun bir değer
+            
+            # Sütun isimlerini küçük harfe çevir ve eşleştir
+            result.columns = [c.lower() for c in result.columns]
+            result = result.rename(columns={
+                "importance": "impact"
+            })
+            
+            # Impact (onem) uyumlulugu
+            if 'impact' in result.columns:
+                result['impact'] = result['impact'].replace({'mid': 'medium'})
+
             records = result.to_dict(orient="records")
             for r in records:
                 for k, v in r.items():
                     if hasattr(v, 'isoformat'):
                         r[k] = v.isoformat()
+                    # 0 olan actual/forecast/previous değerlerini '-' yap (görsel düzeltme)
+                    if k in ['actual', 'forecast', 'previous'] and v == 0:
+                        r[k] = None
         else:
             records = result if isinstance(result, list) else [result]
         
@@ -153,6 +171,7 @@ async def get_eurobonds(
             raise HTTPException(status_code=404, detail="Eurobond verileri bulunamadı")
         
         if hasattr(result, 'to_dict'):
+            result = result.fillna(0)
             result = result.to_dict(orient="records")
         
         return {

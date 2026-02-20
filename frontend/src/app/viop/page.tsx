@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -17,8 +17,8 @@ export default function VIOPPage() {
         setLoading(true);
         try {
             const [futuresRes, optionsRes] = await Promise.all([
-                fetch('http://localhost:8000/api/viop/futures').catch(() => null),
-                fetch('http://localhost:8000/api/viop/options').catch(() => null),
+                fetch('http://localhost:8001/api/viop/futures').catch(() => null),
+                fetch('http://localhost:8001/api/viop/options').catch(() => null),
             ]);
 
             if (futuresRes?.ok) setFutures(await futuresRes.json());

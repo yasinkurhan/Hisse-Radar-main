@@ -12,6 +12,13 @@ from cachetools import TTLCache
 from ..config import get_settings, normalize_symbol
 from .borsapy_fetcher import get_borsapy_fetcher
 
+# yfinance opsiyonel
+try:
+    import yfinance as yf
+    HAS_YFINANCE = True
+except ImportError:
+    HAS_YFINANCE = False
+
 
 class FundamentalAnalyzer:
     """
@@ -151,6 +158,9 @@ class FundamentalAnalyzer:
             except Exception:
                 pass
             
+            # yfinance fallback - borsapy'de eksik olan F/K, ROE vb.
+            self._enrich_from_yfinance(result, symbol)
+            
             # Temettü bilgisi
             try:
                 dividends = self._fetcher.get_dividends(symbol)
@@ -183,6 +193,112 @@ class FundamentalAnalyzer:
                 "error": str(e),
                 "updated_at": datetime.now().isoformat()
             }
+    
+    def _enrich_from_yfinance(self, result: Dict, symbol: str) -> None:
+        """yfinance'den eksik temel analiz verilerini tamamla (F/K, ROE, PD/DD vb.)"""
+        if not HAS_YFINANCE:
+            return
+        try:
+            yf_symbol = f"{symbol}.IS"
+            ticker = yf.Ticker(yf_symbol)
+            info = ticker.info or {}
+            
+            # Değerleme Oranları
+            if not result.get("pe_ratio"):
+                result["pe_ratio"] = self._safe_round(info.get("trailingPE"))
+            if not result.get("forward_pe"):
+                result["forward_pe"] = self._safe_round(info.get("forwardPE"))
+            if not result.get("pb_ratio"):
+                result["pb_ratio"] = self._safe_round(info.get("priceToBook"))
+            if not result.get("peg_ratio"):
+                result["peg_ratio"] = self._safe_round(info.get("pegRatio"))
+            if not result.get("ps_ratio"):
+                result["ps_ratio"] = self._safe_round(info.get("priceToSalesTrailing12Months"))
+            if not result.get("enterprise_to_revenue"):
+                result["enterprise_to_revenue"] = self._safe_round(info.get("enterpriseToRevenue"))
+            if not result.get("enterprise_to_ebitda"):
+                result["enterprise_to_ebitda"] = self._safe_round(info.get("enterpriseToEbitda"))
+            
+            # Kârlılık Oranları
+            if not result.get("roe"):
+                roe_val = info.get("returnOnEquity")
+                if roe_val is not None:
+                    result["roe"] = self._safe_round(roe_val * 100 if abs(roe_val) < 5 else roe_val)
+            if not result.get("roa"):
+                roa_val = info.get("returnOnAssets")
+                if roa_val is not None:
+                    result["roa"] = self._safe_round(roa_val * 100 if abs(roa_val) < 5 else roa_val)
+            if not result.get("profit_margin"):
+                pm_val = info.get("profitMargins")
+                if pm_val is not None:
+                    result["profit_margin"] = self._safe_round(pm_val * 100 if abs(pm_val) < 5 else pm_val)
+            if not result.get("operating_margin"):
+                om_val = info.get("operatingMargins")
+                if om_val is not None:
+                    result["operating_margin"] = self._safe_round(om_val * 100 if abs(om_val) < 5 else om_val)
+            if not result.get("gross_margin"):
+                gm_val = info.get("grossMargins")
+                if gm_val is not None:
+                    result["gross_margin"] = self._safe_round(gm_val * 100 if abs(gm_val) < 5 else gm_val)
+            
+            # Piyasa Verileri
+            if not result.get("market_cap"):
+                result["market_cap"] = info.get("marketCap")
+            if not result.get("enterprise_value"):
+                result["enterprise_value"] = info.get("enterpriseValue")
+            
+            # Bilanço
+            if not result.get("total_revenue"):
+                result["total_revenue"] = info.get("totalRevenue")
+            if not result.get("total_debt"):
+                result["total_debt"] = info.get("totalDebt")
+            if not result.get("total_cash"):
+                result["total_cash"] = info.get("totalCash")
+            if not result.get("debt_to_equity"):
+                de_val = info.get("debtToEquity")
+                if de_val is not None:
+                    result["debt_to_equity"] = self._safe_round(de_val / 100 if de_val > 10 else de_val)
+            if not result.get("book_value"):
+                result["book_value"] = self._safe_round(info.get("bookValue"))
+            if not result.get("revenue_per_share"):
+                result["revenue_per_share"] = self._safe_round(info.get("revenuePerShare"))
+            if not result.get("current_ratio"):
+                result["current_ratio"] = self._safe_round(info.get("currentRatio"))
+            
+            # Temettü
+            if not result.get("dividend_yield"):
+                dy_val = info.get("dividendYield")
+                if dy_val is not None:
+                    result["dividend_yield"] = self._safe_round(dy_val if dy_val > 1 else dy_val * 100)
+            if not result.get("dividend_rate"):
+                result["dividend_rate"] = self._safe_round(info.get("dividendRate"))
+            if not result.get("payout_ratio"):
+                pr_val = info.get("payoutRatio")
+                if pr_val is not None:
+                    result["payout_ratio"] = self._safe_round(pr_val * 100 if pr_val < 5 else pr_val)
+            
+            # Büyüme
+            if not result.get("earnings_growth"):
+                eg_val = info.get("earningsGrowth")
+                if eg_val is not None:
+                    result["earnings_growth"] = self._safe_round(eg_val * 100 if abs(eg_val) < 5 else eg_val)
+            if not result.get("revenue_growth"):
+                rg_val = info.get("revenueGrowth")
+                if rg_val is not None:
+                    result["revenue_growth"] = self._safe_round(rg_val * 100 if abs(rg_val) < 5 else rg_val)
+            
+            # EPS
+            if not result.get("trailing_eps"):
+                result["trailing_eps"] = self._safe_round(info.get("trailingEps"))
+            if not result.get("forward_eps"):
+                result["forward_eps"] = self._safe_round(info.get("forwardEps"))
+            
+            # Beta
+            if not result.get("beta"):
+                result["beta"] = self._safe_round(info.get("beta"))
+            
+        except Exception as e:
+            print(f"yfinance zenginleştirme hatası ({symbol}): {e}")
     
     def _extract_profitability(self, result: Dict, income: Dict) -> None:
         """Gelir tablosundan kârlılık metriklerini çıkar"""

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -28,7 +28,7 @@ export default function HeatmapPage() {
   useEffect(() => {
     const fetchHeatmap = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/charts/sector-heatmap');
+        const response = await fetch('http://localhost:8001/api/charts/sector-heatmap');
         const data = await response.json();
 
         if (!data.success) {

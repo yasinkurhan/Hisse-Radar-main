@@ -17,7 +17,7 @@ import type {
 } from '@/types';
 
 // API Base URL
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
 
 /**
  * Genel API istek fonksiyonu
@@ -86,6 +86,18 @@ export async function searchStocks(query: string): Promise<StockListResponse> {
 // ==========================================
 // FİYAT API'LERİ
 // ==========================================
+
+/**
+ * OHLC verilerini chart formatında getir
+ */
+export async function getOHLCData(
+  symbol: string,
+  period: string = '3mo',
+  interval: string = '1d'
+): Promise<any> {
+    const params = new URLSearchParams({ period, interval });
+    return fetchAPI(`/api/charts/ohlc/${symbol}?${params.toString()}`);
+}
 
 /**
  * Fiyat geçmişini getir
@@ -442,6 +454,48 @@ export async function getFundamentalCharts(symbol: string) {
  */
 export async function compareFundamentals(symbols: string[]) {
   return fetchAPI(`/api/fundamental/compare?symbols=${symbols.join(',')}`);
+}
+
+/**
+ * ETF Sahipliği - Hisseyi hangi yabancı ETF'lerin tuttuğu
+ */
+export async function getETFHolders(symbol: string) {
+  return fetchAPI(`/api/fundamental/etf-holders/${symbol}`);
+}
+
+/**
+ * Kurumsal Takvim - Temettü tarihleri, kazanç açıklama tarihleri
+ */
+export async function getCorporateCalendar(symbol: string) {
+  return fetchAPI(`/api/fundamental/calendar/${symbol}`);
+}
+
+/**
+ * Analist Tahminleri - Hedef fiyatlar ve al/sat önerileri
+ */
+export async function getAnalystData(symbol: string) {
+  return fetchAPI(`/api/fundamental/analyst/${symbol}`);
+}
+
+/**
+ * Teknik Analiz Sinyalleri - TradingView tabanlı AL/SAT/NÖTR sinyalleri
+ */
+export async function getTASignals(symbol: string, interval: string = '1d') {
+  return fetchAPI(`/api/fundamental/ta-signals/${symbol}?interval=${interval}`);
+}
+
+/**
+ * Tüm Zaman Dilimlerinde Teknik Sinyaller
+ */
+export async function getTASignalsAllTimeframes(symbol: string) {
+  return fetchAPI(`/api/fundamental/ta-signals-all/${symbol}`);
+}
+
+/**
+ * Şirket Aksiyonları - Temettü ödemeleri ve hisse bölünmeleri
+ */
+export async function getCorporateActions(symbol: string) {
+  return fetchAPI(`/api/fundamental/actions/${symbol}`);
 }
 
 // ==========================================

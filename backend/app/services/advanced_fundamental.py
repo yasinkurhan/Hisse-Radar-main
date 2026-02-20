@@ -11,6 +11,12 @@ from typing import Dict, Any, List, Optional
 from .cache_service import FundamentalCache
 from .borsapy_fetcher import get_borsapy_fetcher
 
+try:
+    import yfinance as yf
+    HAS_YFINANCE = True
+except ImportError:
+    HAS_YFINANCE = False
+
 
 class AdvancedFundamentalService:
     """Gelişmiş temel analiz servisi (borsapy)"""
@@ -336,11 +342,105 @@ class AdvancedFundamentalService:
                 "data_source": "borsapy",
             }
 
+            # yfinance ile eksik ratioları tamamla
+            self._enrich_ratios_from_yfinance(result, clean_symbol)
+
             FundamentalCache.set_fundamental(clean_symbol, result)
             return result
         except Exception as e:
             return {"symbol": clean_symbol, "success": False, "error": str(e)}
 
+    def _enrich_ratios_from_yfinance(self, result: Dict[str, Any], symbol: str) -> None:
+        """yfinance'den eksik ratio ve metrikleri tamamla"""
+        if not HAS_YFINANCE:
+            return
+        try:
+            yf_symbol = f"{symbol}.IS"
+            ticker = yf.Ticker(yf_symbol)
+            info = ticker.info or {}
+            
+            ratios = result.get("ratios", {})
+            growth = result.get("growth_metrics", {})
+            fi_sum = result.get("financial_summary", {})
+            company = result.get("company_info", {})
+            
+            # Company info
+            if company.get("sector") == "N/A":
+                company["sector"] = info.get("sector", "N/A")
+                company["industry"] = info.get("industry", "N/A")
+                company["name"] = info.get("longName") or info.get("shortName") or symbol
+            if not company.get("market_cap"):
+                company["market_cap"] = info.get("marketCap")
+            
+            # Valuation ratios
+            val = ratios.get("valuation", {})
+            if not val.get("pe_ratio"):
+                val["pe_ratio"] = self._to_float(info.get("trailingPE"))
+            if not val.get("forward_pe"):
+                val["forward_pe"] = self._to_float(info.get("forwardPE"))
+            if not val.get("pb_ratio"):
+                val["pb_ratio"] = self._to_float(info.get("priceToBook"))
+            if not val.get("ps_ratio"):
+                val["ps_ratio"] = self._to_float(info.get("priceToSalesTrailing12Months"))
+            if not val.get("ev_ebitda"):
+                val["ev_ebitda"] = self._to_float(info.get("enterpriseToEbitda"))
+            ratios["valuation"] = val
+            
+            # Profitability ratios
+            prof = ratios.get("profitability", {})
+            roe_val = info.get("returnOnEquity")
+            if not prof.get("roe") and roe_val is not None:
+                prof["roe"] = round(roe_val * 100 if abs(roe_val) < 5 else roe_val, 2)
+            roa_val = info.get("returnOnAssets")
+            if not prof.get("roa") and roa_val is not None:
+                prof["roa"] = round(roa_val * 100 if abs(roa_val) < 5 else roa_val, 2)
+            pm_val = info.get("profitMargins")
+            if not prof.get("net_margin") and pm_val is not None:
+                prof["net_margin"] = round(pm_val * 100 if abs(pm_val) < 5 else pm_val, 2)
+            gm_val = info.get("grossMargins")
+            if not prof.get("gross_margin") and gm_val is not None:
+                prof["gross_margin"] = round(gm_val * 100 if abs(gm_val) < 5 else gm_val, 2)
+            om_val = info.get("operatingMargins")
+            if not prof.get("operating_margin") and om_val is not None:
+                prof["operating_margin"] = round(om_val * 100 if abs(om_val) < 5 else om_val, 2)
+            ratios["profitability"] = prof
+            
+            # Leverage
+            lev = ratios.get("leverage", {})
+            de_val = info.get("debtToEquity")
+            if not lev.get("debt_to_equity") and de_val is not None:
+                lev["debt_to_equity"] = round(de_val, 2)
+            ratios["leverage"] = lev
+            
+            # Growth metrics
+            eg_val = info.get("earningsGrowth")
+            if not growth.get("yoy_profit_growth") and eg_val is not None:
+                growth["yoy_profit_growth"] = round(eg_val * 100 if abs(eg_val) < 5 else eg_val, 2)
+            rg_val = info.get("revenueGrowth")
+            if not growth.get("yoy_revenue_growth") and rg_val is not None:
+                growth["yoy_revenue_growth"] = round(rg_val * 100 if abs(rg_val) < 5 else rg_val, 2)
+            
+            # Financial summary extras
+            if not fi_sum.get("market_cap"):
+                fi_sum["market_cap"] = info.get("marketCap")
+            if not fi_sum.get("dividend_yield"):
+                dy_val = info.get("dividendYield")
+                if dy_val is not None:
+                    fi_sum["dividend_yield"] = round(dy_val if dy_val > 1 else dy_val * 100, 2)
+            if not fi_sum.get("beta"):
+                fi_sum["beta"] = self._to_float(info.get("beta"))
+            if not fi_sum.get("pe_ratio"):
+                fi_sum["pe_ratio"] = self._to_float(info.get("trailingPE"))
+            
+            result["ratios"] = ratios
+            result["growth_metrics"] = growth
+            result["financial_summary"] = fi_sum
+            result["company_info"] = company
+            result["data_source"] = "borsapy+yfinance"
+            
+        except Exception as e:
+            print(f"yfinance advanced fundamental hatası ({symbol}): {e}")
+    
     def get_quick_stats(self, symbol: str) -> Dict[str, Any]:
         """Hızlı temel analiz istatistikleri"""
         try:

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useRef } from 'react';
 
@@ -53,7 +53,7 @@ export default function StockNews({ symbol }: StockNewsProps) {
   const fetchNews = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8000/api/kap/news/${symbol}?limit=50`);
+      const response = await fetch(`http://localhost:8001/api/kap/news/${symbol}?limit=50`);
       
       if (!response.ok) {
         throw new Error('Haberler yüklenemedi');
@@ -73,7 +73,7 @@ export default function StockNews({ symbol }: StockNewsProps) {
   const collectNews = async () => {
     try {
       setCollecting(true);
-      const response = await fetch(`http://localhost:8000/api/kap/collect/${symbol}`, {
+      const response = await fetch(`http://localhost:8001/api/kap/collect/${symbol}`, {
         method: 'POST'
       });
       

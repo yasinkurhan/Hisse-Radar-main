@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -64,7 +64,7 @@ export default function NewsSentimentCard({ symbol }: NewsSentimentCardProps) {
     try {
       setLoading(true);
       // Gerçek haberler endpoint'ini kullan
-      const response = await fetch(`http://localhost:8000/api/news/real/stock/${symbol}`);
+      const response = await fetch(`http://localhost:8001/api/news/real/stock/${symbol}`);
       if (!response.ok) throw new Error('Veri alınamadı');
       const data = await response.json();
       

@@ -17,6 +17,7 @@ from typing import Dict, List, Any, Optional
 from datetime import datetime
 
 from .borsapy_fetcher import get_borsapy_fetcher
+from .chart_patterns import ChartPatternDetector
 
 
 class TechnicalAnalyzer:
@@ -38,6 +39,7 @@ class TechnicalAnalyzer:
         """
         self.symbol = symbol
         self._fetcher = get_borsapy_fetcher()
+        self._pattern_detector = ChartPatternDetector()
         
         if df is not None:
             self.df = df.copy()
@@ -54,6 +56,15 @@ class TechnicalAnalyzer:
         """DataFrame'in gerekli sütunları içerdiğini doğrula"""
         if self.df.empty:
             return
+        # Kolon isimlerini normalize et (close, Close, CLOSE → close)
+        column_mapping = {}
+        for col in self.df.columns:
+            col_lower = col.lower()
+            if col_lower in ['open', 'high', 'low', 'close', 'volume']:
+                column_mapping[col] = col_lower
+        if column_mapping:
+            self.df = self.df.rename(columns=column_mapping)
+        
         required_columns = ["close"]
         for col in required_columns:
             if col not in self.df.columns:
@@ -379,3 +390,55 @@ class TechnicalAnalyzer:
                 entry[key] = round(float(value), 2) if pd.notna(value) else None
             result.append(entry)
         return result
+    
+    def detect_chart_patterns(self) -> Dict[str, Any]:
+        """
+        Grafik formasyonlarını tespit et (Flama, Üçgen, Baş-Omuz vb.)
+        
+        Returns:
+            Dict: Tespit edilen formasyonlar ve detayları
+        """
+        if self.df.empty or len(self.df) < 20:
+            return {
+                "success": False,
+                "patterns": [],
+                "pattern_count": 0,
+                "summary": "Yetersiz veri",
+                "message": "Formasyon tespiti için yeterli veri yok"
+            }
+        
+        try:
+            # DataFrame'i normalize et (Close/close, High/high vb.)
+            df_normalized = self.df.copy()
+            
+            # Kolon isimlerini kontrol et ve normalize et
+            columns_map = {}
+            for col in df_normalized.columns:
+                col_lower = col.lower()
+                if col_lower in ['open', 'high', 'low', 'close', 'volume']:
+                    columns_map[col] = col_lower.capitalize()
+            
+            if columns_map:
+                df_normalized = df_normalized.rename(columns=columns_map)
+            
+            # Pattern detector'ı çalıştır
+            result = self._pattern_detector.detect_all_patterns(df_normalized)
+            
+            return {
+                "success": True,
+                "patterns": result.get("patterns", []),
+                "pattern_count": result.get("pattern_count", 0),
+                "summary": result.get("summary", ""),
+                "fibonacci": result.get("fibonacci", {}),
+                "support_resistance": result.get("support_resistance", {}),
+                "symbol": self.symbol,
+                "analysis_date": datetime.now().isoformat()
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "patterns": [],
+                "pattern_count": 0,
+                "summary": f"Hata: {str(e)}",
+                "message": "Formasyon tespiti sırasında hata oluştu"
+            }

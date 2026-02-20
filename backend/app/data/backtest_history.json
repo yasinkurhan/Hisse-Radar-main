@@ -136,10 +136,12 @@
       "score": 90,
       "entry_price": 2.84,
       "date": "2026-01-21",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 3.21,
+      "exit_date": "2026-02-17",
+      "profit_pct": 13.03,
+      "exit_reason": "kar_al",
+      "days_held": 27
     },
     {
       "symbol": "YGYO",
@@ -290,10 +292,12 @@
       "score": 85,
       "entry_price": 2.85,
       "date": "2026-01-23",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 3.21,
+      "exit_date": "2026-02-17",
+      "profit_pct": 12.63,
+      "exit_reason": "kar_al",
+      "days_held": 25
     },
     {
       "symbol": "TATEN",
@@ -347,10 +351,12 @@
       "score": 75,
       "entry_price": 73.15,
       "date": "2026-01-23",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 81.25,
+      "exit_date": "2026-02-17",
+      "profit_pct": 11.07,
+      "exit_reason": "kar_al",
+      "days_held": 25
     },
     {
       "symbol": "YGGYO",
@@ -486,10 +492,12 @@
       "score": 85,
       "entry_price": 2.83,
       "date": "2026-01-26",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 3.21,
+      "exit_date": "2026-02-17",
+      "profit_pct": 13.43,
+      "exit_reason": "kar_al",
+      "days_held": 22
     },
     {
       "symbol": "PCILT",
@@ -497,10 +505,12 @@
       "score": 83,
       "entry_price": 22.94,
       "date": "2026-01-26",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 25.34,
+      "exit_date": "2026-02-17",
+      "profit_pct": 10.46,
+      "exit_reason": "kar_al",
+      "days_held": 22
     },
     {
       "symbol": "TATEN",
@@ -630,10 +640,12 @@
       "score": 78,
       "entry_price": 14.5,
       "date": "2026-01-26",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 13.47,
+      "exit_date": "2026-02-19",
+      "profit_pct": -7.1,
+      "exit_reason": "zarar_kes",
+      "days_held": 24
     },
     {
       "symbol": "DCTTR",
@@ -667,10 +679,12 @@
       "score": 75,
       "entry_price": 3.05,
       "date": "2026-01-26",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 3.37,
+      "exit_date": "2026-02-17",
+      "profit_pct": 10.49,
+      "exit_reason": "kar_al",
+      "days_held": 22
     },
     {
       "symbol": "KONTR",
@@ -713,10 +727,12 @@
       "score": 85,
       "entry_price": 2.83,
       "date": "2026-01-27",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 3.21,
+      "exit_date": "2026-02-17",
+      "profit_pct": 13.43,
+      "exit_reason": "kar_al",
+      "days_held": 21
     },
     {
       "symbol": "MARKA",
@@ -789,10 +805,12 @@
       "score": 75,
       "entry_price": 2.5,
       "date": "2026-01-27",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 2.77,
+      "exit_date": "2026-02-16",
+      "profit_pct": 10.8,
+      "exit_reason": "kar_al",
+      "days_held": 20
     },
     {
       "symbol": "BEYAZ",
@@ -835,10 +853,12 @@
       "score": 85,
       "entry_price": 2.79,
       "date": "2026-01-29",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 3.21,
+      "exit_date": "2026-02-17",
+      "profit_pct": 15.05,
+      "exit_reason": "kar_al",
+      "days_held": 19
     },
     {
       "symbol": "INGRM",
@@ -968,10 +988,12 @@
       "score": 85,
       "entry_price": 2.78,
       "date": "2026-01-30",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 3.21,
+      "exit_date": "2026-02-17",
+      "profit_pct": 15.47,
+      "exit_reason": "kar_al",
+      "days_held": 18
     },
     {
       "symbol": "PATEK",
@@ -1014,10 +1036,12 @@
       "score": 80,
       "entry_price": 182.0,
       "date": "2026-01-30",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 166.5,
+      "exit_date": "2026-02-19",
+      "profit_pct": -8.52,
+      "exit_reason": "zarar_kes",
+      "days_held": 20
     },
     {
       "symbol": "DOFER",
@@ -1097,10 +1121,12 @@
       "score": 80,
       "entry_price": 13.73,
       "date": "2026-02-03",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 12.75,
+      "exit_date": "2026-02-19",
+      "profit_pct": -7.14,
+      "exit_reason": "zarar_kes",
+      "days_held": 16
     },
     {
       "symbol": "EMKEL",
@@ -1265,10 +1291,12 @@
       "score": 91,
       "entry_price": 26.74,
       "date": "2026-02-03",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 30.1,
+      "exit_date": "2026-02-17",
+      "profit_pct": 12.57,
+      "exit_reason": "kar_al",
+      "days_held": 14
     },
     {
       "symbol": "AVHOL",
@@ -1313,10 +1341,12 @@
       "score": 79,
       "entry_price": 4.26,
       "date": "2026-02-04",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 3.91,
+      "exit_date": "2026-02-19",
+      "profit_pct": -8.22,
+      "exit_reason": "zarar_kes",
+      "days_held": 15
     },
     {
       "symbol": "KONTR",
@@ -1361,10 +1391,12 @@
       "score": 76,
       "entry_price": 3.3,
       "date": "2026-02-04",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 3.64,
+      "exit_date": "2026-02-17",
+      "profit_pct": 10.3,
+      "exit_reason": "kar_al",
+      "days_held": 13
     },
     {
       "symbol": "MARKA",
@@ -1385,10 +1417,12 @@
       "score": 76,
       "entry_price": 8.29,
       "date": "2026-02-04",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 9.21,
+      "exit_date": "2026-02-17",
+      "profit_pct": 11.1,
+      "exit_reason": "kar_al",
+      "days_held": 13
     },
     {
       "symbol": "ACSEL",
@@ -1470,10 +1504,12 @@
       "score": 84,
       "entry_price": 4.18,
       "date": "2026-02-05",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 3.87,
+      "exit_date": "2026-02-19",
+      "profit_pct": -7.42,
+      "exit_reason": "zarar_kes",
+      "days_held": 14
     },
     {
       "symbol": "IHLGM",
@@ -1573,10 +1609,12 @@
       "score": 84,
       "entry_price": 1518.0,
       "date": "2026-02-12",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 1675.0,
+      "exit_date": "2026-02-19",
+      "profit_pct": 10.34,
+      "exit_reason": "kar_al",
+      "days_held": 7
     },
     {
       "symbol": "GENIL",
@@ -1584,10 +1622,12 @@
       "score": 83,
       "entry_price": 8.23,
       "date": "2026-02-12",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 7.61,
+      "exit_date": "2026-02-19",
+      "profit_pct": -7.53,
+      "exit_reason": "zarar_kes",
+      "days_held": 7
     },
     {
       "symbol": "VERUS",
@@ -1617,10 +1657,12 @@
       "score": 80,
       "entry_price": 179.4,
       "date": "2026-02-12",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 166.5,
+      "exit_date": "2026-02-19",
+      "profit_pct": -7.19,
+      "exit_reason": "zarar_kes",
+      "days_held": 7
     },
     {
       "symbol": "EGEEN",
@@ -1674,10 +1716,12 @@
       "score": 73,
       "entry_price": 162.4,
       "date": "2026-02-12",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 150.6,
+      "exit_date": "2026-02-19",
+      "profit_pct": -7.27,
+      "exit_reason": "zarar_kes",
+      "days_held": 7
     },
     {
       "symbol": "AKSUE",
@@ -1696,10 +1740,12 @@
       "score": 80,
       "entry_price": 175.1,
       "date": "2026-02-12",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 158.6,
+      "exit_date": "2026-02-19",
+      "profit_pct": -9.42,
+      "exit_reason": "zarar_kes",
+      "days_held": 7
     },
     {
       "symbol": "POLTK",
@@ -1718,10 +1764,12 @@
       "score": 85,
       "entry_price": 1486.0,
       "date": "2026-02-16",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 1665.0,
+      "exit_date": "2026-02-19",
+      "profit_pct": 12.05,
+      "exit_reason": "kar_al",
+      "days_held": 3
     },
     {
       "symbol": "DURDO",
@@ -1773,10 +1821,12 @@
       "score": 77,
       "entry_price": 2.72,
       "date": "2026-02-16",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 1.68,
+      "exit_date": "2026-02-19",
+      "profit_pct": -38.24,
+      "exit_reason": "zarar_kes",
+      "days_held": 3
     },
     {
       "symbol": "GLBMD",
@@ -1806,10 +1856,12 @@
       "score": 76,
       "entry_price": 4.0,
       "date": "2026-02-16",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 3.7,
+      "exit_date": "2026-02-19",
+      "profit_pct": -7.5,
+      "exit_reason": "zarar_kes",
+      "days_held": 3
     },
     {
       "symbol": "BORSK",
@@ -1817,10 +1869,12 @@
       "score": 79,
       "entry_price": 6.8,
       "date": "2026-02-16",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 6.32,
+      "exit_date": "2026-02-19",
+      "profit_pct": -7.06,
+      "exit_reason": "zarar_kes",
+      "days_held": 3
     },
     {
       "symbol": "MNDTR",
@@ -1839,10 +1893,12 @@
       "score": 76,
       "entry_price": 5.5,
       "date": "2026-02-16",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 5.11,
+      "exit_date": "2026-02-19",
+      "profit_pct": -7.09,
+      "exit_reason": "zarar_kes",
+      "days_held": 3
     },
     {
       "symbol": "PINSU",
@@ -1872,10 +1928,12 @@
       "score": 75,
       "entry_price": 172.8,
       "date": "2026-02-16",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 158.6,
+      "exit_date": "2026-02-19",
+      "profit_pct": -8.22,
+      "exit_reason": "zarar_kes",
+      "days_held": 3
     },
     {
       "symbol": "BMSTL",
@@ -1883,10 +1941,12 @@
       "score": 72,
       "entry_price": 98.45,
       "date": "2026-02-16",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 90.3,
+      "exit_date": "2026-02-19",
+      "profit_pct": -8.28,
+      "exit_reason": "zarar_kes",
+      "days_held": 3
     },
     {
       "symbol": "FONET",
@@ -1894,10 +1954,12 @@
       "score": 71,
       "entry_price": 3.42,
       "date": "2026-02-16",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 3.12,
+      "exit_date": "2026-02-19",
+      "profit_pct": -8.77,
+      "exit_reason": "zarar_kes",
+      "days_held": 3
     },
     {
       "symbol": "OTKAR",
@@ -1938,10 +2000,12 @@
       "score": 75,
       "entry_price": 18.87,
       "date": "2026-02-16",
-      "status": "active",
-      "exit_price": null,
-      "exit_date": null,
-      "profit_pct": null
+      "status": "completed",
+      "exit_price": 17.4,
+      "exit_date": "2026-02-19",
+      "profit_pct": -7.79,
+      "exit_reason": "zarar_kes",
+      "days_held": 3
     },
     {
       "symbol": "RAYSG",
@@ -1964,17 +2028,577 @@
       "exit_price": null,
       "exit_date": null,
       "profit_pct": null
+    },
+    {
+      "symbol": "VKING",
+      "signal": "GUCLU_AL",
+      "score": 76,
+      "entry_price": 32.54,
+      "date": "2026-02-16",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "BERA",
+      "signal": "GUCLU_AL",
+      "score": 70,
+      "entry_price": 20.04,
+      "date": "2026-02-16",
+      "status": "completed",
+      "exit_price": 18.43,
+      "exit_date": "2026-02-19",
+      "profit_pct": -8.03,
+      "exit_reason": "zarar_kes",
+      "days_held": 3
+    },
+    {
+      "symbol": "DMSAS",
+      "signal": "GUCLU_AL",
+      "score": 70,
+      "entry_price": 9.28,
+      "date": "2026-02-16",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "ULUSE",
+      "signal": "GUCLU_AL",
+      "score": 70,
+      "entry_price": 197.5,
+      "date": "2026-02-16",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "PNLSN",
+      "signal": "GUCLU_AL",
+      "score": 70,
+      "entry_price": 43.46,
+      "date": "2026-02-16",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "FZLGY",
+      "signal": "AL",
+      "score": 67,
+      "entry_price": 12.89,
+      "date": "2026-02-16",
+      "status": "completed",
+      "exit_price": 11.78,
+      "exit_date": "2026-02-19",
+      "profit_pct": -8.61,
+      "exit_reason": "zarar_kes",
+      "days_held": 3
+    },
+    {
+      "symbol": "CANTE",
+      "signal": "AL",
+      "score": 66,
+      "entry_price": 1.92,
+      "date": "2026-02-16",
+      "status": "completed",
+      "exit_price": 1.75,
+      "exit_date": "2026-02-19",
+      "profit_pct": -8.85,
+      "exit_reason": "zarar_kes",
+      "days_held": 3
+    },
+    {
+      "symbol": "GLBMD",
+      "signal": "GUCLU_AL",
+      "score": 76,
+      "entry_price": 13.0,
+      "date": "2026-02-17",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "BMSTL",
+      "signal": "GUCLU_AL",
+      "score": 75,
+      "entry_price": 96.85,
+      "date": "2026-02-17",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "BIOEN",
+      "signal": "GUCLU_AL",
+      "score": 75,
+      "entry_price": 18.84,
+      "date": "2026-02-17",
+      "status": "completed",
+      "exit_price": 17.4,
+      "exit_date": "2026-02-19",
+      "profit_pct": -7.64,
+      "exit_reason": "zarar_kes",
+      "days_held": 2
+    },
+    {
+      "symbol": "LINK",
+      "signal": "GUCLU_AL",
+      "score": 75,
+      "entry_price": 239.9,
+      "date": "2026-02-17",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "KRTEK",
+      "signal": "GUCLU_AL",
+      "score": 75,
+      "entry_price": 28.5,
+      "date": "2026-02-17",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "SEYKM",
+      "signal": "GUCLU_AL",
+      "score": 75,
+      "entry_price": 5.5,
+      "date": "2026-02-17",
+      "status": "completed",
+      "exit_price": 5.11,
+      "exit_date": "2026-02-19",
+      "profit_pct": -7.09,
+      "exit_reason": "zarar_kes",
+      "days_held": 2
+    },
+    {
+      "symbol": "VKING",
+      "signal": "GUCLU_AL",
+      "score": 75,
+      "entry_price": 32.54,
+      "date": "2026-02-17",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "RNPOL",
+      "signal": "GUCLU_AL",
+      "score": 75,
+      "entry_price": 47.4,
+      "date": "2026-02-17",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "MNDTR",
+      "signal": "GUCLU_AL",
+      "score": 74,
+      "entry_price": 7.04,
+      "date": "2026-02-17",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "PINSU",
+      "signal": "GUCLU_AL",
+      "score": 74,
+      "entry_price": 11.47,
+      "date": "2026-02-17",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "TATEN",
+      "signal": "GUCLU_AL",
+      "score": 85,
+      "entry_price": 10.07,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "GARFA",
+      "signal": "GUCLU_AL",
+      "score": 83,
+      "entry_price": 29.88,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "PINSU",
+      "signal": "GUCLU_AL",
+      "score": 83,
+      "entry_price": 11.18,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "BMSCH",
+      "signal": "GUCLU_AL",
+      "score": 78,
+      "entry_price": 17.29,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "REEDR",
+      "signal": "GUCLU_AL",
+      "score": 78,
+      "entry_price": 6.78,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "LRSHO",
+      "signal": "GUCLU_AL",
+      "score": 78,
+      "entry_price": 4.05,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "DURDO",
+      "signal": "GUCLU_AL",
+      "score": 77,
+      "entry_price": 3.81,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "ALCAR",
+      "signal": "GUCLU_AL",
+      "score": 75,
+      "entry_price": 914.0,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "ATAKP",
+      "signal": "GUCLU_AL",
+      "score": 75,
+      "entry_price": 59.75,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "BRLSM",
+      "signal": "GUCLU_AL",
+      "score": 75,
+      "entry_price": 15.73,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "BULGS",
+      "signal": "GUCLU_AL",
+      "score": 80,
+      "entry_price": 47.54,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "HATEK",
+      "signal": "GUCLU_AL",
+      "score": 80,
+      "entry_price": 15.79,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "MIATK",
+      "signal": "GUCLU_AL",
+      "score": 80,
+      "entry_price": 38.42,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "ESCOM",
+      "signal": "GUCLU_AL",
+      "score": 76,
+      "entry_price": 3.81,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "IHLGM",
+      "signal": "GUCLU_AL",
+      "score": 80,
+      "entry_price": 2.09,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "SMART",
+      "signal": "GUCLU_AL",
+      "score": 80,
+      "entry_price": 26.28,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "IHYAY",
+      "signal": "GUCLU_AL",
+      "score": 78,
+      "entry_price": 1.88,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "OYLUM",
+      "signal": "GUCLU_AL",
+      "score": 78,
+      "entry_price": 8.17,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "POLTK",
+      "signal": "GUCLU_AL",
+      "score": 78,
+      "entry_price": 6107.5,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "ADEL",
+      "signal": "GUCLU_AL",
+      "score": 75,
+      "entry_price": 36.44,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "LYDYE",
+      "signal": "GUCLU_AL",
+      "score": 85,
+      "entry_price": 14282.5,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "ARZUM",
+      "signal": "GUCLU_AL",
+      "score": 80,
+      "entry_price": 2.74,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "AYEN",
+      "signal": "GUCLU_AL",
+      "score": 80,
+      "entry_price": 28.7,
+      "date": "2026-02-19",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "LYDYE",
+      "signal": "GUCLU_AL",
+      "score": 85,
+      "entry_price": 14282.5,
+      "date": "2026-02-20",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "TATEN",
+      "signal": "GUCLU_AL",
+      "score": 85,
+      "entry_price": 10.2,
+      "date": "2026-02-20",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "BMSCH",
+      "signal": "GUCLU_AL",
+      "score": 83,
+      "entry_price": 17.05,
+      "date": "2026-02-20",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "REEDR",
+      "signal": "GUCLU_AL",
+      "score": 83,
+      "entry_price": 6.63,
+      "date": "2026-02-20",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "ARZUM",
+      "signal": "GUCLU_AL",
+      "score": 80,
+      "entry_price": 2.74,
+      "date": "2026-02-20",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "AYEN",
+      "signal": "GUCLU_AL",
+      "score": 80,
+      "entry_price": 28.7,
+      "date": "2026-02-20",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "SMART",
+      "signal": "GUCLU_AL",
+      "score": 80,
+      "entry_price": 26.02,
+      "date": "2026-02-20",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "IHYAY",
+      "signal": "GUCLU_AL",
+      "score": 78,
+      "entry_price": 1.88,
+      "date": "2026-02-20",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "OYLUM",
+      "signal": "GUCLU_AL",
+      "score": 78,
+      "entry_price": 8.04,
+      "date": "2026-02-20",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
+    },
+    {
+      "symbol": "POLTK",
+      "signal": "GUCLU_AL",
+      "score": 78,
+      "entry_price": 6100.0,
+      "date": "2026-02-20",
+      "status": "active",
+      "exit_price": null,
+      "exit_date": null,
+      "profit_pct": null
     }
   ],
   "performance": {
-    "total_signals": 75,
-    "win_rate": 82.7,
-    "avg_profit": 10.64,
-    "avg_win": 14.21,
-    "avg_loss": -6.37,
-    "al_win_rate": 82.7,
+    "total_signals": 112,
+    "win_rate": 68.8,
+    "avg_profit": 6.94,
+    "avg_win": 13.81,
+    "avg_loss": -8.17,
+    "al_win_rate": 68.8,
     "sat_win_rate": 0,
-    "high_score_win_rate": 84.3,
-    "last_updated": "2026-02-16 16:36"
+    "high_score_win_rate": 70.5,
+    "last_updated": "2026-02-19 17:54"
   }
 }

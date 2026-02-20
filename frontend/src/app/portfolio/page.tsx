@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -54,7 +54,7 @@ export default function PortfolioPage() {
 
   const fetchPortfolio = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/user/portfolio');
+      const res = await fetch('http://localhost:8001/api/user/portfolio');
       const data = await res.json();
       setPortfolio(data);
     } catch (error) {
@@ -66,7 +66,7 @@ export default function PortfolioPage() {
 
   const fetchTransactions = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/user/portfolio/transactions?limit=50');
+      const res = await fetch('http://localhost:8001/api/user/portfolio/transactions?limit=50');
       const data = await res.json();
       setTransactions(data);
     } catch (error) {
@@ -83,8 +83,8 @@ export default function PortfolioPage() {
     setTrading(true);
     try {
       const endpoint = tradeType === 'buy' 
-        ? '/api/user/portfolio/buy'
-        : '/api/user/portfolio/sell';
+        ? 'http://localhost:8001/api/user/portfolio/buy'
+        : 'http://localhost:8001/api/user/portfolio/sell';
       
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -119,7 +119,7 @@ export default function PortfolioPage() {
     if (!confirm('Portföyü sıfırlamak istediğinize emin misiniz? Tüm veriler silinecek.')) return;
     
     try {
-      await fetch('http://localhost:8000/api/user/portfolio/reset?initial_capital=100000', { method: 'POST' });
+      await fetch('http://localhost:8001/api/user/portfolio/reset?initial_capital=100000', { method: 'POST' });
       fetchPortfolio();
       fetchTransactions();
     } catch (error) {
@@ -236,7 +236,7 @@ export default function PortfolioPage() {
                     {portfolio.stocks.map((stock, idx) => (
                       <tr key={idx} className="border-b border-gray-700 hover:bg-gray-700/50">
                         <td className="py-3 px-4">
-                          <Link href={`/stocks/${stock.symbol}`} className="text-blue-400 hover:underline font-semibold">
+                          <Link href={`/stock/${stock.symbol}`} className="text-blue-400 hover:underline font-semibold">
                             {stock.symbol}
                           </Link>
                         </td>
@@ -370,7 +370,7 @@ export default function PortfolioPage() {
                           </span>
                         </td>
                         <td className="py-3 px-4">
-                          <Link href={`/stocks/${tx.symbol}`} className="text-blue-400 hover:underline font-semibold">
+                          <Link href={`/stock/${tx.symbol}`} className="text-blue-400 hover:underline font-semibold">
                             {tx.symbol}
                           </Link>
                         </td>

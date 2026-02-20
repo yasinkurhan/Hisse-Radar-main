@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -65,6 +65,7 @@ export default function BacktestPage() {
   const [activeTab, setActiveTab] = useState<'overview' | 'active' | 'history'>('overview');
 
   useEffect(() => {
+    console.log('Backtest page loaded - Check API URLs');
     fetchAllData();
   }, []);
 
@@ -83,6 +84,7 @@ export default function BacktestPage() {
     try {
       // Fetch each endpoint with individual error handling
       const fetchWithTimeout = async (url: string, timeoutMs = 10000) => {
+        console.log('Fetching:', url); // Log the URL
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), timeoutMs);
         try {
@@ -96,10 +98,10 @@ export default function BacktestPage() {
       };
 
       const [perfData, activeData, recentData, marketData] = await Promise.all([
-        fetchWithTimeout('/api/backtest/performance'),
-        fetchWithTimeout('/api/backtest/active-signals'),
-        fetchWithTimeout('/api/backtest/recent-results?limit=20'),
-        fetchWithTimeout('/api/backtest/market-condition', 15000)
+        fetchWithTimeout('http://localhost:8001/api/backtest/performance'),
+        fetchWithTimeout('http://localhost:8001/api/backtest/active-signals'),
+        fetchWithTimeout('http://localhost:8001/api/backtest/recent-results?limit=20'),
+        fetchWithTimeout('http://localhost:8001/api/backtest/market-condition', 15000)
       ]);
 
       if (perfData) setPerformance(perfData);
@@ -119,7 +121,7 @@ export default function BacktestPage() {
     setRefreshing(true);
     try {
       // Önce sinyalleri güncelle
-      const refreshRes = await fetch('http://localhost:8000/api/backtest/refresh');
+      const refreshRes = await fetch('http://localhost:8001/api/backtest/refresh');
       const refreshData = await refreshRes.json();
       console.log('Refresh sonucu:', refreshData);
 
@@ -324,7 +326,7 @@ export default function BacktestPage() {
                     {activeSignals.map((signal, idx) => (
                       <tr key={idx} className="border-b border-gray-700 hover:bg-gray-700/50">
                         <td className="py-3 px-4">
-                          <Link href={`/stocks/${signal.symbol}`} className="text-blue-400 hover:underline font-semibold">
+                          <Link href={`/stock/${signal.symbol}`} className="text-blue-400 hover:underline font-semibold">
                             {signal.symbol}
                           </Link>
                         </td>
@@ -377,7 +379,7 @@ export default function BacktestPage() {
                     {recentResults.map((result, idx) => (
                       <tr key={idx} className="border-b border-gray-700 hover:bg-gray-700/50">
                         <td className="py-3 px-4">
-                          <Link href={`/stocks/${result.symbol}`} className="text-blue-400 hover:underline font-semibold">
+                          <Link href={`/stock/${result.symbol}`} className="text-blue-400 hover:underline font-semibold">
                             {result.symbol}
                           </Link>
                         </td>

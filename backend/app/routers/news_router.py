@@ -2,6 +2,7 @@
 HisseRadar Haber & Sentiment API Router
 =======================================
 borsapy KAP verileri + Google News RSS üzerinden gerçek haberler
+Background fetcher ile TÜM BIST hisselerinin KAP bildirimleri toplanır.
 """
 
 from fastapi import APIRouter, HTTPException, Query
@@ -19,205 +20,88 @@ from ..services.real_news_service import (
     RealNewsAggregator
 )
 from ..services.borsapy_fetcher import get_borsapy_fetcher
+from ..services.kap_background_fetcher import get_background_fetcher
 
 router = APIRouter(prefix="/api/news", tags=["news-sentiment"])
 
 
-
-
-
-
-# === KAP Toplama Durum Takibi ===
-_collection_status = {
-    "is_running": False,
-    "progress": 0,
-    "total": 0,
-    "current_batch": 0,
-    "total_batches": 0,
-    "started_at": None,
-    "completed_at": None,
-    "result": None
-}
-
-
 @router.get("/kap")
 async def get_all_kap_notifications(
-    limit: int = Query(50, ge=1, le=200, description="Maksimum bildirim sayısı"),
-    days: int = Query(90, ge=1, le=365, description="Son kaç günün haberleri")
+    limit: int = Query(100, ge=1, le=500, description="Maksimum bildirim sayısı"),
+    days: int = Query(90, ge=1, le=365, description="Son kaç günün haberleri"),
+    symbol: str = Query(None, description="Sembol filtresi (opsiyonel)"),
+    refresh: bool = Query(False, description="Arka planda yenileme tetikle")
 ):
     """
-    Tüm BIST hisselerinin KAP bildirimlerini getir (DB cache'den — anlık yanıt)
-    Eğer DB boşsa, en popüler hisseler için canlı veri çeker.
+    Tüm BIST hisseleri için KAP bildirimlerini getir.
+    
+    Veriler arka planda periyodik olarak toplanır (her 30 dk).
+    - refresh=False: DB'den anında yanıt (hızlı)
+    - refresh=True: DB'den yanıt + arka planda yenileme tetikle
+    - symbol: Opsiyonel sembol filtresi  
     """
     from ..services.kap_news_service import get_kap_service
     
     try:
         kap_service = get_kap_service()
+        bg_fetcher = get_background_fetcher()
         
-        # Önce DB'den oku (hızlı yol)
-        db_news = kap_service.get_all_recent_news(limit=limit, days=days)
+        # refresh=True ise arka plan yenilemeyi tetikle
+        bg_status = None
+        if refresh:
+            result = await bg_fetcher.trigger_refresh()
+            bg_status = result
         
-        if db_news:
-            return {
-                "total": len(db_news),
-                "notifications": db_news,
-                "source": "database",
-                "message": f"DB'den {len(db_news)} KAP bildirimi getirildi"
-            }
+        # Her zaman DB'den hızlı yanıt döndür
+        if symbol:
+            # Tek sembol filtresi
+            db_news = kap_service.get_news_for_symbol(symbol.upper(), limit=limit, days=days)
+        else:
+            # Tüm haberler
+            db_news = kap_service.get_all_recent_news(limit=limit, days=days)
         
-        # DB boşsa, hızlı canlı veri çek (8 popüler hisse)
-        import asyncio
-        import pandas as pd
-        
-        fetcher = get_borsapy_fetcher()
-        popular_symbols = ["THYAO", "ASELS", "AKBNK", "GARAN", 
-                           "TUPRS", "SAHOL", "TCELL", "FROTO"]
-        
-        all_notifications = []
-        
-        def fetch_symbol_news(symbol: str):
-            results = []
-            try:
-                raw_news = fetcher.get_kap_news(symbol)
-                if raw_news is not None:
-                    if isinstance(raw_news, pd.DataFrame):
-                        items = raw_news.to_dict(orient="records") if not raw_news.empty else []
-                    elif isinstance(raw_news, list):
-                        items = raw_news
-                    else:
-                        items = [raw_news] if raw_news else []
-                    
-                    for item in items:
-                        if isinstance(item, dict):
-                            title = item.get("Title") or item.get("title") or item.get("text") or "KAP Bildirimi"
-                            date_val = item.get("Date") or item.get("date") or item.get("time") or ""
-                            link = item.get("URL") or item.get("url") or item.get("link") or ""
-                            
-                            sentiment = kap_service._analyze_sentiment(title)
-                            category = kap_service._categorize_news(title)
-                            cat_info = kap_service.CATEGORY_IMPORTANCE.get(category, {})
-                            
-                            news_entry = {
-                                "symbol": symbol,
-                                "title": title,
-                                "summary": item.get("summary") or title,
-                                "publish_date": str(date_val),
-                                "url": link,
-                                "source": "KAP",
-                                "category": category,
-                                "category_name": cat_info.get("name", "Diğer"),
-                                "importance": cat_info.get("importance", "medium"),
-                                "sentiment_score": sentiment["score"],
-                                "sentiment_label": sentiment["label"]
-                            }
-                            results.append(news_entry)
-            except Exception:
-                pass
-            return results
-        
-        loop = asyncio.get_event_loop()
-        tasks = [loop.run_in_executor(None, fetch_symbol_news, sym) for sym in popular_symbols]
-        results = await asyncio.gather(*tasks)
-        
-        for result_list in results:
-            all_notifications.extend(result_list)
-        
-        # Canlı veriyi DB'ye kaydet
-        if all_notifications:
-            for notif in all_notifications:
-                notif["publish_date"] = notif.get("publish_date", "")
-            kap_service.save_news_to_db(all_notifications)
-        
-        all_notifications.sort(key=lambda x: str(x.get("publish_date", "")), reverse=True)
+        # Background durumu
+        collection_info = bg_fetcher.get_status()
         
         return {
-            "total": len(all_notifications[:limit]),
-            "notifications": all_notifications[:limit],
-            "source": "live_fetch",
-            "message": "DB boş — canlı veri çekildi ve cache'lendi. Tüm hisseler için /kap/collect kullanın."
+            "total": len(db_news),
+            "notifications": db_news,
+            "source": "database",
+            "collection_status": collection_info,
+            "background_triggered": refresh,
+            "message": f"DB'den {len(db_news)} KAP bildirimi getirildi" + (
+                " (arka planda yenileme başlatıldı)" if refresh and bg_status and bg_status.get("status") == "started" else ""
+            ) + (
+                f" (yenileme zaten devam ediyor: %{collection_info['percent']})" if refresh and bg_status and bg_status.get("status") == "already_running" else ""
+            )
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/kap/collection-status")
+async def get_kap_collection_status():
+    """KAP arka plan toplama durumunu döndür"""
+    bg_fetcher = get_background_fetcher()
+    return bg_fetcher.get_status()
+
+
 @router.post("/kap/collect")
-async def collect_kap_news(
-    batch_size: int = Query(15, ge=5, le=50, description="Batch boyutu"),
-    max_symbols: int = Query(0, ge=0, description="Maksimum sembol (0=tümü)")
-):
+async def collect_kap_news():
     """
     Tüm BIST hisseleri için KAP haberlerini toplu çek ve DB'ye kaydet.
-    Bu işlem arka planda çalışır.
+    Background fetcher'ı tetikler.
     """
-    import asyncio
-    from datetime import datetime
-    from ..services.kap_news_service import get_news_collector
-    
-    global _collection_status
-    
-    if _collection_status["is_running"]:
-        return {
-            "status": "already_running",
-            "progress": _collection_status["progress"],
-            "total": _collection_status["total"],
-            "current_batch": _collection_status["current_batch"],
-            "total_batches": _collection_status["total_batches"],
-            "started_at": _collection_status["started_at"],
-            "message": "Toplama zaten devam ediyor"
-        }
-    
-    collector = get_news_collector()
-    symbols = collector.all_symbols
-    if max_symbols > 0:
-        symbols = symbols[:max_symbols]
-    
-    _collection_status.update({
-        "is_running": True,
-        "progress": 0,
-        "total": len(symbols),
-        "current_batch": 0,
-        "total_batches": (len(symbols) + batch_size - 1) // batch_size,
-        "started_at": datetime.now().isoformat(),
-        "completed_at": None,
-        "result": None
-    })
-    
-    async def _run_collection():
-        global _collection_status
-        try:
-            _collection_status["started_at"] = datetime.now().isoformat()
-            
-            result = await collector.collect_news_for_batch(symbols, batch_size=batch_size)
-            
-            _collection_status.update({
-                "is_running": False,
-                "progress": len(symbols),
-                "completed_at": datetime.now().isoformat(),
-                "result": result
-            })
-        except Exception as e:
-            _collection_status.update({
-                "is_running": False,
-                "result": {"error": str(e)}
-            })
-    
-    # Arka planda başlat
-    asyncio.create_task(_run_collection())
-    
-    return {
-        "status": "started",
-        "total_symbols": len(symbols),
-        "batch_size": batch_size,
-        "total_batches": _collection_status["total_batches"],
-        "message": f"{len(symbols)} hisse için KAP haberleri toplanıyor..."
-    }
+    bg_fetcher = get_background_fetcher()
+    result = await bg_fetcher.trigger_refresh()
+    return result
 
 
 @router.get("/kap/collect/status")
 async def get_collection_status():
     """KAP toplama işleminin durumunu döner"""
-    global _collection_status
-    return _collection_status
+    bg_fetcher = get_background_fetcher()
+    return bg_fetcher.get_status()
 
 
 @router.get("/kap/sentiment")
@@ -269,7 +153,7 @@ async def get_kap_statistics():
         return {
             **stats,
             "collection_history": history,
-            "collection_status": _collection_status
+            "collection_status": get_background_fetcher().get_status()
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

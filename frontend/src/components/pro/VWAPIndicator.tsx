@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import type { VWAPData } from '@/types';
@@ -15,21 +15,21 @@ export default function VWAPIndicator({ data }: VWAPIndicatorProps) {
   };
 
   return (
-    <div className="bg-slate-800 rounded-xl p-5 shadow-lg border border-slate-700">
-      <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+    <div className="bg-white rounded-xl p-5 shadow-lg border border-gray-200">
+      <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
         <span>📈</span> VWAP Analizi
       </h3>
 
       {/* Ana VWAP */}
-      <div className="bg-slate-700/50 rounded-lg p-4 mb-4 border border-slate-600">
+      <div className="bg-gray-50 rounded-lg p-4 mb-4 border border-gray-200">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-slate-400">VWAP</span>
+          <span className="text-gray-500">VWAP</span>
           <span className="text-2xl font-bold text-blue-400">
             {data.vwap?.toFixed(2) || '-'}
           </span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-slate-400">Sapma</span>
+          <span className="text-gray-500">Sapma</span>
           <span className={`font-bold ${data.deviation_pct > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
             {data.deviation_pct > 0 ? '+' : ''}{data.deviation_pct?.toFixed(2) || 0}%
           </span>
@@ -66,8 +66,8 @@ export default function VWAPIndicator({ data }: VWAPIndicatorProps) {
 
       {/* Sinyal ve Bölge */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between py-2 border-b border-slate-700">
-          <span className="text-slate-400">Sinyal</span>
+        <div className="flex items-center justify-between py-2 border-b border-gray-200">
+          <span className="text-gray-500">Sinyal</span>
           <span className={`font-bold px-3 py-1 rounded ${
             data.signal === 'AL' ? 'bg-emerald-500/30 text-emerald-400' : 
             data.signal === 'SAT' ? 'bg-red-500/30 text-red-400' : 'bg-amber-500/30 text-amber-400'
@@ -75,14 +75,14 @@ export default function VWAPIndicator({ data }: VWAPIndicatorProps) {
             {data.signal || 'NÖTR'}
           </span>
         </div>
-        <div className="flex items-center justify-between py-2 border-b border-slate-700">
-          <span className="text-slate-400">Bölge</span>
+        <div className="flex items-center justify-between py-2 border-b border-gray-200">
+          <span className="text-gray-500">Bölge</span>
           <span className={`font-medium ${getZoneColor(data.zone)}`}>
             {data.zone || '-'}
           </span>
         </div>
         <div className="flex items-center justify-between py-2">
-          <span className="text-slate-400">Trend</span>
+          <span className="text-gray-500">Trend</span>
           <span className={`font-medium ${data.trend === 'bullish' ? 'text-emerald-400' : data.trend === 'bearish' ? 'text-red-400' : 'text-amber-400'}`}>
             {data.trend === 'bullish' ? 'Yükseliş' : data.trend === 'bearish' ? 'Düşüş' : data.trend || '-'}
           </span>

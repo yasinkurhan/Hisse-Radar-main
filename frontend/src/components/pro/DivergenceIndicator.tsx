@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import type { DivergenceData } from '@/types';
@@ -11,7 +11,7 @@ export default function DivergenceIndicator({ data }: DivergenceIndicatorProps) 
   const getDivergenceColor = (divergence: string) => {
     if (divergence === 'bullish') return 'text-emerald-400';
     if (divergence === 'bearish') return 'text-red-400';
-    return 'text-slate-400';
+    return 'text-gray-500';
   };
 
   const getDivergenceLabel = (divergence: string) => {
@@ -27,37 +27,37 @@ export default function DivergenceIndicator({ data }: DivergenceIndicatorProps) 
   const macd = data.macd_divergence;
 
   return (
-    <div className="bg-slate-800 rounded-xl p-5 shadow-lg border border-slate-700">
-      <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+    <div className="bg-white rounded-xl p-5 shadow-lg border border-gray-200">
+      <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
         <span>🔀</span> Diverjans Analizi
       </h3>
 
       {/* RSI Diverjans */}
-      <div className="bg-slate-700/50 rounded-lg p-4 mb-4 border border-slate-600">
-        <h4 className="font-bold text-white mb-3">RSI Diverjansı</h4>
+      <div className="bg-gray-50 rounded-lg p-4 mb-4 border border-gray-200">
+        <h4 className="font-bold text-gray-900 mb-3">RSI Diverjansı</h4>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-slate-400">Durum</span>
+            <span className="text-gray-500">Durum</span>
             <span className={`font-bold ${getDivergenceColor(rsi?.divergence)}`}>
               {getDivergenceLabel(rsi?.divergence)}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-slate-400">Sinyal</span>
+            <span className="text-gray-500">Sinyal</span>
             <span className={`px-3 py-1 rounded text-sm font-bold ${
               rsi?.signal === 'AL' ? 'bg-emerald-500/30 text-emerald-400' :
               rsi?.signal === 'SAT' ? 'bg-red-500/30 text-red-400' :
-              'bg-slate-600 text-slate-300'
+              'bg-gray-200 text-gray-600'
             }`}>
               {rsi?.signal || 'BEKLE'}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-slate-400">Güç</span>
-            <span className="font-bold text-white">{rsi?.strength || 0}</span>
+            <span className="text-gray-500">Güç</span>
+            <span className="font-bold text-gray-900">{rsi?.strength || 0}</span>
           </div>
           {rsi?.description && (
-            <div className="mt-2 p-3 bg-slate-800 rounded text-sm text-slate-300">
+            <div className="mt-2 p-3 bg-white rounded text-sm text-gray-600">
               {rsi.description}
             </div>
           )}
@@ -65,31 +65,31 @@ export default function DivergenceIndicator({ data }: DivergenceIndicatorProps) 
       </div>
 
       {/* MACD Diverjans */}
-      <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-        <h4 className="font-bold text-white mb-3">MACD Diverjansı</h4>
+      <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+        <h4 className="font-bold text-gray-900 mb-3">MACD Diverjansı</h4>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-slate-400">Durum</span>
+            <span className="text-gray-500">Durum</span>
             <span className={`font-bold ${getDivergenceColor(macd?.divergence)}`}>
               {getDivergenceLabel(macd?.divergence)}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-slate-400">Sinyal</span>
+            <span className="text-gray-500">Sinyal</span>
             <span className={`px-3 py-1 rounded text-sm font-bold ${
               macd?.signal === 'AL' ? 'bg-emerald-500/30 text-emerald-400' :
               macd?.signal === 'SAT' ? 'bg-red-500/30 text-red-400' :
-              'bg-slate-600 text-slate-300'
+              'bg-gray-200 text-gray-600'
             }`}>
               {macd?.signal || 'BEKLE'}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-slate-400">Güç</span>
-            <span className="font-bold text-white">{macd?.strength || 0}</span>
+            <span className="text-gray-500">Güç</span>
+            <span className="font-bold text-gray-900">{macd?.strength || 0}</span>
           </div>
           {macd?.description && (
-            <div className="mt-2 p-3 bg-slate-800 rounded text-sm text-slate-300">
+            <div className="mt-2 p-3 bg-white rounded text-sm text-gray-600">
               {macd.description}
             </div>
           )}
@@ -103,7 +103,7 @@ export default function DivergenceIndicator({ data }: DivergenceIndicatorProps) 
             <span className="text-xl">⚡</span>
             <span className="font-bold text-blue-300">Aktif Diverjans Tespit Edildi!</span>
           </div>
-          <p className="text-sm text-slate-300 mt-2">
+          <p className="text-sm text-gray-600 mt-2">
             Diverjanslar trend dönüşünün erken sinyalleri olabilir.
           </p>
         </div>

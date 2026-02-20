@@ -131,6 +131,43 @@ app.include_router(viop_router)
 app.include_router(index_router)
 
 
+# === Hisse Listesi Otomatik Güncelleme + KAP Background Fetcher ===
+@app.on_event("startup")
+async def start_kap_background_fetcher():
+    """Uygulama başladığında hisse listesini güncelle ve KAP toplayıcısını başlat"""
+    # 1) Hisse listesini güncellemeyi dene
+    try:
+        from .services.stock_list_updater import auto_update_stock_list
+        added = auto_update_stock_list()
+        if added:
+            print(f"[Startup] Hisse listesi güncellendi: {len(added)} yeni hisse eklendi ({', '.join(added[:10])}{'...' if len(added) > 10 else ''})")
+        else:
+            print("[Startup] Hisse listesi güncel")
+    except Exception as e:
+        print(f"[Startup] Hisse listesi güncelleme hatası (kritik değil): {e}")
+    
+    # 2) KAP Background Fetcher'ı başlat
+    try:
+        from .services.kap_background_fetcher import get_background_fetcher
+        bg_fetcher = get_background_fetcher()
+        await bg_fetcher.start()
+        print("[Startup] KAP Background Fetcher başlatıldı")
+    except Exception as e:
+        print(f"[Startup] KAP Background Fetcher başlatma hatası: {e}")
+
+
+@app.on_event("shutdown")
+async def stop_kap_background_fetcher():
+    """Uygulama kapanırken KAP arka plan toplayıcısını durdur"""
+    try:
+        from .services.kap_background_fetcher import get_background_fetcher
+        bg_fetcher = get_background_fetcher()
+        await bg_fetcher.stop()
+        print("[Shutdown] KAP Background Fetcher durduruldu")
+    except Exception as e:
+        print(f"[Shutdown] KAP Background Fetcher durdurma hatası: {e}")
+
+
 # Ana endpoint'ler
 @app.get("/", tags=["Genel"])
 async def root():

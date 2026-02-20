@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -7,10 +7,15 @@ interface BondData {
     [key: string]: any;
 }
 
+interface TCMBRate {
+    borrowing: number;
+    lending: number;
+}
+
 interface TCMBData {
     policy_rate: number | null;
-    overnight: number | null;
-    late_liquidity: number | null;
+    overnight: number | TCMBRate | null;
+    late_liquidity: number | TCMBRate | null;
 }
 
 interface CalendarEvent {
@@ -43,25 +48,37 @@ export default function EconomyPage() {
         setLoading(true);
         try {
             const [bondsRes, tcmbRes, inflationRes, calendarRes, eurobondsRes, riskRes] = await Promise.all([
-                fetch('http://localhost:8000/api/economy/bonds').catch(() => null),
-                fetch('http://localhost:8000/api/economy/tcmb').catch(() => null),
-                fetch('http://localhost:8000/api/economy/inflation').catch(() => null),
-                fetch('http://localhost:8000/api/economy/calendar').catch(() => null),
-                fetch('http://localhost:8000/api/economy/eurobonds').catch(() => null),
-                fetch('http://localhost:8000/api/economy/risk-free-rate').catch(() => null),
+                fetch('http://localhost:8001/api/economy/bonds').catch(() => null),
+                fetch('http://localhost:8001/api/economy/tcmb').catch(() => null),
+                fetch('http://localhost:8001/api/economy/inflation').catch(() => null),
+                fetch('http://localhost:8001/api/economy/calendar').catch(() => null),
+                fetch('http://localhost:8001/api/economy/eurobonds').catch(() => null),
+                fetch('http://localhost:8001/api/economy/risk-free-rate').catch(() => null),
             ]);
 
-            if (bondsRes?.ok) setBonds(await bondsRes.json());
-            if (tcmbRes?.ok) setTcmb(await tcmbRes.json());
-            if (inflationRes?.ok) setInflation(await inflationRes.json());
+            if (bondsRes?.ok) {
+                const data = await bondsRes.json();
+                setBonds(data.bonds || data);
+            }
+            if (tcmbRes?.ok) {
+                const data = await tcmbRes.json();
+                setTcmb(data.tcmb_rates || data);
+            }
+            if (inflationRes?.ok) {
+                const data = await inflationRes.json();
+                setInflation(data.inflation || data);
+            }
             if (calendarRes?.ok) {
                 const calData = await calendarRes.json();
                 setCalendar(Array.isArray(calData) ? calData : calData?.events || calData?.data || []);
             }
-            if (eurobondsRes?.ok) setEurobonds(await eurobondsRes.json());
+            if (eurobondsRes?.ok) {
+                const data = await eurobondsRes.json();
+                setEurobonds(data.eurobonds || data);
+            }
             if (riskRes?.ok) {
                 const riskData = await riskRes.json();
-                setRiskFreeRate(typeof riskData === 'number' ? riskData : riskData?.rate ?? null);
+                setRiskFreeRate(typeof riskData === 'number' ? riskData : riskData?.risk_free_rate ?? riskData?.rate ?? null);
             }
         } catch (err) {
             console.error('Ekonomi verileri yüklenemedi:', err);
@@ -84,7 +101,15 @@ export default function EconomyPage() {
     const renderValue = (val: any) => {
         if (val === null || val === undefined) return <span className="text-gray-500">—</span>;
         if (typeof val === 'number') return val.toLocaleString('tr-TR', { maximumFractionDigits: 2 });
+        if (typeof val === 'object') return JSON.stringify(val);
         return String(val);
+    };
+
+    const renderTcmbRate = (rate: number | TCMBRate | null | undefined, type: 'lending' | 'borrowing' = 'lending') => {
+        if (rate === null || rate === undefined) return '—';
+        if (typeof rate === 'number') return `%${rate}`;
+        if (typeof rate === 'object' && rate !== null) return `%${rate[type]}`;
+        return '—';
     };
 
     return (
@@ -122,7 +147,7 @@ export default function EconomyPage() {
                     <div className="bg-gradient-to-br from-blue-900/50 to-blue-800/30 border border-blue-700/30 rounded-xl p-5">
                         <div className="text-sm text-blue-300 mb-1">Gecelik Faiz</div>
                         <div className="text-3xl font-bold text-blue-400">
-                            {tcmb?.overnight != null ? `%${tcmb.overnight}` : '—'}
+                            {renderTcmbRate(tcmb?.overnight, 'lending')}
                         </div>
                         <div className="text-xs text-gray-400 mt-2">Gecelik borç verme</div>
                     </div>
@@ -138,7 +163,7 @@ export default function EconomyPage() {
                     <div className="bg-gradient-to-br from-amber-900/50 to-amber-800/30 border border-amber-700/30 rounded-xl p-5">
                         <div className="text-sm text-amber-300 mb-1">Geç Likidite Penceresi</div>
                         <div className="text-3xl font-bold text-amber-400">
-                            {tcmb?.late_liquidity != null ? `%${tcmb.late_liquidity}` : '—'}
+                            {renderTcmbRate(tcmb?.late_liquidity, 'lending')}
                         </div>
                         <div className="text-xs text-gray-400 mt-2">GLP faiz oranı</div>
                     </div>
@@ -206,11 +231,11 @@ export default function EconomyPage() {
                                             </tr>
                                             <tr className="border-b border-gray-700/50 hover:bg-gray-700/30">
                                                 <td className="py-3 px-4 font-medium">Gecelik Borç Verme</td>
-                                                <td className="py-3 px-4 text-right text-blue-400 font-bold text-lg">{tcmb.overnight ?? '—'}</td>
+                                                <td className="py-3 px-4 text-right text-blue-400 font-bold text-lg">{renderTcmbRate(tcmb.overnight, 'lending')}</td>
                                             </tr>
                                             <tr className="hover:bg-gray-700/30">
                                                 <td className="py-3 px-4 font-medium">Geç Likidite Penceresi</td>
-                                                <td className="py-3 px-4 text-right text-amber-400 font-bold text-lg">{tcmb.late_liquidity ?? '—'}</td>
+                                                <td className="py-3 px-4 text-right text-amber-400 font-bold text-lg">{renderTcmbRate(tcmb.late_liquidity, 'lending')}</td>
                                             </tr>
                                         </tbody>
                                     </table>

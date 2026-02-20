@@ -12,6 +12,18 @@ import pandas as pd
 from typing import Optional, Dict, Any, List
 from datetime import datetime
 from cachetools import TTLCache
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
+
+
+def _call_with_timeout(func, timeout=15):
+    """borsapy property çağrısını timeout ile sar. Sadece timeout durumunda None döner."""
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        future = executor.submit(func)
+        try:
+            return future.result(timeout=timeout)
+        except FuturesTimeoutError:
+            print(f"borsapy timeout ({timeout}s): {func}")
+            return None
 
 
 # ==========================================
@@ -326,10 +338,16 @@ class BorsapyFetcher:
         except Exception:
             return None
     
-    def get_kap_news(self, symbol: str) -> Optional[list]:
+    def get_kap_news(self, symbol: str, force_refresh: bool = False) -> Optional[list]:
         """KAP bildirimleri - her zaman list döndürür"""
         try:
             import pandas as pd
+            symbol = symbol.upper().strip().replace(".IS", "")
+            
+            # force_refresh ise cache'den sil ve yeniden oluştur
+            if force_refresh and symbol in self._ticker_cache:
+                del self._ticker_cache[symbol]
+            
             ticker = self._get_ticker(symbol)
             result = ticker.news
             
@@ -740,7 +758,306 @@ class BorsapyFetcher:
         """Uluslararası ETF sahiplik bilgisi"""
         try:
             ticker = self._get_ticker(symbol)
-            return ticker.etf_holders
+            result = ticker.etf_holders
+            if result is None:
+                return None
+            if hasattr(result, 'to_dict'):
+                if result.empty:
+                    return None
+                return result.to_dict(orient="records")
+            return result
+        except Exception as e:
+            print(f"borsapy etf_holders hatası ({symbol}): {e}")
+            return None
+    
+    # ==========================================
+    # Kurumsal Takvim & Kazanç Tarihleri
+    # (Not: BIST hisseleri için çoğunlukla boş döner)
+    # ==========================================
+    
+    def get_calendar(self, symbol: str) -> Optional[Dict]:
+        """Şirket kurumsal takvim bilgisi (temettü tarihleri, kazanç tarihleri vb.)"""
+        try:
+            ticker = self._get_ticker(symbol)
+            result = _call_with_timeout(lambda: ticker.calendar, timeout=15)
+            if result is None:
+                return None
+            # dict of Series kontrolü (BIST'te genellikle boş Series döner)
+            if isinstance(result, dict):
+                cleaned = {}
+                has_any_data = False
+                for k, v in result.items():
+                    if hasattr(v, 'empty') and v.empty:
+                        cleaned[k] = []
+                    elif hasattr(v, 'tolist'):
+                        items = v.tolist()
+                        cleaned[k] = [
+                            item.isoformat() if hasattr(item, 'isoformat') else item
+                            for item in items
+                        ]
+                        if items:
+                            has_any_data = True
+                    elif hasattr(v, 'isoformat'):
+                        cleaned[k] = v.isoformat()
+                        has_any_data = True
+                    else:
+                        cleaned[k] = v
+                        if v is not None:
+                            has_any_data = True
+                if not has_any_data:
+                    return None
+                return cleaned
+            if hasattr(result, 'to_dict'):
+                if hasattr(result, 'empty') and result.empty:
+                    return None
+                return result.to_dict()
+            return result
+        except Exception as e:
+            print(f"borsapy calendar hatası ({symbol}): {e}")
+            return None
+    
+    def get_earnings_dates(self, symbol: str) -> Optional[Any]:
+        """Şirketin kazanç açıklama tarihleri"""
+        try:
+            ticker = self._get_ticker(symbol)
+            result = _call_with_timeout(lambda: ticker.earnings_dates, timeout=15)
+            if result is None:
+                return None
+            if hasattr(result, 'to_dict'):
+                if result.empty:
+                    return None
+                df = result.copy()
+                if hasattr(df.index, 'strftime'):
+                    df.index = df.index.strftime('%Y-%m-%d')
+                return df.reset_index().to_dict(orient="records")
+            return result
+        except Exception as e:
+            print(f"borsapy earnings_dates hatası ({symbol}): {e}")
+            return None
+
+    # ==========================================
+    # Analist Tahminleri & Önerileri (BIST İÇİN ÇALIŞIYOR)
+    # ==========================================
+    
+    def get_analyst_data(self, symbol: str) -> Dict[str, Any]:
+        """Analist hedef fiyatları ve önerilerini getir"""
+        try:
+            ticker = self._get_ticker(symbol)
+            result = {"symbol": symbol}
+            
+            # Analist hedef fiyatları
+            try:
+                targets = _call_with_timeout(lambda: ticker.analyst_price_targets, timeout=15)
+                if targets and isinstance(targets, dict) and targets.get("mean", 0) > 0:
+                    result["price_targets"] = targets
+                else:
+                    result["price_targets"] = None
+            except Exception:
+                result["price_targets"] = None
+            
+            # Analist önerileri özeti
+            try:
+                rec_summary = _call_with_timeout(lambda: ticker.recommendations_summary, timeout=15)
+                if rec_summary and isinstance(rec_summary, dict):
+                    result["recommendations_summary"] = rec_summary
+                else:
+                    result["recommendations_summary"] = None
+            except Exception:
+                result["recommendations_summary"] = None
+            
+            # Genel öneri
+            try:
+                rec = _call_with_timeout(lambda: ticker.recommendations, timeout=15)
+                if rec and isinstance(rec, dict):
+                    result["recommendation"] = rec
+                else:
+                    result["recommendation"] = None
+            except Exception:
+                result["recommendation"] = None
+            
+            return result
+        except Exception as e:
+            print(f"borsapy analyst hatası ({symbol}): {e}")
+            return {"symbol": symbol, "error": str(e)}
+    
+    # ==========================================
+    # Teknik Analiz Sinyalleri (BIST İÇİN ÇALIŞIYOR)
+    # ==========================================
+    
+    def get_ta_signals(self, symbol: str, interval: str = "1d") -> Dict[str, Any]:
+        """TradingView teknik analiz sinyalleri"""
+        try:
+            ticker = self._get_ticker(symbol)
+            result = _call_with_timeout(lambda: ticker.ta_signals(interval=interval), timeout=15)
+            if result is None:
+                return {"symbol": symbol, "error": "Sinyal verisi bulunamadı"}
+            if isinstance(result, dict):
+                result["symbol"] = symbol
+                result["interval"] = interval
+                return result
+            return {"symbol": symbol, "data": result, "interval": interval}
+        except Exception as e:
+            print(f"borsapy ta_signals hatası ({symbol}): {e}")
+            return {"symbol": symbol, "error": str(e)}
+    
+    def get_ta_signals_all_timeframes(self, symbol: str) -> Dict[str, Any]:
+        """Tüm zaman dilimlerinde teknik sinyaller"""
+        try:
+            ticker = self._get_ticker(symbol)
+            result = _call_with_timeout(lambda: ticker.ta_signals_all_timeframes(), timeout=30)
+            if result is None:
+                return {"symbol": symbol, "error": "Sinyal verisi bulunamadı"}
+            if isinstance(result, dict):
+                result["symbol"] = symbol
+                return result
+            return {"symbol": symbol, "data": result}
+        except Exception as e:
+            print(f"borsapy ta_signals_all hatası ({symbol}): {e}")
+            return {"symbol": symbol, "error": str(e)}
+    
+    # ==========================================
+    # TTM (Son 12 Ay) Finansalları
+    # ==========================================
+    
+    def get_ttm_financials(self, symbol: str) -> Dict[str, Any]:
+        """TTM (Trailing Twelve Months) finansal tabloları"""
+        try:
+            symbol = symbol.upper().strip().replace(".IS", "")
+            ticker = self._get_ticker(symbol)
+            
+            result = {
+                "symbol": symbol,
+                "ttm_income_stmt": None,
+                "ttm_balance_sheet": None,
+                "ttm_cashflow": None,
+            }
+            
+            try:
+                ttm_inc = _call_with_timeout(lambda: ticker.ttm_income_stmt, timeout=20)
+                if ttm_inc is not None and not (hasattr(ttm_inc, 'empty') and ttm_inc.empty):
+                    if hasattr(ttm_inc, 'to_dict'):
+                        result["ttm_income_stmt"] = ttm_inc.to_dict()
+                    else:
+                        result["ttm_income_stmt"] = ttm_inc
+            except Exception:
+                pass
+            
+            try:
+                ttm_bs = _call_with_timeout(lambda: ticker.ttm_balance_sheet, timeout=20)
+                if ttm_bs is not None and not (hasattr(ttm_bs, 'empty') and ttm_bs.empty):
+                    if hasattr(ttm_bs, 'to_dict'):
+                        result["ttm_balance_sheet"] = ttm_bs.to_dict()
+                    else:
+                        result["ttm_balance_sheet"] = ttm_bs
+            except Exception:
+                pass
+            
+            try:
+                ttm_cf = _call_with_timeout(lambda: ticker.ttm_cashflow, timeout=20)
+                if ttm_cf is not None and not (hasattr(ttm_cf, 'empty') and ttm_cf.empty):
+                    if hasattr(ttm_cf, 'to_dict'):
+                        result["ttm_cashflow"] = ttm_cf.to_dict()
+                    else:
+                        result["ttm_cashflow"] = ttm_cf
+            except Exception:
+                pass
+            
+            return result
+        except Exception as e:
+            print(f"borsapy TTM hatası ({symbol}): {e}")
+            return {"symbol": symbol, "error": str(e)}
+    
+    # ==========================================
+    # Banka UFRS Finansalları
+    # ==========================================
+    
+    def get_ufrs_financials(self, symbol: str) -> Dict[str, Any]:
+        """UFRS formatında finansal tablolar (özellikle bankalar için)"""
+        try:
+            symbol = symbol.upper().strip().replace(".IS", "")
+            ticker = self._get_ticker(symbol)
+            
+            result = {
+                "symbol": symbol,
+                "ufrs_balance_sheet": None,
+                "ufrs_income_stmt": None,
+                "ufrs_cashflow": None,
+            }
+            
+            try:
+                ufrs_bs = _call_with_timeout(lambda: ticker.get_balance_sheet(financial_group="UFRS"), timeout=20)
+                if ufrs_bs is not None and not (hasattr(ufrs_bs, 'empty') and ufrs_bs.empty):
+                    if hasattr(ufrs_bs, 'to_dict'):
+                        result["ufrs_balance_sheet"] = ufrs_bs.to_dict()
+                    else:
+                        result["ufrs_balance_sheet"] = ufrs_bs
+            except Exception:
+                pass
+            
+            try:
+                ufrs_inc = _call_with_timeout(lambda: ticker.get_income_stmt(financial_group="UFRS"), timeout=20)
+                if ufrs_inc is not None and not (hasattr(ufrs_inc, 'empty') and ufrs_inc.empty):
+                    if hasattr(ufrs_inc, 'to_dict'):
+                        result["ufrs_income_stmt"] = ufrs_inc.to_dict()
+                    else:
+                        result["ufrs_income_stmt"] = ufrs_inc
+            except Exception:
+                pass
+            
+            try:
+                ufrs_cf = _call_with_timeout(lambda: ticker.get_cashflow(financial_group="UFRS"), timeout=20)
+                if ufrs_cf is not None and not (hasattr(ufrs_cf, 'empty') and ufrs_cf.empty):
+                    if hasattr(ufrs_cf, 'to_dict'):
+                        result["ufrs_cashflow"] = ufrs_cf.to_dict()
+                    else:
+                        result["ufrs_cashflow"] = ufrs_cf
+            except Exception:
+                pass
+            
+            return result
+        except Exception as e:
+            print(f"borsapy UFRS hatası ({symbol}): {e}")
+            return {"symbol": symbol, "error": str(e)}
+    
+    # ==========================================
+    # Hisse Bölünme & Şirket Aksiyonları
+    # ==========================================
+    
+    def get_splits(self, symbol: str) -> Optional[Any]:
+        """Hisse bölünme geçmişi"""
+        try:
+            ticker = self._get_ticker(symbol)
+            result = _call_with_timeout(lambda: ticker.splits, timeout=15)
+            if result is None:
+                return None
+            if hasattr(result, 'to_dict'):
+                if result.empty:
+                    return None
+                return result.to_dict()
+            return result
+        except Exception:
+            return None
+    
+    def get_actions(self, symbol: str) -> Optional[Any]:
+        """Şirket aksiyonları (temettü + bölünme)"""
+        try:
+            ticker = self._get_ticker(symbol)
+            result = _call_with_timeout(lambda: ticker.actions, timeout=15)
+            if result is None:
+                return None
+            if hasattr(result, 'to_dict'):
+                if result.empty:
+                    return None
+                return result.reset_index().to_dict(orient="records")
+            return result
+        except Exception:
+            return None
+    
+    def get_isin(self, symbol: str) -> Optional[str]:
+        """ISIN kodu"""
+        try:
+            ticker = self._get_ticker(symbol)
+            return _call_with_timeout(lambda: ticker.isin, timeout=15)
         except Exception:
             return None
     

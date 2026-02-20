@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
@@ -6,7 +6,7 @@ import { Filter, RefreshCw, BarChart3, ChevronDown, ChevronUp, ExternalLink } fr
 import AdvancedFilterPanel, { FilterState, defaultFilters } from '@/components/AdvancedFilterPanel';
 
 // API Base URL
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
 
 const STORAGE_KEY_DAILY = 'hisseradar_analysis_daily';
 const STORAGE_KEY_WEEKLY = 'hisseradar_analysis_weekly';
@@ -147,7 +147,7 @@ export default function AnalysisPage() {
     // Performans istatistiklerini yükle (retry ile)
     const fetchPerformance = async (attempt = 0) => {
       try {
-        const res = await fetch(`${API_BASE}/api/backtest/performance`);
+        const res = await fetch(`http://localhost:8001/api/backtest/performance`);
         const data = await res.json();
         if (data && Object.keys(data).length > 0) {
           setPerformanceStats(data);
@@ -882,12 +882,12 @@ export default function AnalysisPage() {
                         <td className="p-2 sm:p-3 text-center hidden lg:table-cell">
                           {stock.sentiment?.has_data ? (
                             <div className="flex flex-col items-center">
-                              <span className={`text-[10px] sm:text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded ${stock.sentiment.score > 0.2 ? 'bg-green-500/20 text-green-400' :
-                                  stock.sentiment.score < -0.2 ? 'bg-red-500/20 text-red-400' :
+                              <span className={`text-[10px] sm:text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded ${stock.sentiment.score > 0.15 ? 'bg-green-500/20 text-green-400' :
+                                  stock.sentiment.score < -0.15 ? 'bg-red-500/20 text-red-400' :
                                     'bg-gray-500/20 text-gray-400'
                                 }`}>
-                                {stock.sentiment.score > 0.2 ? '📈 Olumlu' :
-                                  stock.sentiment.score < -0.2 ? '📉 Olumsuz' : '➖ Nötr'}
+                                {stock.sentiment.score > 0.15 ? '📈 Olumlu' :
+                                  stock.sentiment.score < -0.15 ? '📉 Olumsuz' : '➖ Nötr'}
                               </span>
                               <span className="text-[10px] text-gray-500 mt-0.5">
                                 {stock.sentiment.news_count} haber

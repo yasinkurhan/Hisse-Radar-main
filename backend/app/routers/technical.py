@@ -415,3 +415,46 @@ async def get_technical_summary(
         "sell_signals": sell_signals,
         "neutral_signals": len(signals) - buy_signals - sell_signals
     }
+
+
+@router.get("/{symbol}/patterns")
+async def get_chart_patterns(
+    symbol: str,
+    period: str = Query("6mo", description="Zaman dilimi"),
+    interval: str = Query("1d", description="Veri aralığı")
+):
+    """
+    Grafik formasyonlarını tespit et (Flama, Üçgen, Baş-Omuz vb.)
+    
+    - **symbol**: Hisse sembolü (örn: THYAO)
+    - **period**: Zaman dilimi (varsayılan: 6mo)
+    - **interval**: Veri aralığı (varsayılan: 1d)
+    
+    Tespit edilen formasyonlar:
+    - 🚩 Flama (Flag): Güçlü trend sonrası dar konsolidasyon
+    - 📐 Üçgen (Triangle): Yükselen, düşen, simetrik üçgenler
+    - 👤 Baş-Omuz (Head & Shoulders): Trend dönüş formasyonu
+    - 🔄 İkili Tepe/Dip (Double Top/Bottom): Direnç/destek testleri
+    - 📊 Kanal (Channel): Paralel trend çizgileri
+    - 📉 Kama (Wedge): Daralan kanal formasyonu
+    """
+    fetcher = get_data_fetcher()
+    df = fetcher.get_price_history(symbol.upper(), period=period, interval=interval)
+    
+    if df.empty:
+        raise HTTPException(
+            status_code=404,
+            detail=f"{symbol} için veri bulunamadı"
+        )
+    
+    # Pattern detection
+    analyzer = TechnicalAnalyzer(df, symbol=symbol.upper())
+    patterns_result = analyzer.detect_chart_patterns()
+    
+    return {
+        "symbol": symbol.upper(),
+        "period": period,
+        "interval": interval,
+        **patterns_result
+    }
+

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import {
@@ -436,15 +436,15 @@ export default function FundamentalCharts({ symbol }: FundamentalChartsProps) {
 
   if (loading) {
     return (
-      <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+      <div className="bg-white rounded-xl p-6 border border-gray-200">
         <div className="flex items-center gap-3 mb-4">
           <BarChart3 className="w-6 h-6 text-purple-400" />
-          <h3 className="text-lg font-semibold text-white">Temel Analiz</h3>
+          <h3 className="text-lg font-semibold text-gray-900">Temel Analiz</h3>
         </div>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <RefreshCw className="w-8 h-8 text-purple-400 animate-spin mx-auto mb-3" />
-            <p className="text-slate-400">Finansal veriler yükleniyor...</p>
+            <p className="text-gray-500">Finansal veriler yükleniyor...</p>
           </div>
         </div>
       </div>
@@ -453,37 +453,37 @@ export default function FundamentalCharts({ symbol }: FundamentalChartsProps) {
 
   if (error) {
     return (
-      <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+      <div className="bg-white rounded-xl p-6 border border-gray-200">
         <div className="flex items-center gap-3 mb-4">
           <BarChart3 className="w-6 h-6 text-purple-400" />
-          <h3 className="text-lg font-semibold text-white">Temel Analiz</h3>
+          <h3 className="text-lg font-semibold text-gray-900">Temel Analiz</h3>
         </div>
         <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 text-center">
           <Info className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
           <p className="text-yellow-400">{error}</p>
-          <p className="text-slate-400 text-sm mt-2">Bu hisse için finansal veri bulunmuyor olabilir.</p>
+          <p className="text-gray-500 text-sm mt-2">Bu hisse için finansal veri bulunmuyor olabilir.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
       {/* Header */}
-      <div className="p-4 sm:p-6 border-b border-slate-700">
+      <div className="p-4 sm:p-6 border-b border-gray-200">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
-              <BarChart3 className="w-5 h-5 text-white" />
+              <BarChart3 className="w-5 h-5 text-gray-900" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-white">Temel Analiz</h3>
-              <p className="text-sm text-slate-400">Finansal tablolar ve oranlar</p>
+              <h3 className="text-lg font-semibold text-gray-900">Temel Analiz</h3>
+              <p className="text-sm text-gray-500">Finansal tablolar ve oranlar</p>
             </div>
           </div>
 
           {/* Tab seçici */}
-          <div className="flex gap-1 bg-slate-700/50 rounded-lg p-1">
+          <div className="flex gap-1 bg-gray-50 rounded-lg p-1">
             {[
               { id: 'overview', label: 'Özet', icon: PieChart },
               { id: 'income', label: 'Gelir', icon: TrendingUp },
@@ -494,8 +494,8 @@ export default function FundamentalCharts({ symbol }: FundamentalChartsProps) {
                 key={id}
                 onClick={() => setActiveTab(id as any)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition ${activeTab === id
-                  ? 'bg-purple-500 text-white'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-purple-500 text-gray-900'
+                  : 'text-gray-500 hover:text-gray-900'
                   }`}
               >
                 <Icon className="w-4 h-4" />
@@ -512,27 +512,27 @@ export default function FundamentalCharts({ symbol }: FundamentalChartsProps) {
           <div className="space-y-4">
             {/* Özet Kartları */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="bg-slate-700/50 rounded-lg p-3">
-                <p className="text-slate-400 text-xs mb-1">F/K Oranı</p>
-                <p className="text-xl font-bold text-white">
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-gray-500 text-xs mb-1">F/K Oranı</p>
+                <p className="text-xl font-bold text-gray-900">
                   {ratios.valuation?.pe_ratio?.toFixed(1) || 'N/A'}
                 </p>
               </div>
-              <div className="bg-slate-700/50 rounded-lg p-3">
-                <p className="text-slate-400 text-xs mb-1">PD/DD</p>
-                <p className="text-xl font-bold text-white">
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-gray-500 text-xs mb-1">PD/DD</p>
+                <p className="text-xl font-bold text-gray-900">
                   {ratios.valuation?.pb_ratio?.toFixed(2) || 'N/A'}
                 </p>
               </div>
-              <div className="bg-slate-700/50 rounded-lg p-3">
-                <p className="text-slate-400 text-xs mb-1">ROE</p>
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-gray-500 text-xs mb-1">ROE</p>
                 <p className="text-xl font-bold text-green-400">
                   {ratios.profitability?.roe ? `%${ratios.profitability.roe.toFixed(1)}` : 'N/A'}
                 </p>
               </div>
-              <div className="bg-slate-700/50 rounded-lg p-3">
-                <p className="text-slate-400 text-xs mb-1">Borç/Özkaynak</p>
-                <p className="text-xl font-bold text-white">
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-gray-500 text-xs mb-1">Borç/Özkaynak</p>
+                <p className="text-xl font-bold text-gray-900">
                   {ratios.leverage?.debt_to_equity?.toFixed(2) || 'N/A'}
                 </p>
               </div>
@@ -540,14 +540,14 @@ export default function FundamentalCharts({ symbol }: FundamentalChartsProps) {
 
             {/* Büyüme Metrikleri */}
             {growth && (
-              <div className="bg-slate-700/30 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-3 flex items-center gap-2">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h4 className="text-gray-900 font-medium mb-3 flex items-center gap-2">
                   <Activity className="w-4 h-4 text-purple-400" />
                   Büyüme Metrikleri
                 </h4>
                 <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <p className="text-slate-400 text-xs">Yıllık Gelir Büyümesi</p>
+                    <p className="text-gray-500 text-xs">Yıllık Gelir Büyümesi</p>
                     <p className={`text-lg font-bold flex items-center gap-1 ${(growth.yoy_revenue_growth || 0) >= 0 ? 'text-green-400' : 'text-red-400'
                       }`}>
                       {(growth.yoy_revenue_growth || 0) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
@@ -555,7 +555,7 @@ export default function FundamentalCharts({ symbol }: FundamentalChartsProps) {
                     </p>
                   </div>
                   <div>
-                    <p className="text-slate-400 text-xs">Yıllık Kar Büyümesi</p>
+                    <p className="text-gray-500 text-xs">Yıllık Kar Büyümesi</p>
                     <p className={`text-lg font-bold flex items-center gap-1 ${(growth.yoy_profit_growth || 0) >= 0 ? 'text-green-400' : 'text-red-400'
                       }`}>
                       {(growth.yoy_profit_growth || 0) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
@@ -563,7 +563,7 @@ export default function FundamentalCharts({ symbol }: FundamentalChartsProps) {
                     </p>
                   </div>
                   <div>
-                    <p className="text-slate-400 text-xs">3 Yıllık CAGR</p>
+                    <p className="text-gray-500 text-xs">3 Yıllık CAGR</p>
                     <p className={`text-lg font-bold ${(growth.cagr_3y_revenue || 0) >= 0 ? 'text-green-400' : 'text-red-400'
                       }`}>
                       {growth.cagr_3y_revenue?.toFixed(1) || 'N/A'}%
@@ -578,8 +578,8 @@ export default function FundamentalCharts({ symbol }: FundamentalChartsProps) {
               <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-lg p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-slate-400 text-sm">Analist Hedef Fiyat</p>
-                    <p className="text-2xl font-bold text-white">₺{valuation.target_mean.toFixed(2)}</p>
+                    <p className="text-gray-500 text-sm">Analist Hedef Fiyat</p>
+                    <p className="text-2xl font-bold text-gray-900">₺{valuation.target_mean.toFixed(2)}</p>
                   </div>
                   {valuation.upside_potential && (
                     <div className={`text-right ${valuation.upside_potential >= 0 ? 'text-green-400' : 'text-red-400'}`}>
@@ -591,7 +591,7 @@ export default function FundamentalCharts({ symbol }: FundamentalChartsProps) {
                   )}
                 </div>
                 {valuation.number_of_analysts > 0 && (
-                  <p className="text-slate-400 text-xs mt-2">
+                  <p className="text-gray-500 text-xs mt-2">
                     {valuation.number_of_analysts} analist değerlendirmesi •
                     Düşük: ₺{valuation.target_low?.toFixed(2)} •
                     Yüksek: ₺{valuation.target_high?.toFixed(2)}

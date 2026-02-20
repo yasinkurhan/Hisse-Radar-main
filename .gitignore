@@ -38,6 +38,28 @@ next-env.d.ts
 .idea/
 .vscode/
 *.swp
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# Database & logs
+*.db
+*.sqlite3
+*.log
+
+# Test & temp files
+backend/kap_test_result.txt
+backend/test_kap_bulk.py
+backend/update_stock_list.py
+
+# Next.js old
+.next.old/
+
 *.swo
 
 # Python

@@ -1,224 +1,299 @@
-# HisseRadar 🚀
-[![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-blue?logo=github)](https://github.com/yasinkurhan/Hisse-Radar-main)
+﻿<div align="center">
 
-## BIST Borsa Analiz Platformu
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=32&pause=1000&color=0EA5E9&center=true&vCenter=true&width=600&lines=📡+HisseRadar;BIST+Analiz+Platformu;Ücretsiz+%26+Açık+Kaynak" alt="HisseRadar" />
 
-Borsa İstanbul (BIST) hisseleri için kapsamlı teknik ve temel analiz platformu. Öğrenci bütçesine uygun, tamamen ücretsiz ve açık kaynak.
+<br/>
 
-![HisseRadar Banner](https://via.placeholder.com/1200x400/0ea5e9/ffffff?text=HisseRadar+-+BIST+Analiz+Platformu)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 
-## 🌟 Özellikler
+<br/>
 
-### 📈 Fiyat Grafikleri
-- TradingView Lightweight Charts ile interaktif mum grafikleri
-- Günlük, haftalık, aylık veri görüntüleme
-- Hacim göstergesi
-- Yakınlaştırma ve kaydırma
+> **Borsa İstanbul (BIST)** hisseleri için teknik analiz, temel analiz, AI tahminleri,  
+> KAP bildirimleri ve canlı piyasa verisi — tamamen **ücretsiz** ve **açık kaynak**.
 
-### 📊 Teknik Analiz
-- **RSI (Relative Strength Index)**: Aşırı alım/satım göstergesi
-- **MACD**: Trend ve momentum göstergesi
-- **Bollinger Bands**: Volatilite bandları
-- **Hareketli Ortalamalar**: SMA20, SMA50, SMA200, EMA12, EMA26
-- Otomatik sinyal üretimi
+<br/>
+
+</div>
+
+---
+
+## 🖼️ Ekran Görüntüleri
+
+<div align="center">
+
+| 🏠 Ana Sayfa | 📈 Hisse Detay |
+|:---:|:---:|
+| Gerçek zamanlı BIST taraması & hisse listesi | İnteraktif grafik + teknik + temel analiz |
+
+| 📡 Teknik Sinyaller | 📰 KAP Bildirimleri |
+|:---:|:---:|
+| TradingView tabanlı AL/SAT/NÖTR | Sentiment analizi ile KAP akışı |
+
+</div>
+
+---
+
+## ⚡ Özellikler
+
+<table>
+<tr>
+<td width="50%">
+
+### 📈 Grafik & Teknik Analiz
+- TradingView **Lightweight Charts** ile mum grafikleri
+- **RSI, MACD, Bollinger, ATR, Stochastic**
+- **SMA / EMA** (20, 50, 200)
+- Mum çubuğu pattern tespiti
+- PRO analiz & çoklu zaman dilimi
+
+</td>
+<td width="50%">
+
+### 🤖 AI & Teknik Sinyaller
+- TradingView tabanlı **AL / SAT / NÖTR**
+- Osilatörler + Hareketli Ortalama sinyalleri
+- 1dk → aylık çoklu zaman dilimi
+- Makine öğrenmesi ile fiyat tahmini
+
+</td>
+</tr>
+<tr>
+<td>
 
 ### 📋 Temel Analiz
-- **Değerleme**: F/K, PD/DD, F/S, PEG oranları
-- **Kârlılık**: ROE, ROA, Kâr marjları
-- **Temettü**: Temettü verimi ve dağıtım oranı
+- **Değerleme**: F/K, PD/DD, F/S, EV/FAVÖK
+- **Kârlılık**: ROE, ROA, Kâr marjı
 - **Bilanço**: Borç/Özkaynak, Cari oran
-- Otomatik değerlendirme ve notlar
+- **Temettü**: Verim, ödeme oranı
+- Yıllık & çeyreklik finansal tablolar
 
-### 🔍 Diğer
-- 100+ BIST hissesi
-- Hisse arama ve sektör filtreleme
-- Responsive tasarım (mobil uyumlu)
-- Anlık ve gecikmeli veri desteği (borsapy)
+</td>
+<td>
+
+### 🎯 Analist & ETF
+- Analist fiyat hedefleri (düşük / ort. / yüksek)
+- Güçlü Al → Güçlü Sat öneri dağılımı
+- Uluslararası ETF sahiplik verileri
+- Yukarı / aşağı potansiyel hesabı
+
+</td>
+</tr>
+<tr>
+<td>
+
+### 📰 KAP & Haberler
+- **600 sembol**, 30 dk döngülü KAP akışı
+- **Türkçe sentiment analizi** (Olumlu/Nötr/Olumsuz)
+- Kategori filtresi (Finansal Sonuç, Temettü vb.)
+- Hisse bazlı sentiment skor tablosu
+
+</td>
+<td>
+
+### 💼 Portföy & Alarmlar
+- Alım/satım işlem takibi, kâr/zarar
+- İzleme listesi (watchlist)
+- Fiyat & sinyal alarmları
+- Strateji backtest motoru
+
+</td>
+</tr>
+<tr>
+<td>
+
+### 🔍 Tarama & Isı Haritası
+- Teknik sinyal + temel metrik kombinasyonu
+- BIST100 / BIST50 / sektör bazlı filtre
+- Interaktif sektör ısı haritası
+
+</td>
+<td>
+
+### 🌐 Ek Modüller
+- 💱 **Döviz** — TCMB kurları & grafikler
+- 📊 **Ekonomi** — Faiz, TÜFE, büyüme
+- 🪙 **Kripto** — BtcTurk paritesi
+- 📦 **Fon** — TEFAS karşılaştırması
+- 📱 **PWA** — Mobil uygulama olarak kurulum
+
+</td>
+</tr>
+</table>
+
+---
 
 ## 🛠️ Teknoloji Stack
 
+<div align="center">
+
 ### Backend
-- **Python 3.11+**
-- **FastAPI** - Modern, hızlı web framework
-- **borsapy** - BIST veri kütüphanesi (İş Yatırım, TradingView, KAP, TCMB)
-- **pandas** - Veri işleme
+![Python](https://img.shields.io/badge/Python_3.11-3776AB?style=flat-square&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![borsapy](https://img.shields.io/badge/borsapy-BIST_Verisi-orange?style=flat-square)
+![pandas](https://img.shields.io/badge/pandas-150458?style=flat-square&logo=pandas&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=flat-square&logo=scikit-learn&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
 
 ### Frontend
-- **Next.js 14** - React framework
-- **TypeScript** - Tip güvenliği
-- **Tailwind CSS** - Stil
-- **Lightweight Charts** - TradingView grafik kütüphanesi
-- **Lucide Icons** - İkonlar
+![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=flat-square&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![TradingView](https://img.shields.io/badge/TradingView_Charts-2196F3?style=flat-square)
+![Lucide](https://img.shields.io/badge/Lucide_Icons-F56565?style=flat-square)
 
-## 📁 Proje Yapısı
+</div>
 
-```
-HisseRadar/
-├── backend/
-│   ├── app/
-│   │   ├── main.py              # FastAPI ana dosya
-│   │   ├── config.py            # Yapılandırma
-│   │   ├── routers/             # API endpoint'leri
-│   │   │   ├── stocks.py        # Hisse listesi
-│   │   │   ├── price.py         # Fiyat verileri
-│   │   │   ├── technical.py     # Teknik analiz
-│   │   │   └── fundamental.py   # Temel analiz
-│   │   ├── services/            # İş mantığı
-│   │   │   ├── data_fetcher.py
-│   │   │   ├── technical_analysis.py
-│   │   │   └── fundamental_analysis.py
-│   │   ├── models/              # Veri modelleri
-│   │   └── data/                # Statik veriler
-│   └── requirements.txt
-│
-├── frontend/
-│   ├── src/
-│   │   ├── app/                 # Next.js sayfalar
-│   │   ├── components/          # React bileşenleri
-│   │   ├── lib/                 # Yardımcı fonksiyonlar
-│   │   └── types/               # TypeScript tipleri
-│   ├── package.json
-│   └── tailwind.config.js
-│
-└── README.md
-```
+---
 
 ## 🚀 Kurulum
 
 ### Gereksinimler
-- Python 3.11 veya üzeri
-- Node.js 18 veya üzeri
-- npm veya yarn
 
-### Backend Kurulumu
+![Python](https://img.shields.io/badge/Python-3.11+-required-3776AB?style=flat-square&logo=python&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-18+-required-339933?style=flat-square&logo=node.js&logoColor=white)
+
+### 1️⃣ Depoyu klonlayın
 
 ```bash
-# Backend klasörüne git
-cd backend
-
-# Sanal ortam oluştur (önerilir)
-python -m venv venv
-
-# Sanal ortamı aktif et
-# Windows:
-venv\Scripts\activate
-# Linux/Mac:
-source venv/bin/activate
-
-# Bağımlılıkları yükle
-pip install -r requirements.txt
-
-# Sunucuyu başlat
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+git clone https://github.com/yasinkurhan/Hisse-Radar-main.git
+cd hisse-radar
 ```
 
-Backend şimdi http://localhost:8000 adresinde çalışıyor.
-
-API Dokümantasyonu: http://localhost:8000/docs
-
-### Frontend Kurulumu
+### 2️⃣ Backend
 
 ```bash
-# Frontend klasörüne git
+cd backend
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+# macOS / Linux
+source venv/bin/activate
+
+pip install -r requirements.txt
+uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+```
+
+> 🟢 Backend çalışıyor: `http://localhost:8001`  
+> 📖 API Dökümanı: `http://localhost:8001/docs`
+
+### 3️⃣ Frontend
+
+```bash
 cd frontend
-
-# Bağımlılıkları yükle
 npm install
-
-# Geliştirme sunucusunu başlat
 npm run dev
 ```
 
-Frontend şimdi http://localhost:3000 adresinde çalışıyor.
+> 🟢 Frontend çalışıyor: `http://localhost:3000`
 
-## 📡 API Endpoint'leri
+### ⚡ Hızlı Başlatma (Windows)
 
-### Hisse Listesi
-```
-GET /api/stocks                    # Tüm hisseler
-GET /api/stocks?sector=Bankacılık  # Sektöre göre filtre
-GET /api/stocks?search=THY         # Arama
-GET /api/stocks/{symbol}           # Hisse detayı
-GET /api/stocks/sectors            # Sektör listesi
+```bash
+start-all.bat
 ```
 
-### Fiyat Verileri
+### 🐳 Docker
+
+```bash
+docker-compose up --build
 ```
-GET /api/price/{symbol}                      # Fiyat geçmişi
-GET /api/price/{symbol}?period=3mo&interval=1d
-GET /api/price/{symbol}/candles              # TradingView formatı
-GET /api/price/{symbol}/volume               # Hacim verileri
-GET /api/price/{symbol}/latest               # Güncel fiyat
-```
-
-### Teknik Analiz
-```
-GET /api/technical/{symbol}           # Tüm göstergeler
-GET /api/technical/{symbol}/rsi       # RSI
-GET /api/technical/{symbol}/macd      # MACD
-GET /api/technical/{symbol}/bollinger # Bollinger Bands
-GET /api/technical/{symbol}/ma        # Hareketli Ortalamalar
-GET /api/technical/{symbol}/summary   # Özet rapor
-```
-
-### Temel Analiz
-```
-GET /api/fundamental/{symbol}           # Kapsamlı veriler
-GET /api/fundamental/{symbol}/valuation # Değerleme oranları
-GET /api/fundamental/{symbol}/profitability # Kârlılık
-GET /api/fundamental/{symbol}/dividend  # Temettü
-GET /api/fundamental/{symbol}/balance   # Bilanço
-GET /api/fundamental/{symbol}/summary   # Özet rapor
-```
-
-## 💰 Maliyet (Öğrenci Bütçesi)
-
-| Bileşen | Maliyet |
-|---------|---------|
-| borsapy | **Ücretsiz** |
-| TradingView Charts | **Ücretsiz** (Açık kaynak) |
-| Vercel (Frontend) | **Ücretsiz** (Hobby tier) |
-| Railway/Render (Backend) | **Ücretsiz** (Free tier) |
-| **TOPLAM** | **$0/ay** |
-
-## 🚀 Deploy
-
-### Vercel (Frontend)
-1. GitHub'a push edin
-2. Vercel'e bağlayın
-3. `frontend` klasörünü root olarak seçin
-4. Deploy!
-
-### Railway/Render (Backend)
-1. GitHub'a push edin
-2. Railway veya Render'a bağlayın
-3. `backend` klasörünü seçin
-4. Start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-
-## ⚠️ Yasal Uyarı
-
-Bu platform **eğitim ve bilgilendirme amaçlıdır**. Sunulan veriler ve analizler **yatırım tavsiyesi niteliği taşımaz**. 
-
-- Veriler 15-20 dakika gecikmelidir
-- Yatırım kararlarınızı vermeden önce profesyonel danışmanlık alınız
-- Geçmiş performans gelecek sonuçları garanti etmez
-
-## 📝 Lisans
-
-MIT License - Özgürce kullanabilir, değiştirebilir ve dağıtabilirsiniz.
-
-## 🤝 Katkıda Bulunma
-
-1. Fork edin
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Commit edin (`git commit -m 'Add amazing feature'`)
-4. Push edin (`git push origin feature/amazing-feature`)
-5. Pull Request açın
-
-## 📧 İletişim
-
-Sorularınız için issue açabilirsiniz.
 
 ---
 
-**HisseRadar** ile yatırım yolculuğunuzda başarılar! 📈🚀
+## 🗂️ Veri Kaynakları
+
+<div align="center">
+
+| Kaynak | Veri |
+|--------|------|
+| 🏦 **borsapy** (İş Yatırım) | BIST fiyat, teknik & temel analiz |
+| 📊 **TradingView** | TA sinyalleri, osilatörler |
+| 📋 **KAP** | Şirket bildirimleri |
+| 🏛️ **TCMB** | Döviz kurları, faiz verileri |
+| 🪙 **BtcTurk** | Kripto pariteler |
+| 📦 **TEFAS** | Yatırım fonu verileri |
+| 🌍 **yfinance** | ETF sahipliği, analist tahminleri |
+
+</div>
+
+---
+
+## 💰 Tamamen Ücretsiz
+
+<div align="center">
+
+| Bileşen | Maliyet |
+|---------|:-------:|
+| borsapy kütüphanesi | ✅ `$0` |
+| TradingView Lightweight Charts | ✅ `$0` |
+| SQLite | ✅ `$0` |
+| Vercel — Frontend deploy | ✅ `$0` |
+| Railway / Render — Backend | ✅ `$0` |
+| **💵 Toplam** | **`$0 / ay`** |
+
+</div>
+
+---
+
+## 🗺️ Yol Haritası
+
+- [x] TradingView tabanlı teknik sinyaller
+- [x] Analist hedef fiyatları & ETF sahiplik
+- [x] KAP sentiment analizi
+- [x] PWA desteği
+- [ ] WebSocket canlı fiyat akışı
+- [ ] Fiyat alarmları push bildirimi
+- [ ] Portföy değer grafiği
+- [ ] AI günlük piyasa özeti
+- [ ] CSV / Excel veri dışa aktarma
+
+---
+
+## 🤝 Katkıda Bulunma
+
+```bash
+# 1. Fork edin
+# 2. Branch oluşturun
+git checkout -b feature/yeni-ozellik
+
+# 3. Commit edin
+git commit -m 'feat: yeni özellik eklendi'
+
+# 4. Push edin
+git push origin feature/yeni-ozellik
+
+# 5. Pull Request açın 🎉
+```
+
+---
+
+## ⚠️ Yasal Uyarı
+
+> Bu platform **yalnızca eğitim ve bilgilendirme amaçlıdır.**  
+> Sunulan veriler ve analizler **yatırım tavsiyesi niteliği taşımaz.**  
+> Yatırım kararlarında **profesyonel mali danışmanlık** alınması tavsiye edilir.
+
+---
+
+<div align="center">
+
+## 📝 Lisans
+
+[MIT License](LICENSE) — Özgürce kullanabilir, değiştirebilir ve dağıtabilirsiniz.
+
+<br/>
+
+**Sorularınız için [Issue açın](../../issues) · Beğendiyseniz ⭐ verin!**
+
+<br/>
+
+*HisseRadar ile yatırım yolculuğunuzda başarılar!* 📈🚀
+
+</div>
+

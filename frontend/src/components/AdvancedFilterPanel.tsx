@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { X, Filter, ChevronDown, ChevronUp, Save, RotateCcw } from 'lucide-react';
@@ -144,7 +144,7 @@ export default function AdvancedFilterPanel({
 
   useEffect(() => {
     // Sektörleri yükle (retry ile)
-    const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
     let retryCount = 0;
     const maxRetries = 3;
 

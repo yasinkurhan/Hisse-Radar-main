@@ -1,4 +1,4 @@
-/**
+﻿/**
  * HisseRadar PWA Utilities
  * Service Worker, Push Notifications, Offline Support
  */
@@ -101,7 +101,7 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
 // Subscription'ı backend'e kaydet
 async function savePushSubscription(subscription: PushSubscription): Promise<void> {
   try {
-    await fetch('http://localhost:8000/api/user/push-subscription', {
+    await fetch('http://localhost:8001/api/user/push-subscription', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(subscription.toJSON())

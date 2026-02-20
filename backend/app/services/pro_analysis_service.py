@@ -15,6 +15,7 @@ import time
 
 from ..config import get_settings
 from .borsapy_fetcher import get_borsapy_fetcher
+from .news_sentiment_service import SentimentAnalyzer
 
 # Pro Modüller
 from .pro_indicators import (
@@ -159,7 +160,10 @@ class ProAnalysisService:
                 support_resistance
             )
             
-            # 13. AI SİNYAL BİRLEŞTİRME
+            # 13. HABER / SENTIMENT ANALİZİ
+            news_impact = self._analyze_news_impact(clean_symbol)
+            
+            # 14. AI SİNYAL BİRLEŞTİRME
             indicators_for_ai = {
                 "rsi": float(rsi_series.iloc[-1]) if not pd.isna(rsi_series.iloc[-1]) else 50,
                 "rsi_prev": float(rsi_series.iloc[-2]) if len(rsi_series) > 1 else None,
@@ -183,6 +187,19 @@ class ProAnalysisService:
                 market_condition
             )
             
+            # Haber etkisini AI sinyale dahil et
+            if news_impact and news_impact.get("has_data"):
+                news_score = news_impact.get("sentiment_score", 0)
+                # AI sinyal skoruna haber etkisi ekle (max ±8 puan)
+                if ai_signal and "score" in ai_signal:
+                    news_bonus = int(news_score * 8)
+                    if news_impact.get("strong_positive_count", 0) >= 2:
+                        news_bonus += 3
+                    elif news_impact.get("strong_negative_count", 0) >= 2:
+                        news_bonus -= 3
+                    ai_signal["score"] = max(0, min(100, ai_signal["score"] + news_bonus))
+                    ai_signal["news_impact_bonus"] = news_bonus
+            
             # Hisse bilgisi
             stock_info = next((s for s in self._stocks if s["symbol"] == symbol), {})
             
@@ -195,6 +212,9 @@ class ProAnalysisService:
                 
                 # AI Birleşik Sinyal
                 "ai_signal": ai_signal,
+                
+                # Haber / Sentiment Analizi
+                "news_impact": news_impact,
                 
                 # Pro Göstergeler
                 "pro_indicators": {
@@ -430,6 +450,132 @@ class ProAnalysisService:
             
         except Exception as e:
             return {"error": str(e)}
+    
+    def _analyze_news_impact(self, symbol: str) -> Dict[str, Any]:
+        """
+        Hisse için haber sentiment analizi yap.
+        KAP bildirimleri ve haberler üzerinden etki analizi.
+        Olumlu haberler yükseliş, olumsuz haberler düşüş potansiyeli gösterir.
+        """
+        try:
+            from .kap_news_service import get_kap_service
+            kap_service = get_kap_service()
+            kap_news = kap_service.get_news_for_symbol(symbol, limit=30, days=30)
+            
+            if not kap_news or len(kap_news) < 1:
+                return {
+                    "has_data": False,
+                    "sentiment_score": 0,
+                    "sentiment_label": "Haber Yok",
+                    "news_count": 0,
+                    "recent_news": [],
+                    "impact_summary": "Bu hisse için son 30 günde KAP bildirimi bulunamadı."
+                }
+            
+            analyzed_news = []
+            total_score = 0
+            positive_count = 0
+            negative_count = 0
+            strong_positive = 0
+            strong_negative = 0
+            
+            for item in kap_news:
+                title = item.get("title", "")
+                summary = item.get("summary", "")
+                text = f"{title} {summary}".strip()
+                
+                result = SentimentAnalyzer.analyze_text(text)
+                score = result["score"]
+                
+                # KAP kategorisine göre sentiment modifier uygula
+                category = item.get("category", "DIGER")
+                kap_cat_info = SentimentAnalyzer.KAP_CATEGORIES.get(category, {})
+                cat_modifier = kap_cat_info.get("sentiment_modifier", 0)
+                score = score + cat_modifier
+                # Normalize et (-1..1 aralığına çek)
+                score = max(-1.0, min(1.0, score))
+                
+                total_score += score
+                
+                if score > 0.1:
+                    positive_count += 1
+                    if score > 0.4:
+                        strong_positive += 1
+                elif score < -0.1:
+                    negative_count += 1
+                    if score < -0.4:
+                        strong_negative += 1
+                
+                # Etki açıklaması
+                if score > 0.3:
+                    impact = "Güçlü Olumlu - Yükseliş potansiyeli"
+                    impact_icon = "🚀"
+                elif score > 0.1:
+                    impact = "Olumlu - Hafif yükseliş beklentisi"
+                    impact_icon = "📈"
+                elif score < -0.3:
+                    impact = "Güçlü Olumsuz - Düşüş riski"
+                    impact_icon = "🔻"
+                elif score < -0.1:
+                    impact = "Olumsuz - Hafif düşüş beklentisi"
+                    impact_icon = "📉"
+                else:
+                    impact = "Nötr - Belirgin etki yok"
+                    impact_icon = "➖"
+                
+                analyzed_news.append({
+                    "title": title,
+                    "date": item.get("publish_date", ""),
+                    "category": item.get("category", "DIGER"),
+                    "sentiment_score": round(score, 3),
+                    "impact": impact,
+                    "impact_icon": impact_icon,
+                    "url": item.get("url", "")
+                })
+            
+            news_count = len(kap_news)
+            avg_score = total_score / news_count if news_count > 0 else 0
+            
+            # Genel etki özeti oluştur
+            if avg_score > 0.25:
+                sentiment_label = "Çok Olumlu"
+                impact_summary = f"Son {news_count} KAP bildiriminden {positive_count} tanesi olumlu. Haberler hisse fiyatında yükselişi destekliyor. Özellikle güçlü olumlu {strong_positive} haber dikkat çekici."
+            elif avg_score > 0.1:
+                sentiment_label = "Olumlu"
+                impact_summary = f"Son haberlerin çoğunluğu olumlu ({positive_count}/{news_count}). Haber akışı hafif yükseliş yönünde."
+            elif avg_score < -0.25:
+                sentiment_label = "Çok Olumsuz"
+                impact_summary = f"Son {news_count} bildirimden {negative_count} tanesi olumsuz. Haberler düşüş baskısı oluşturabilir. {strong_negative} güçlü olumsuz haber mevcut."
+            elif avg_score < -0.1:
+                sentiment_label = "Olumsuz"
+                impact_summary = f"Haber akışında olumsuzluk ağırlıkta ({negative_count}/{news_count}). Dikkatli olunmalı."
+            else:
+                sentiment_label = "Nötr"
+                impact_summary = f"Son {news_count} bildirimin sentiment dengesi nötr. Haberlerden kaynaklı belirgin bir fiyat etkisi beklenmiyor."
+            
+            return {
+                "has_data": True,
+                "sentiment_score": round(avg_score, 3),
+                "sentiment_label": sentiment_label,
+                "news_count": news_count,
+                "positive_count": positive_count,
+                "negative_count": negative_count,
+                "neutral_count": news_count - positive_count - negative_count,
+                "strong_positive_count": strong_positive,
+                "strong_negative_count": strong_negative,
+                "impact_summary": impact_summary,
+                "recent_news": analyzed_news[:10]  # Son 10 haber detayı
+            }
+        except Exception as e:
+            print(f"News impact analiz hatası ({symbol}): {e}")
+            return {
+                "has_data": False,
+                "sentiment_score": 0,
+                "sentiment_label": "Hata",
+                "news_count": 0,
+                "recent_news": [],
+                "impact_summary": f"Haber analizi sırasında hata: {str(e)}"
+            }
     
     # Yardımcı metodlar
     def _calculate_rsi_series(self, close: pd.Series, period: int = 14) -> pd.Series:

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -39,7 +39,7 @@ export default function AlertsPage() {
 
   const fetchAlerts = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/user/alerts');
+      const res = await fetch('http://localhost:8001/api/user/alerts');
       const data = await res.json();
       setAlerts(data);
     } catch (error) {
@@ -57,7 +57,7 @@ export default function AlertsPage() {
 
     setCreating(true);
     try {
-      const res = await fetch('http://localhost:8000/api/user/alerts/create', {
+      const res = await fetch('http://localhost:8001/api/user/alerts/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -89,7 +89,7 @@ export default function AlertsPage() {
     if (!confirm('Alarmı silmek istediğinize emin misiniz?')) return;
     
     try {
-      await fetch(`http://localhost:8000/api/user/alerts/delete?alert_id=${alertId}`, { method: 'POST' });
+      await fetch(`http://localhost:8001/api/user/alerts/delete?alert_id=${alertId}`, { method: 'POST' });
       fetchAlerts();
     } catch (error) {
       alert('Hata oluştu');
@@ -98,7 +98,7 @@ export default function AlertsPage() {
 
   const resetAlert = async (alertId: string) => {
     try {
-      await fetch(`http://localhost:8000/api/user/alerts/reset?alert_id=${alertId}`, { method: 'POST' });
+      await fetch(`http://localhost:8001/api/user/alerts/reset?alert_id=${alertId}`, { method: 'POST' });
       fetchAlerts();
     } catch (error) {
       alert('Hata oluştu');
@@ -188,7 +188,7 @@ export default function AlertsPage() {
                 {alerts.active.map((alert) => (
                   <div key={alert.id} className="bg-gray-700 rounded-lg p-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <Link href={`/stocks/${alert.symbol}`} className="text-blue-400 hover:underline font-bold text-lg">
+                      <Link href={`/stock/${alert.symbol}`} className="text-blue-400 hover:underline font-bold text-lg">
                         {alert.symbol}
                       </Link>
                       <span className="text-gray-300">{getAlertTypeText(alert.alert_type)}</span>
@@ -222,7 +222,7 @@ export default function AlertsPage() {
                   <div key={alert.id} className="bg-yellow-900/30 border border-yellow-700 rounded-lg p-4 flex items-center justify-between">
                     <div>
                       <div className="flex items-center gap-4">
-                        <Link href={`/stocks/${alert.symbol}`} className="text-blue-400 hover:underline font-bold text-lg">
+                        <Link href={`/stock/${alert.symbol}`} className="text-blue-400 hover:underline font-bold text-lg">
                           {alert.symbol}
                         </Link>
                         <span className="text-gray-300">{getAlertTypeText(alert.alert_type)}</span>

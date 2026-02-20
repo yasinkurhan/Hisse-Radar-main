@@ -1,4 +1,4 @@
-/**
+﻿/**
  * HisseRadar Yardımcı Fonksiyonlar
  */
 
@@ -55,7 +55,7 @@ export function debounce<T extends (...args: any[]) => any>(
  * API URL'i oluştur
  */
 export function buildApiUrl(endpoint: string, params?: Record<string, string | number>): string {
-  const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
   const url = new URL(endpoint, base);
   
   if (params) {

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -12,6 +12,22 @@ const TEMPLATES = [
     { id: 'low_pe', name: 'Düşük F/K', icon: '📉', desc: 'Fiyat/Kazanç oranı düşük hisseler' },
     { id: 'high_roe', name: 'Yüksek ROE', icon: '📈', desc: 'Özkaynak karlılığı yüksek hisseler' },
     { id: 'high_upside', name: 'Yüksek Potansiyel', icon: '🚀', desc: 'Hedef fiyata göre yükseliş potansiyeli' },
+    { id: 'growth', name: 'Büyüme', icon: '🌱', desc: 'Gelir ve kar artışı yüksek hisseler' },
+    { id: 'value', name: 'Değer', icon: '💎', desc: 'Ucuz kalmış değerli hisseler' },
+    { id: 'momentum', name: 'Momentum', icon: '⚡', desc: 'Güçlü yükseliş trendinde hisseler' },
+];
+
+const SCAN_PRESETS = [
+    { label: 'Aşırı Satım (RSI<30)', condition: 'rsi < 30', icon: '📉', color: 'text-red-400' },
+    { label: 'Aşırı Alım (RSI>70)', condition: 'rsi > 70', icon: '📈', color: 'text-green-400' },
+    { label: 'MACD Al Sinyali', condition: 'macd > signal', icon: '🟢', color: 'text-emerald-400' },
+    { label: 'MACD Sat Sinyali', condition: 'macd < signal', icon: '🔴', color: 'text-red-400' },
+    { label: 'SMA20 Üzerinde', condition: 'close > sma20', icon: '⬆️', color: 'text-blue-400' },
+    { label: 'SMA200 Üzerinde', condition: 'close > sma200', icon: '🏔️', color: 'text-indigo-400' },
+    { label: 'Yüksek Hacim', condition: 'volume > 5000000', icon: '🔊', color: 'text-amber-400' },
+    { label: 'Düşük Volatilite', condition: 'atr < 1', icon: '🎯', color: 'text-cyan-400' },
+    { label: 'Altın Çapraz', condition: 'sma50 > sma200', icon: '✨', color: 'text-yellow-400' },
+    { label: 'Bollinger Alt Band', condition: 'close < bb_lower', icon: '📊', color: 'text-purple-400' },
 ];
 
 export default function ScreenerPage() {
@@ -36,7 +52,7 @@ export default function ScreenerPage() {
         setLoading(true);
         setActiveTemplate(template);
         try {
-            const res = await fetch(`http://localhost:8000/api/screener/stocks?template=${template}`);
+            const res = await fetch(`http://localhost:8001/api/screener/stocks?template=${template}`);
             if (res.ok) {
                 const data = await res.json();
                 const rows = data?.results || data?.stocks || (Array.isArray(data) ? data : []);
@@ -64,7 +80,7 @@ export default function ScreenerPage() {
             if (roeMin) params.append('roe_min', roeMin);
             if (pbMax) params.append('pb_max', pbMax);
 
-            const res = await fetch(`http://localhost:8000/api/screener/stocks?${params.toString()}`);
+            const res = await fetch(`http://localhost:8001/api/screener/stocks?${params.toString()}`);
             if (res.ok) {
                 const data = await res.json();
                 const rows = data?.results || data?.stocks || (Array.isArray(data) ? data : []);
@@ -87,7 +103,7 @@ export default function ScreenerPage() {
         setActiveTemplate('scan');
         try {
             const res = await fetch(
-                `http://localhost:8000/api/screener/scan?index=${scanIndex}&condition=${encodeURIComponent(scanCondition)}&interval=${scanInterval}`
+                `http://localhost:8001/api/screener/scan?index=${scanIndex}&condition=${encodeURIComponent(scanCondition)}&interval=${scanInterval}`
             );
             if (res.ok) {
                 const data = await res.json();
@@ -152,7 +168,7 @@ export default function ScreenerPage() {
                         {/* Template Buttons */}
                         <div className="bg-gray-800/80 backdrop-blur rounded-xl p-6 border border-gray-700/50">
                             <h3 className="text-lg font-semibold mb-4">⚡ Hazır Şablonlar</h3>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                                 {TEMPLATES.map(t => (
                                     <button
                                         key={t.id}
@@ -241,9 +257,13 @@ export default function ScreenerPage() {
                                     <option value="XU030">BIST 30</option>
                                     <option value="XU050">BIST 50</option>
                                     <option value="XU100">BIST 100</option>
+                                    <option value="XUTUM">BIST Tüm</option>
                                     <option value="XBANK">Banka</option>
                                     <option value="XHOLD">Holding</option>
                                     <option value="XUSIN">Sanayi</option>
+                                    <option value="XKTUM">Katılım</option>
+                                    <option value="XUTEK">Teknoloji</option>
+                                    <option value="XGIDA">Gıda</option>
                                 </select>
                             </div>
                             <div>
@@ -270,14 +290,21 @@ export default function ScreenerPage() {
                             </div>
                         </div>
                         <div className="flex flex-wrap gap-2 mb-4">
-                            <span className="text-xs text-gray-500">Örnek koşullar:</span>
-                            {['rsi < 30', 'rsi > 70', 'macd > signal', 'close > sma20', 'volume > 1000000'].map(c => (
+                            <span className="text-xs text-gray-500">Hazır koşullar:</span>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 mb-4">
+                            {SCAN_PRESETS.map(preset => (
                                 <button
-                                    key={c}
-                                    onClick={() => setScanCondition(c)}
-                                    className="text-xs bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded transition-colors"
+                                    key={preset.condition}
+                                    onClick={() => setScanCondition(preset.condition)}
+                                    className={`text-xs p-2 rounded-lg border transition-all hover:scale-[1.02] ${
+                                        scanCondition === preset.condition
+                                            ? 'bg-violet-600/20 border-violet-500/50'
+                                            : 'bg-gray-700/50 border-gray-600/50 hover:border-violet-500/30'
+                                    }`}
                                 >
-                                    {c}
+                                    <span className="mr-1">{preset.icon}</span>
+                                    <span className={preset.color}>{preset.label}</span>
                                 </button>
                             ))}
                         </div>
@@ -327,7 +354,7 @@ export default function ScreenerPage() {
                                                 <td className="py-3 px-3">
                                                     {symbol && (
                                                         <Link
-                                                            href={`/stocks/${symbol}`}
+                                                            href={`/stock/${symbol}`}
                                                             className="text-violet-400 hover:text-violet-300 text-xs font-medium"
                                                         >
                                                             Detay →

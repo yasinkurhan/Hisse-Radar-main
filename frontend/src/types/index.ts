@@ -424,6 +424,7 @@ export interface AISignal {
   risk_level: string;
   entry_timing: string;
   recommendation: string;
+  news_impact_bonus?: number;
 }
 
 // Pro Analysis (Combined)
@@ -434,6 +435,27 @@ export interface ProAnalysis {
   current_price: number;
   analysis_timestamp: string;
   ai_signal: AISignal;
+  news_impact?: {
+    has_data: boolean;
+    sentiment_score: number;
+    sentiment_label: string;
+    news_count: number;
+    positive_count?: number;
+    negative_count?: number;
+    neutral_count?: number;
+    strong_positive_count?: number;
+    strong_negative_count?: number;
+    impact_summary: string;
+    recent_news?: Array<{
+      title: string;
+      date: string;
+      category: string;
+      sentiment_score: number;
+      impact: string;
+      impact_icon: string;
+      url: string;
+    }>;
+  };
   pro_indicators: {
     ichimoku: IchimokuData;
     vwap: VWAPData;

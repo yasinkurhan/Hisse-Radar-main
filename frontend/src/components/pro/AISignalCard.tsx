@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import type { AISignal } from '@/types';
@@ -11,12 +11,12 @@ export default function AISignalCard({ signal }: AISignalCardProps) {
   const getSignalColor = (signalType: string) => {
     switch (signalType) {
       case 'GÜÇLÜ_AL':
-      case 'AL': return 'bg-emerald-600 text-white';
+      case 'AL': return 'bg-emerald-600 text-gray-900';
       case 'NÖTR':
-      case 'BEKLE': return 'bg-amber-500 text-white';
+      case 'BEKLE': return 'bg-amber-500 text-gray-900';
       case 'SAT':
-      case 'GÜÇLÜ_SAT': return 'bg-red-600 text-white';
-      default: return 'bg-slate-600 text-white';
+      case 'GÜÇLÜ_SAT': return 'bg-red-600 text-gray-900';
+      default: return 'bg-gray-200 text-gray-900';
     }
   };
 
@@ -39,13 +39,13 @@ export default function AISignalCard({ signal }: AISignalCardProps) {
   const gaugeValue = scoreToGauge(signal.score || 50);
 
   return (
-    <div className="bg-slate-800 rounded-xl p-6 shadow-lg">
+    <div className="bg-white rounded-xl p-6 shadow-lg">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+          <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
             <span>🤖</span> AI Sinyal Analizi
           </h3>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-gray-500 mt-1">
             Yapay zeka destekli birleşik sinyal analizi
           </p>
         </div>
@@ -63,8 +63,8 @@ export default function AISignalCard({ signal }: AISignalCardProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Sinyal Detayları */}
-        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-          <h4 className="font-bold text-white mb-4">Sinyal Detayları</h4>
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <h4 className="font-bold text-gray-900 mb-4">Sinyal Detayları</h4>
           {signal.breakdown && signal.breakdown.length > 0 ? (
             <div className="space-y-3">
               {signal.breakdown.map((item, idx) => (
@@ -74,7 +74,7 @@ export default function AISignalCard({ signal }: AISignalCardProps) {
                       item.signal === 'AL' ? 'bg-emerald-500' :
                       item.signal === 'SAT' ? 'bg-red-500' : 'bg-amber-500'
                     }`}></span>
-                    <span className="text-slate-200 font-medium">{item.indicator}</span>
+                    <span className="text-gray-700 font-medium">{item.indicator}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className={`text-sm px-3 py-1 rounded font-bold ${
@@ -83,19 +83,19 @@ export default function AISignalCard({ signal }: AISignalCardProps) {
                     }`}>
                       {item.signal}
                     </span>
-                    <span className="text-slate-400 text-sm">({item.strength})</span>
+                    <span className="text-gray-500 text-sm">({item.strength})</span>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-slate-400 text-center py-4">Detay bulunamadı</p>
+            <p className="text-gray-500 text-center py-4">Detay bulunamadı</p>
           )}
         </div>
 
         {/* Birleşik Sinyal Gauge */}
-        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-          <h4 className="font-bold text-white mb-4">Birleşik Sinyal</h4>
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <h4 className="font-bold text-gray-900 mb-4">Birleşik Sinyal</h4>
           
           <div className="relative h-32 mb-4">
             <div className="absolute inset-0 flex items-center justify-center">
@@ -107,7 +107,7 @@ export default function AISignalCard({ signal }: AISignalCardProps) {
                 }`}>
                   {signal.score?.toFixed(0) || 0}
                 </div>
-                <div className="text-sm text-slate-400 font-medium">Skor</div>
+                <div className="text-sm text-gray-500 font-medium">Skor</div>
               </div>
             </div>
             <svg className="w-full h-full" viewBox="0 0 200 100">
@@ -147,7 +147,7 @@ export default function AISignalCard({ signal }: AISignalCardProps) {
             </svg>
           </div>
 
-          <div className="flex justify-between text-sm text-slate-400 px-2 font-medium">
+          <div className="flex justify-between text-sm text-gray-500 px-2 font-medium">
             <span>Güçlü Sat</span>
             <span>Nötr</span>
             <span>Güçlü Al</span>
@@ -157,9 +157,9 @@ export default function AISignalCard({ signal }: AISignalCardProps) {
 
       {/* Sinyal İstatistikleri */}
       <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-slate-700/50 rounded-lg p-4 text-center border border-slate-600">
-          <div className="text-sm text-slate-400 mb-1">Sinyal Uyumu</div>
-          <div className="text-2xl font-bold text-white">%{signal.signal_agreement?.toFixed(0) || 0}</div>
+        <div className="bg-gray-50 rounded-lg p-4 text-center border border-gray-200">
+          <div className="text-sm text-gray-500 mb-1">Sinyal Uyumu</div>
+          <div className="text-2xl font-bold text-gray-900">%{signal.signal_agreement?.toFixed(0) || 0}</div>
         </div>
         <div className="bg-emerald-500/20 border border-emerald-500/30 rounded-lg p-4 text-center">
           <div className="text-sm text-emerald-300 mb-1">Yükseliş Sinyali</div>
@@ -169,16 +169,16 @@ export default function AISignalCard({ signal }: AISignalCardProps) {
           <div className="text-sm text-red-300 mb-1">Düşüş Sinyali</div>
           <div className="text-2xl font-bold text-red-400">{signal.bearish_signals || 0}</div>
         </div>
-        <div className="bg-slate-700/50 rounded-lg p-4 text-center border border-slate-600">
-          <div className="text-sm text-slate-400 mb-1">Nötr Sinyal</div>
-          <div className="text-2xl font-bold text-white">{signal.neutral_signals || 0}</div>
+        <div className="bg-gray-50 rounded-lg p-4 text-center border border-gray-200">
+          <div className="text-sm text-gray-500 mb-1">Nötr Sinyal</div>
+          <div className="text-2xl font-bold text-gray-900">{signal.neutral_signals || 0}</div>
         </div>
       </div>
 
       {/* Risk & Giriş Zamanı */}
       <div className="mt-4 grid grid-cols-2 gap-4">
-        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-          <div className="text-sm text-slate-400 mb-1">Risk Seviyesi</div>
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <div className="text-sm text-gray-500 mb-1">Risk Seviyesi</div>
           <div className={`text-lg font-bold ${
             signal.risk_level === 'düşük' ? 'text-emerald-400' :
             signal.risk_level === 'orta' ? 'text-amber-400' : 'text-red-400'
@@ -186,9 +186,9 @@ export default function AISignalCard({ signal }: AISignalCardProps) {
             {signal.risk_level?.toUpperCase() || 'Bilinmiyor'}
           </div>
         </div>
-        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-          <div className="text-sm text-slate-400 mb-1">Giriş Zamanlaması</div>
-          <div className="text-lg font-bold text-white">{signal.entry_timing || 'Bilinmiyor'}</div>
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <div className="text-sm text-gray-500 mb-1">Giriş Zamanlaması</div>
+          <div className="text-lg font-bold text-gray-900">{signal.entry_timing || 'Bilinmiyor'}</div>
         </div>
       </div>
 
@@ -197,13 +197,36 @@ export default function AISignalCard({ signal }: AISignalCardProps) {
         <h4 className="font-bold text-blue-300 mb-2 flex items-center gap-2">
           <span>💡</span> Öneri
         </h4>
-        <p className="text-slate-200">{signal.recommendation || 'Öneri bulunamadı'}</p>
+        <p className="text-gray-700">{signal.recommendation || 'Öneri bulunamadı'}</p>
       </div>
+
+      {/* Haber Etkisi Göstergesi */}
+      {signal.news_impact_bonus !== undefined && signal.news_impact_bonus !== 0 && (
+        <div className={`mt-4 p-4 rounded-lg border ${
+          signal.news_impact_bonus > 0 
+            ? 'bg-emerald-500/10 border-emerald-500/30' 
+            : 'bg-red-500/10 border-red-500/30'
+        }`}>
+          <div className="flex items-center gap-2">
+            <span className="text-lg">{signal.news_impact_bonus > 0 ? '📰📈' : '📰📉'}</span>
+            <div>
+              <div className={`font-bold ${signal.news_impact_bonus > 0 ? 'text-emerald-300' : 'text-red-300'}`}>
+                Haber Etkisi: {signal.news_impact_bonus > 0 ? '+' : ''}{signal.news_impact_bonus} puan
+              </div>
+              <div className="text-xs text-gray-500 mt-0.5">
+                {signal.news_impact_bonus > 0 
+                  ? 'Son KAP bildirimleri olumlu - AI skoru artırıldı' 
+                  : 'Son KAP bildirimleri olumsuz - AI skoru düşürüldü'}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Güven Göstergesi */}
       <div className="mt-4">
         <div className="flex items-center justify-between text-sm mb-2">
-          <span className="text-slate-400 font-medium">Sinyal Güveni</span>
+          <span className="text-gray-500 font-medium">Sinyal Güveni</span>
           <span className={`font-bold ${
             (signal.confidence || 0) > 70 ? 'text-emerald-400' :
             (signal.confidence || 0) > 50 ? 'text-amber-400' : 'text-red-400'
@@ -211,7 +234,7 @@ export default function AISignalCard({ signal }: AISignalCardProps) {
             %{signal.confidence?.toFixed(0) || 0}
           </span>
         </div>
-        <div className="h-3 bg-slate-700 rounded-full overflow-hidden">
+        <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
           <div
             className={`h-full transition-all duration-500 ${
               (signal.confidence || 0) > 70 ? 'bg-emerald-500' :
