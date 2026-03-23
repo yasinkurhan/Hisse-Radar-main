@@ -35,9 +35,9 @@ class KAPBackgroundFetcher:
         self._task: Optional[asyncio.Task] = None
         self._stop_event = asyncio.Event()
         self._all_symbols: List[str] = []
-        self._max_workers = 20
-        self._batch_size = 25
-        self._interval_seconds = 1800  # 30 dakika
+        self._max_workers = 3       # KAP rate limit önlemek için az paralel istek
+        self._batch_size = 5           # Her seferinde küçük batch
+        self._interval_seconds = 14400  # 4 saatte bir (rate limit koruması)
     
     def _load_all_symbols(self) -> List[str]:
         """Tüm BIST sembollerini yükle"""
@@ -198,9 +198,9 @@ class KAPBackgroundFetcher:
                       f"{self.progress}/{self.total_symbols} sembol - "
                       f"{self.total_news} yeni haber - {elapsed:.0f}sn")
             
-            # Batch arası kısa bekleme (rate limiting)
+            # Batch arası bekleme (rate limiting koruması)
             if i + self._batch_size < self.total_symbols:
-                await asyncio.sleep(0.3)
+                await asyncio.sleep(3.0)  # 3 saniye — KAP'ın engellemesini önler
         
         elapsed = time.time() - start_time
         self.completed_at = datetime.now().isoformat()

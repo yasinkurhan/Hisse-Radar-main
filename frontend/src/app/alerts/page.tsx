@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -39,7 +39,7 @@ export default function AlertsPage() {
 
   const fetchAlerts = async () => {
     try {
-      const res = await fetch('http://localhost:8001/api/user/alerts');
+      const res = await fetch('http://localhost:8000/api/user/alerts');
       const data = await res.json();
       setAlerts(data);
     } catch (error) {
@@ -57,7 +57,7 @@ export default function AlertsPage() {
 
     setCreating(true);
     try {
-      const res = await fetch('http://localhost:8001/api/user/alerts/create', {
+      const res = await fetch('http://localhost:8000/api/user/alerts/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -89,7 +89,7 @@ export default function AlertsPage() {
     if (!confirm('Alarmı silmek istediğinize emin misiniz?')) return;
     
     try {
-      await fetch(`http://localhost:8001/api/user/alerts/delete?alert_id=${alertId}`, { method: 'POST' });
+      await fetch(`http://localhost:8000/api/user/alerts/delete?alert_id=${alertId}`, { method: 'POST' });
       fetchAlerts();
     } catch (error) {
       alert('Hata oluştu');
@@ -98,7 +98,7 @@ export default function AlertsPage() {
 
   const resetAlert = async (alertId: string) => {
     try {
-      await fetch(`http://localhost:8001/api/user/alerts/reset?alert_id=${alertId}`, { method: 'POST' });
+      await fetch(`http://localhost:8000/api/user/alerts/reset?alert_id=${alertId}`, { method: 'POST' });
       fetchAlerts();
     } catch (error) {
       alert('Hata oluştu');

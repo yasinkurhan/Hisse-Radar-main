@@ -21,10 +21,10 @@ export default function SectorRotation({ sectors }: SectorRotationProps) {
   const getPhaseIcon = (phase: string) => {
     switch (phase) {
       case 'leading': return '🚀';
-      case 'weakening': return '📉';
+      case 'weakening': return '�0';
       case 'lagging': return '🐢';
-      case 'improving': return '📈';
-      default: return '❓';
+      case 'improving': return '��';
+      default: return 'â“';
     }
   };
 
@@ -41,7 +41,7 @@ export default function SectorRotation({ sectors }: SectorRotationProps) {
   return (
     <div className="bg-surface rounded-lg p-6">
       <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-        <span>🔄</span> Sektör Rotasyonu
+        <span>�</span> Sektör Rotasyonu
       </h3>
 
       {/* Phase Summary */}
@@ -81,10 +81,10 @@ export default function SectorRotation({ sectors }: SectorRotationProps) {
 
           {/* Axis Labels */}
           <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted">
-            Göreli Güç →
+            Göreli Güç â†’
           </div>
           <div className="absolute top-1/2 -left-6 transform -rotate-90 -translate-y-1/2 text-xs text-muted">
-            Momentum →
+            Momentum â†’
           </div>
 
           {/* Sector Points */}
@@ -165,7 +165,7 @@ export default function SectorRotation({ sectors }: SectorRotationProps) {
 
       {/* Legend */}
       <div className="mt-6 p-4 bg-card rounded-lg">
-        <h4 className="font-semibold mb-3">📖 Sektör Rotasyonu Rehberi</h4>
+        <h4 className="font-semibold mb-3">� Sektör Rotasyonu Rehberi</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
           <div className="flex items-start gap-2">
             <span className="text-up">🚀</span>
@@ -175,7 +175,7 @@ export default function SectorRotation({ sectors }: SectorRotationProps) {
             </div>
           </div>
           <div className="flex items-start gap-2">
-            <span className="text-yellow-400">📉</span>
+            <span className="text-yellow-400">�0</span>
             <div>
               <strong className="text-yellow-400">Zayıflayan:</strong>
               <span className="text-muted"> Güçlü ama momentum düşüyor</span>
@@ -189,7 +189,7 @@ export default function SectorRotation({ sectors }: SectorRotationProps) {
             </div>
           </div>
           <div className="flex items-start gap-2">
-            <span className="text-blue-400">📈</span>
+            <span className="text-blue-400">��</span>
             <div>
               <strong className="text-blue-400">Yükselen:</strong>
               <span className="text-muted"> Zayıf ama momentum artıyor</span>

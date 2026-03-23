@@ -1,12 +1,12 @@
-﻿'use client';
+'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Fragment } from 'react';
 import Link from 'next/link';
-import { Filter, RefreshCw, BarChart3, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import { Filter, RefreshCw, BarChart3, ChevronDown, ChevronUp, ExternalLink, Info, TrendingUp, TrendingDown, Shield } from 'lucide-react';
 import AdvancedFilterPanel, { FilterState, defaultFilters } from '@/components/AdvancedFilterPanel';
 
 // API Base URL
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 const STORAGE_KEY_DAILY = 'hisseradar_analysis_daily';
 const STORAGE_KEY_WEEKLY = 'hisseradar_analysis_weekly';
@@ -59,8 +59,57 @@ interface StockAnalysis {
     potential_profit: number;
     potential_loss: number;
   };
+  confidence?: {
+    confidence: number;
+    agreement: number;
+    level: string;
+    bullish_count?: number;
+    bearish_count?: number;
+    neutral_count?: number;
+  };
+  weekly_trend?: {
+    trend: string;
+    rsi_weekly?: number;
+    alignment: number;
+  };
+  relative_strength?: {
+    rs_score: number;
+    rs_label: string;
+    vs_index: number;
+    stock_return_20d?: number;
+    index_return_20d?: number;
+  };
+  support_resistance?: {
+    pivot?: number;
+    resistance1?: number;
+    resistance2?: number;
+    support1?: number;
+    support2?: number;
+  };
+  fibonacci?: {
+    fib_0?: number;
+    fib_236?: number;
+    fib_382?: number;
+    fib_500?: number;
+    fib_618?: number;
+    fib_786?: number;
+    fib_100?: number;
+    trend?: string;
+  };
   reasons: string[];
   tags?: string[];
+  tv_signals?: {
+    summary?: {
+      recommendation?: string;
+      RECOMMENDATION?: string;
+      buy?: number;
+      BUY?: number;
+      sell?: number;
+      SELL?: number;
+      neutral?: number;
+      NEUTRAL?: number;
+    };
+  } | null;
 }
 
 interface AnalysisResult {
@@ -81,6 +130,7 @@ interface AnalysisResult {
     avg_sentiment?: number;
     positive_sentiment_stocks?: number;
     negative_sentiment_stocks?: number;
+    sentiment_count?: number;
   };
   top_picks: StockAnalysis[];
   all_results: StockAnalysis[];
@@ -147,7 +197,7 @@ export default function AnalysisPage() {
     // Performans istatistiklerini yükle (retry ile)
     const fetchPerformance = async (attempt = 0) => {
       try {
-        const res = await fetch(`http://localhost:8001/api/backtest/performance`);
+        const res = await fetch(`http://localhost:8000/api/backtest/performance`);
         const data = await res.json();
         if (data && Object.keys(data).length > 0) {
           setPerformanceStats(data);
@@ -640,7 +690,7 @@ export default function AnalysisPage() {
               <div className="bg-gradient-to-r from-purple-900/20 to-blue-900/20 rounded-xl p-4 sm:p-6 border border-purple-500/30">
                 <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2">
                   📰 Haber Sentiment Analizi
-                  <span className="text-xs text-gray-400 font-normal">(Top 30 hisse)</span>
+                  <span className="text-xs text-gray-400 font-normal">({result.market_summary.sentiment_count || 0} hisse)</span>
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
                   <div className="bg-gray-900/50 rounded-lg p-3 sm:p-4 text-center">
@@ -672,7 +722,7 @@ export default function AnalysisPage() {
                   <div className="bg-gray-900/50 rounded-lg p-3 sm:p-4 text-center">
                     <p className="text-gray-400 text-[10px] sm:text-xs mb-1">Nötr Haberli</p>
                     <p className="text-lg sm:text-2xl font-bold text-gray-400">
-                      {30 - (result.market_summary.positive_sentiment_stocks || 0) - (result.market_summary.negative_sentiment_stocks || 0)}
+                      {(result.market_summary.sentiment_count || 0) - (result.market_summary.positive_sentiment_stocks || 0) - (result.market_summary.negative_sentiment_stocks || 0)}
                     </p>
                     <p className="text-[10px] sm:text-xs text-gray-500 mt-1">hisse</p>
                   </div>
@@ -732,25 +782,30 @@ export default function AnalysisPage() {
               </div>
             )}
 
-            {/* Sonu Tablosu */}
-            <div className="bg-gray-800 rounded-xl overflow-hidden">
-              <div className="p-3 sm:p-4 border-b border-gray-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <h3 className="text-base sm:text-lg font-semibold">
-                  Analiz Sonuçları
-                  <span className="text-gray-400 text-sm ml-2">({filteredResults.length} hisse)</span>
-                </h3>
-                <div className="flex items-center gap-2 text-xs sm:text-sm overflow-x-auto">
-                  <span className="text-gray-400 hidden sm:inline">Sırala:</span>
+            {/* Sonuç Tablosu */}
+            <div className="bg-gray-800/60 rounded-xl overflow-hidden shadow-xl border border-gray-700/50 backdrop-blur-sm">
+              <div className="p-4 sm:p-5 border-b border-gray-700/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gray-800/40">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-500/20 rounded-lg">
+                    <BarChart3 className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                    Analiz Sonuçları
+                    <span className="text-sm font-medium px-2.5 py-0.5 bg-gray-700 text-gray-300 rounded-full">{filteredResults.length} hisse</span>
+                  </h3>
+                </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+                  <span className="text-gray-400 font-medium hidden sm:inline mr-1">Sıralama:</span>
                   {[
                     { key: 'score', label: 'Skor' },
                     { key: 'change', label: 'Değişim' },
-                    { key: 'rsi', label: 'RS' },
+                    { key: 'rsi', label: 'RSİ' },
                     { key: 'target', label: 'Hedef' },
                   ].map(item => (
                     <button
                       key={item.key}
                       onClick={() => toggleSort(item.key as typeof sortBy)}
-                      className={`px-2 py-1 rounded whitespace-nowrap ${sortBy === item.key ? 'bg-blue-500 text-white' : 'bg-gray-700 text-gray-300'
+                      className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-medium transition-all duration-200 border ${sortBy === item.key ? 'bg-blue-500/20 text-blue-400 border-blue-500/30 shadow-sm' : 'bg-gray-800 text-gray-400 border-gray-700 hover:bg-gray-700 hover:text-gray-200'
                         }`}
                     >
                       {item.label}
@@ -813,113 +868,251 @@ export default function AnalysisPage() {
                         </span>
                       </div>
                     )}
+                    {/* Güven & MTF Bilgisi */}
+                    <div className="mt-2 flex flex-wrap gap-1 text-[10px]">
+                      {stock.confidence && (
+                        <span className={`px-1.5 py-0.5 rounded ${
+                          stock.confidence.agreement >= 70 ? 'bg-green-500/20 text-green-400' :
+                          stock.confidence.agreement >= 50 ? 'bg-yellow-500/20 text-yellow-400' :
+                          'bg-gray-500/20 text-gray-400'
+                        }`}>
+                          🎯 Güven: %{stock.confidence.agreement?.toFixed(0)}
+                        </span>
+                      )}
+                      {stock.weekly_trend && stock.weekly_trend.trend !== 'belirsiz' && (
+                        <span className={`px-1.5 py-0.5 rounded ${
+                          stock.weekly_trend.trend === 'yukselis' ? 'bg-green-500/20 text-green-400' :
+                          stock.weekly_trend.trend === 'dusus' ? 'bg-red-500/20 text-red-400' :
+                          'bg-gray-500/20 text-gray-400'
+                        }`}>
+                          📊 Haftalık: {stock.weekly_trend.trend === 'yukselis' ? '↑' : stock.weekly_trend.trend === 'dusus' ? '↓' : '→'}
+                        </span>
+                      )}
+                      {stock.relative_strength && stock.relative_strength.vs_index !== 0 && (
+                        <span className={`px-1.5 py-0.5 rounded ${
+                          stock.relative_strength.vs_index > 2 ? 'bg-blue-500/20 text-blue-400' :
+                          stock.relative_strength.vs_index < -2 ? 'bg-orange-500/20 text-orange-400' :
+                          'bg-gray-500/20 text-gray-400'
+                        }`}>
+                          💪 RS: {stock.relative_strength.vs_index > 0 ? '+' : ''}{stock.relative_strength.vs_index?.toFixed(1)}%
+                        </span>
+                      )}
+                      {(stock.tv_signals?.summary?.RECOMMENDATION || stock.tv_signals?.summary?.recommendation) && (
+                        <span className={`px-1.5 py-0.5 rounded ${
+                          (stock.tv_signals.summary.RECOMMENDATION || stock.tv_signals.summary.recommendation).includes('BUY') ? 'bg-green-500/20 text-green-400' :
+                          (stock.tv_signals.summary.RECOMMENDATION || stock.tv_signals.summary.recommendation).includes('SELL') ? 'bg-red-500/20 text-red-400' :
+                          'bg-gray-500/20 text-gray-400'
+                        }`}>
+                          📡 TV: {(stock.tv_signals.summary.RECOMMENDATION || stock.tv_signals.summary.recommendation) === 'STRONG_BUY' ? 'Güçlü AL' :
+                                  (stock.tv_signals.summary.RECOMMENDATION || stock.tv_signals.summary.recommendation) === 'BUY' ? 'AL' :
+                                  (stock.tv_signals.summary.RECOMMENDATION || stock.tv_signals.summary.recommendation) === 'STRONG_SELL' ? 'Güçlü SAT' :
+                                  (stock.tv_signals.summary.RECOMMENDATION || stock.tv_signals.summary.recommendation) === 'SELL' ? 'SAT' : 'Nötr'}
+                        </span>
+                      )}
+                    </div>
+                    {/* Sinyal Sebepleri */}
+                    {stock.reasons && stock.reasons.length > 0 && (
+                      <div className="mt-2 space-y-0.5">
+                        {stock.reasons.slice(0, 3).map((reason, i) => (
+                          <p key={i} className="text-[10px] text-gray-400 leading-tight">
+                            • {reason}
+                          </p>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
 
               {/* Desktop Tablo Görünümü */}
-              <div className="overflow-x-auto hidden sm:block">
-                <table className="w-full">
-                  <thead className="bg-gray-700/50">
-                    <tr className="text-gray-400 text-xs sm:text-sm">
-                      <th className="text-left p-2 sm:p-3">Hisse</th>
-                      <th className="text-right p-2 sm:p-3">Fiyat</th>
-                      <th className="text-right p-2 sm:p-3">Değişim</th>
-                      <th className="text-center p-2 sm:p-3">Sinyal</th>
-                      <th className="text-center p-2 sm:p-3">Skor</th>
-                      <th className="text-center p-2 sm:p-3 hidden lg:table-cell">Sentiment</th>
-                      <th className="text-right p-2 sm:p-3">RSI</th>
-                      <th className="text-right p-2 sm:p-3">Hedef %</th>
-                      <th className="text-right p-2 sm:p-3 hidden md:table-cell">R/R</th>
-                      <th className="text-center p-2 sm:p-3">Grafik</th>
+              <div className="overflow-x-auto hidden sm:block scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+                <table className="w-full whitespace-nowrap">
+                  <thead>
+                    <tr className="bg-gray-800/80 text-gray-400 text-xs uppercase tracking-wider font-semibold border-b border-gray-700">
+                      <th className="text-left p-3 sm:p-4 rounded-tl-lg">Hisse</th>
+                      <th className="text-right p-3 sm:p-4">Fiyat</th>
+                      <th className="text-right p-3 sm:p-4">Değişim</th>
+                      <th className="text-center p-3 sm:p-4">Sinyal</th>
+                      <th className="text-center p-3 sm:p-4">Skor</th>
+                      <th className="text-center p-3 sm:p-4 hidden lg:table-cell">Güven</th>
+                      <th className="text-center p-3 sm:p-4 hidden xl:table-cell">Haftalık</th>
+                      <th className="text-center p-3 sm:p-4 hidden lg:table-cell">Sentiment</th>
+                      <th className="text-center p-3 sm:p-4 hidden xl:table-cell">TradingView</th>
+                      <th className="text-right p-3 sm:p-4">RSI</th>
+                      <th className="text-right p-3 sm:p-4">Hedef %</th>
+                      <th className="text-right p-3 sm:p-4 hidden md:table-cell">R/R</th>
+                      <th className="text-center p-3 sm:p-4 rounded-tr-lg">Detay</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="divide-y divide-gray-700/50">
                     {filteredResults.slice(0, showAllResults ? undefined : 20).map((stock, index) => (
+                      <Fragment key={stock.symbol}>
                       <tr
-                        key={stock.symbol}
-                        className="border-t border-gray-700/50 hover:bg-gray-700/30 transition"
+                        className="group hover:bg-gray-700/40 transition-colors duration-200"
                       >
-                        <td className="p-2 sm:p-3">
-                          <div className="flex items-center gap-2">
-                            <span className="text-gray-500 text-xs sm:text-sm w-5 sm:w-6">{index + 1}</span>
+                        <td className="p-3 sm:p-4">
+                          <div className="flex items-center gap-3">
+                            <span className="text-gray-500 text-xs font-mono w-5 sm:w-6">{index + 1}</span>
                             <div>
                               <Link
                                 href={`/stock/${stock.symbol}`}
-                                className="font-semibold text-white hover:text-blue-400 text-sm"
+                                className="font-bold text-white group-hover:text-blue-400 text-sm transition-colors"
                               >
                                 {stock.symbol}
                               </Link>
-                              <p className="text-gray-400 text-[10px] sm:text-xs truncate max-w-20 sm:max-w-32">{stock.name}</p>
+                              <p className="text-gray-400 text-[11px] truncate max-w-24 sm:max-w-40">{stock.name}</p>
                             </div>
                           </div>
                         </td>
-                        <td className="p-2 sm:p-3 text-right font-medium text-sm">
+                        <td className="p-3 sm:p-4 text-right font-medium text-sm text-gray-200">
                           {formatCurrency(stock.current_price)}
                         </td>
-                        <td className={`p-2 sm:p-3 text-right font-medium text-sm ${stock.change_percent >= 0 ? 'text-green-400' : 'text-red-400'
+                        <td className={`p-3 sm:p-4 text-right font-semibold text-sm ${stock.change_percent >= 0 ? 'text-emerald-400' : 'text-rose-400'
                           }`}>
                           {stock.change_percent >= 0 ? '+' : ''}{formatNumber(stock.change_percent)}%
                         </td>
-                        <td className="p-2 sm:p-3 text-center">
-                          <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs font-medium ${getSignalColor(stock.signal)}`}>
+                        <td className="p-3 sm:p-4 text-center">
+                          <span className={`inline-flex items-center justify-center px-2 py-1 rounded-md text-xs font-bold shadow-sm ${getSignalColor(stock.signal)}`}>
                             {getSignalText(stock.signal)}
                           </span>
                         </td>
-                        <td className="p-2 sm:p-3 text-center">
-                          <div className="flex items-center justify-center gap-1">
-                            <div className="w-8 sm:w-12 h-2 bg-gray-700 rounded-full overflow-hidden">
+                        <td className="p-3 sm:p-4 text-center">
+                          <div className="flex flex-col items-center justify-center gap-1">
+                            <span className="text-xs sm:text-sm font-bold text-gray-200">{stock.score}</span>
+                            <div className="w-12 sm:w-16 h-1.5 bg-gray-700 rounded-full overflow-hidden">
                               <div
-                                className={`h-full ${stock.score >= 70 ? 'bg-green-500' :
-                                  stock.score >= 50 ? 'bg-yellow-500' : 'bg-red-500'
+                                className={`h-full ${stock.score >= 70 ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' :
+                                  stock.score >= 50 ? 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'bg-rose-500'
                                   }`}
                                 style={{ width: `${stock.score}%` }}
                               />
                             </div>
-                            <span className="text-xs sm:text-sm font-medium w-6 sm:w-8">{stock.score}</span>
                           </div>
                         </td>
-                        <td className="p-2 sm:p-3 text-center hidden lg:table-cell">
-                          {stock.sentiment?.has_data ? (
+                        {/* Güven */}
+                        <td className="p-3 sm:p-4 text-center hidden lg:table-cell">
+                          {stock.confidence ? (
                             <div className="flex flex-col items-center">
-                              <span className={`text-[10px] sm:text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded ${stock.sentiment.score > 0.15 ? 'bg-green-500/20 text-green-400' :
-                                  stock.sentiment.score < -0.15 ? 'bg-red-500/20 text-red-400' :
-                                    'bg-gray-500/20 text-gray-400'
+                              <span className={`text-[10px] sm:text-xs font-medium px-1.5 py-0.5 rounded ${
+                                stock.confidence.agreement >= 70 ? 'bg-green-500/20 text-green-400' :
+                                stock.confidence.agreement >= 50 ? 'bg-yellow-500/20 text-yellow-400' :
+                                'bg-gray-500/20 text-gray-400'
+                              }`}>
+                                %{stock.confidence.agreement?.toFixed(0)}
+                              </span>
+                              <span className="text-[10px] text-gray-500 mt-0.5">{stock.confidence.level}</span>
+                            </div>
+                          ) : <span className="text-xs text-gray-500">-</span>}
+                        </td>
+                        {/* Haftalık Trend */}
+                        <td className="p-2 sm:p-3 text-center hidden xl:table-cell">
+                          {stock.weekly_trend && stock.weekly_trend.trend !== 'belirsiz' ? (
+                            <span className={`text-[10px] sm:text-xs font-medium px-1.5 py-0.5 rounded ${
+                              stock.weekly_trend.trend === 'yukselis' ? 'bg-green-500/20 text-green-400' :
+                              stock.weekly_trend.trend === 'dusus' ? 'bg-red-500/20 text-red-400' :
+                              'bg-gray-500/20 text-gray-400'
+                            }`}>
+                              {stock.weekly_trend.trend === 'yukselis' ? '↑ Yükseliş' :
+                               stock.weekly_trend.trend === 'dusus' ? '↓ Düşüş' : '→ Yatay'}
+                            </span>
+                          ) : <span className="text-xs text-gray-500">-</span>}
+                        </td>
+                        {/* Sentiment */}
+                        <td className="p-3 sm:p-4 text-center hidden lg:table-cell">
+                          {stock.sentiment?.has_data ? (
+                            <div className="flex flex-col items-center gap-0.5">
+                              <span className={`text-[10px] sm:text-xs font-bold px-2 py-1 rounded-md shadow-sm ${stock.sentiment.score > 0.15 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20' :
+                                  stock.sentiment.score < -0.15 ? 'bg-rose-500/20 text-rose-400 border border-rose-500/20' :
+                                    'bg-gray-500/20 text-gray-400 border border-gray-500/20'
                                 }`}>
                                 {stock.sentiment.score > 0.15 ? '📈 Olumlu' :
                                   stock.sentiment.score < -0.15 ? '📉 Olumsuz' : '➖ Nötr'}
                               </span>
-                              <span className="text-[10px] text-gray-500 mt-0.5">
+                              <span className="text-[10px] text-gray-500 font-medium">
                                 {stock.sentiment.news_count} haber
                               </span>
                             </div>
                           ) : (
-                            <span className="text-xs text-gray-500">-</span>
+                            <span className="text-xs text-gray-600">-</span>
                           )}
                         </td>
-                        <td className={`p-2 sm:p-3 text-right text-sm ${stock.indicators.rsi < 30 ? 'text-green-400' :
-                          stock.indicators.rsi > 70 ? 'text-red-400' : 'text-white'
+                        {/* TradingView Sinyali */}
+                        <td className="p-3 sm:p-4 text-center hidden xl:table-cell">
+                          {(stock.tv_signals?.summary?.RECOMMENDATION || stock.tv_signals?.summary?.recommendation) ? (
+                            <div className="flex flex-col items-center gap-1.5">
+                              <span className={`text-[10px] sm:text-xs font-bold px-2 py-1 rounded-md shadow-sm border ${
+                                (stock.tv_signals.summary.RECOMMENDATION || stock.tv_signals.summary.recommendation).includes('BUY') ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' :
+                                (stock.tv_signals.summary.RECOMMENDATION || stock.tv_signals.summary.recommendation).includes('SELL') ? 'bg-rose-500/10 text-rose-400 border-rose-500/30' :
+                                'bg-gray-500/10 text-gray-400 border-gray-500/30'
+                              }`}>
+                                {(stock.tv_signals.summary.RECOMMENDATION || stock.tv_signals.summary.recommendation) === 'STRONG_BUY' ? '🟢 GÜÇLÜ AL' :
+                                 (stock.tv_signals.summary.RECOMMENDATION || stock.tv_signals.summary.recommendation) === 'BUY' ? '🟢 AL' :
+                                 (stock.tv_signals.summary.RECOMMENDATION || stock.tv_signals.summary.recommendation) === 'STRONG_SELL' ? '🔴 GÜÇLÜ SAT' :
+                                 (stock.tv_signals.summary.RECOMMENDATION || stock.tv_signals.summary.recommendation) === 'SELL' ? '🔴 SAT' : '⚪ NÖTR'}
+                              </span>
+                              {(stock.tv_signals.summary.BUY !== undefined || stock.tv_signals.summary.buy !== undefined) && (
+                                <span className="text-[10px] text-gray-400 font-medium tracking-wide">
+                                  {stock.tv_signals.summary.BUY ?? stock.tv_signals.summary.buy} AL <span className="text-gray-600">/</span> {stock.tv_signals.summary.SELL ?? stock.tv_signals.summary.sell} SAT
+                                </span>
+                              )}
+                            </div>
+                          ) : <span className="text-xs text-gray-600">-</span>}
+                        </td>
+                        <td className={`p-3 sm:p-4 text-right font-medium text-sm ${stock.indicators.rsi < 30 ? 'text-emerald-400' :
+                          stock.indicators.rsi > 70 ? 'text-rose-400' : 'text-gray-300'
                           }`}>
                           {formatNumber(stock.indicators.rsi, 0)}
                         </td>
-                        <td className={`p-2 sm:p-3 text-right font-medium text-sm ${stock.potential.target_percent >= 10 ? 'text-green-400' : 'text-white'
+                        <td className={`p-3 sm:p-4 text-right font-bold text-sm ${stock.potential.target_percent >= 10 ? 'text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.3)]' : 'text-gray-300'
                           }`}>
                           +{formatNumber(stock.potential.target_percent)}%
                         </td>
-                        <td className={`p-2 sm:p-3 text-right text-sm hidden md:table-cell ${stock.potential.risk_reward_ratio >= 2 ? 'text-green-400' :
-                          stock.potential.risk_reward_ratio >= 1.5 ? 'text-yellow-400' : 'text-gray-400'
+                        <td className={`p-3 sm:p-4 text-right font-medium text-sm hidden md:table-cell ${stock.potential.risk_reward_ratio >= 2 ? 'text-emerald-400' :
+                          stock.potential.risk_reward_ratio >= 1.5 ? 'text-amber-400' : 'text-gray-400'
                           }`}>
                           {formatNumber(stock.potential.risk_reward_ratio, 1)}
                         </td>
-                        <td className="p-2 sm:p-3 text-center">
+                        <td className="p-3 sm:p-4 text-center">
                           <Link
                             href={`/stock/${stock.symbol}`}
-                            className="p-1 sm:p-1.5 bg-gray-700 hover:bg-gray-600 rounded transition inline-block"
+                            className="p-1.5 sm:p-2 bg-gray-700/80 hover:bg-blue-600 text-gray-300 hover:text-white rounded-lg transition-all duration-200 inline-flex items-center justify-center shadow-sm hover:shadow-blue-500/20"
+                            title="Detaylı Analiz"
                           >
-                            <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
+                            <ExternalLink className="w-4 h-4" />
                           </Link>
                         </td>
                       </tr>
+                      {/* Sinyal Sebepleri Satırı */}
+                      {stock.reasons && stock.reasons.length > 0 && (
+                        <tr key={`${stock.symbol}-reasons`} className="bg-gray-800/10 border-b border-gray-700/50">
+                          <td colSpan={13} className="px-4 py-2 sm:px-5 sm:py-3">
+                            <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] sm:text-xs text-gray-400 font-medium">
+                              {stock.reasons.slice(0, 5).map((reason, i) => (
+                                <span key={i} className="flex items-center gap-1.5 bg-gray-700/30 px-2 py-1 rounded-md">
+                                  <span className="text-blue-400">•</span> {reason}
+                                </span>
+                              ))}
+                              {stock.relative_strength && stock.relative_strength.vs_index !== 0 && (
+                                <span className={`flex items-center gap-1.5 px-2 py-1 rounded-md border ${
+                                  stock.relative_strength.vs_index > 2 ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
+                                  stock.relative_strength.vs_index < -2 ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
+                                  'bg-gray-700/30 text-gray-400 border-transparent'
+                                }`}>
+                                  <span className="font-bold">RS vs XU100:</span> {stock.relative_strength.vs_index > 0 ? '+' : ''}{stock.relative_strength.vs_index?.toFixed(1)}%
+                                </span>
+                              )}
+                              {stock.support_resistance?.support1 && (
+                                <span className="flex items-center gap-1.5 bg-gray-700/30 px-2 py-1 rounded-md text-gray-300">
+                                  <span className="text-emerald-400 font-bold">Destek:</span> {stock.support_resistance.support1?.toFixed(2)} 
+                                  <span className="text-gray-500 mx-1">|</span> 
+                                  <span className="text-rose-400 font-bold">Direnç:</span> {stock.support_resistance.resistance1?.toFixed(2)}
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                      </Fragment>
                     ))}
                   </tbody>
                 </table>

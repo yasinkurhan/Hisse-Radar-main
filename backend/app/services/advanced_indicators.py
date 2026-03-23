@@ -29,17 +29,22 @@ class AdvancedIndicators:
         tr3 = abs(low - close.shift())
         tr = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
         
-        # Directional Movement
-        plus_dm = high.diff()
-        minus_dm = low.diff().abs() * -1
+        # Wilder's Directional Movement (doğru formül)
+        # +DM = high[i] - high[i-1] (pozitifse ve -DM'den büyükse)
+        # -DM = low[i-1] - low[i] (pozitifse ve +DM'den büyükse)
+        up_move = high.diff()
+        down_move = -low.diff()  # low[i-1] - low[i]
         
-        plus_dm = plus_dm.where((plus_dm > minus_dm.abs()) & (plus_dm > 0), 0)
-        minus_dm = minus_dm.abs().where((minus_dm.abs() > plus_dm) & (minus_dm < 0), 0)
+        plus_dm = pd.Series(0.0, index=high.index)
+        minus_dm_series = pd.Series(0.0, index=high.index)
         
-        # Smoothed values
-        atr = tr.rolling(window=period).mean()
-        plus_di = 100 * (plus_dm.rolling(window=period).mean() / atr)
-        minus_di = 100 * (minus_dm.rolling(window=period).mean() / atr)
+        plus_dm = up_move.where((up_move > down_move) & (up_move > 0), 0)
+        minus_dm_series = down_move.where((down_move > up_move) & (down_move > 0), 0)
+        
+        # Wilder smoothing (EMA with alpha=1/period)
+        atr = tr.ewm(alpha=1/period, adjust=False).mean()
+        plus_di = 100 * (plus_dm.ewm(alpha=1/period, adjust=False).mean() / atr)
+        minus_di = 100 * (minus_dm_series.ewm(alpha=1/period, adjust=False).mean() / atr)
         
         # ADX
         dx = 100 * abs(plus_di - minus_di) / (plus_di + minus_di + 0.0001)

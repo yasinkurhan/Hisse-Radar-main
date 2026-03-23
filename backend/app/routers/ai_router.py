@@ -36,13 +36,13 @@ async def predict_price(
     if cached:
         return cached
     
-    # Geçmiş verileri al (minimum 90 gün)
+    # GeÃ§miÅŸ verileri al (minimum 90 gÃ¼n)
     historical = borsapy_fetcher.get_history(symbol, period="6mo")
     
-    if historical is None or historical.empty or len(historical) < 30:
+    if not historical or len(historical) < 30:
         raise HTTPException(
             status_code=400, 
-            detail="Yeterli geçmiş veri bulunamadı (minimum 30 gün gerekli)"
+            detail="Yeterli geÃ§miÅŸ veri bulunamadÄ± (minimum 30 gÃ¼n gerekli)"
         )
     
     # Tahmin yap
@@ -82,7 +82,7 @@ async def get_ai_signal(symbol: str):
     # Ã–nce tahmin yap
     historical = borsapy_fetcher.get_history(symbol, period="6mo")
     
-    if historical is None or historical.empty or len(historical) < 30:
+    if not historical or len(historical) < 30:
         return {
             "symbol": symbol,
             "signal": "BEKLE",
@@ -126,7 +126,7 @@ async def get_batch_signals(symbols: str = Query(..., description="VirgÃ¼lle a
         try:
             historical = borsapy_fetcher.get_history(symbol, period="6mo")
             
-            if historical is not None and not historical.empty and len(historical) >= 30:
+            if historical and len(historical) >= 30:
                 prediction = prediction_service.predict_price(
                     symbol=symbol,
                     historical_data=historical,

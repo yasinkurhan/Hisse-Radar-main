@@ -17,22 +17,30 @@ import type {
 } from '@/types';
 
 // API Base URL
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 /**
  * Genel API istek fonksiyonu
  */
-async function fetchAPI<T>(endpoint: string, options?: RequestInit): Promise<T> {
+async function fetchAPI<T>(endpoint: string, options?: RequestInit & { timeoutMs?: number }): Promise<T> {
   const url = `${API_BASE}${endpoint}`;
-  
+  const timeoutMs = options?.timeoutMs ?? 30_000; // 30 saniye varsayılan
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
   try {
+    const { timeoutMs: _t, ...rest } = options ?? {};
     const response = await fetch(url, {
-      ...options,
+      ...rest,
+      signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
-        ...options?.headers,
+        ...rest?.headers,
       },
     });
+
+    clearTimeout(timer);
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({ error: 'API hatası' }));
@@ -41,6 +49,10 @@ async function fetchAPI<T>(endpoint: string, options?: RequestInit): Promise<T> 
 
     return response.json();
   } catch (error) {
+    clearTimeout(timer);
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(`İstek zaman aşımına uğradı (${timeoutMs / 1000}s): ${endpoint}`);
+    }
     console.error(`API Hatası (${endpoint}):`, error);
     throw error;
   }

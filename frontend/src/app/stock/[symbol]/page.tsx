@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -332,7 +332,7 @@ export default function StockDetailPage() {
         ) : error ? (
           <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
             <p className="text-red-600 font-medium">{error}</p>
-            <Link href="/" className="text-blue-600 hover:underline mt-3 inline-block font-medium">Ana Sayfaya Don</Link>
+            <Link href="/" className="text-blue-600 hover:underline mt-3 inline-block font-medium">Ana Sayfaya Dön</Link>
           </div>
         ) : (
           <>

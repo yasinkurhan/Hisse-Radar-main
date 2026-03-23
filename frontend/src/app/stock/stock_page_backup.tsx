@@ -459,7 +459,7 @@ export default function StockDetailPage() {
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">📊</span>
+                <span className="text-white font-bold text-xl">�`</span>
               </div>
               <span className="text-xl font-bold text-white">HisseRadar</span>
             </Link>
@@ -495,7 +495,7 @@ export default function StockDetailPage() {
                     </span>
                   </div>
                   <div className="text-right">
-                    <p className="text-4xl font-bold text-white">₺{formatNumber(stockInfo.currentPrice)}</p>
+                    <p className="text-4xl font-bold text-white">â‚º{formatNumber(stockInfo.currentPrice)}</p>
                     <p className={`text-xl ${stockInfo.changePercent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                       {stockInfo.changePercent >= 0 ? '+' : ''}{stockInfo.change.toFixed(2)} ({stockInfo.changePercent.toFixed(2)}%)
                     </p>
@@ -505,11 +505,11 @@ export default function StockDetailPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
                   <div className="bg-gray-700/30 rounded-lg p-3">
                     <p className="text-gray-400 text-sm">Günlük En Yüksek</p>
-                    <p className="text-white font-semibold">₺{formatNumber(stockInfo.dayHigh)}</p>
+                    <p className="text-white font-semibold">â‚º{formatNumber(stockInfo.dayHigh)}</p>
                   </div>
                   <div className="bg-gray-700/30 rounded-lg p-3">
                     <p className="text-gray-400 text-sm">Günlük En Düşük</p>
-                    <p className="text-white font-semibold">₺{formatNumber(stockInfo.dayLow)}</p>
+                    <p className="text-white font-semibold">â‚º{formatNumber(stockInfo.dayLow)}</p>
                   </div>
                   <div className="bg-gray-700/30 rounded-lg p-3">
                     <p className="text-gray-400 text-sm">Hacim</p>
@@ -521,15 +521,15 @@ export default function StockDetailPage() {
                   </div>
                   <div className="bg-gray-700/30 rounded-lg p-3">
                     <p className="text-gray-400 text-sm">52H En Yüksek</p>
-                    <p className="text-white font-semibold">₺{formatNumber(stockInfo.fiftyTwoWeekHigh)}</p>
+                    <p className="text-white font-semibold">â‚º{formatNumber(stockInfo.fiftyTwoWeekHigh)}</p>
                   </div>
                   <div className="bg-gray-700/30 rounded-lg p-3">
                     <p className="text-gray-400 text-sm">52H En Düşük</p>
-                    <p className="text-white font-semibold">₺{formatNumber(stockInfo.fiftyTwoWeekLow)}</p>
+                    <p className="text-white font-semibold">â‚º{formatNumber(stockInfo.fiftyTwoWeekLow)}</p>
                   </div>
                   <div className="bg-gray-700/30 rounded-lg p-3">
                     <p className="text-gray-400 text-sm">Önceki Kapanış</p>
-                    <p className="text-white font-semibold">₺{formatNumber(stockInfo.previousClose)}</p>
+                    <p className="text-white font-semibold">â‚º{formatNumber(stockInfo.previousClose)}</p>
                   </div>
                 </div>
               </div>

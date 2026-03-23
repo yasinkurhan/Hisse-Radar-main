@@ -1,7 +1,7 @@
-"""
+﻿"""
 HisseRadar Temel Analiz Router
 ===============================
-F/K, PD/DD, bilanço ve finansal veriler API'leri
+F/K, PD/DD, bilanÃ§o ve finansal veriler API'leri
 """
 
 from fastapi import APIRouter, HTTPException
@@ -14,24 +14,24 @@ router = APIRouter(prefix="/api/fundamental", tags=["Temel Analiz"])
 
 
 @router.get("/{symbol}")
-async def get_fundamental_data(symbol: str):
+def get_fundamental_data(symbol: str):
     """
-    Hisse için kapsamlı temel analiz verilerini getir.
+    Hisse iÃ§in kapsamlÄ± temel analiz verilerini getir.
     
-    - **symbol**: Hisse sembolü (örn: THYAO)
+    - **symbol**: Hisse sembolÃ¼ (Ã¶rn: THYAO)
     
-    Dönen veriler:
-    - Şirket bilgileri
-    - Değerleme oranları (F/K, PD/DD, F/S)
-    - Kârlılık oranları (ROE, ROA, kâr marjı)
-    - Temettü bilgileri
-    - Bilanço verileri
-    - Analiz özeti ve değerlendirme
+    DÃ¶nen veriler:
+    - Åirket bilgileri
+    - DeÄŸerleme oranlarÄ± (F/K, PD/DD, F/S)
+    - KÃ¢rlÄ±lÄ±k oranlarÄ± (ROE, ROA, kÃ¢r marjÄ±)
+    - TemettÃ¼ bilgileri
+    - BilanÃ§o verileri
+    - Analiz Ã¶zeti ve deÄŸerlendirme
     """
     analyzer = get_fundamental_analyzer()
     data = analyzer.get_fundamental_data(symbol.upper())
     
-    # Veri kontrolü - hata varsa ve anlamlı veri yoksa minimal veri döndür
+    # Veri kontrolÃ¼ - hata varsa ve anlamlÄ± veri yoksa minimal veri dÃ¶ndÃ¼r
     has_valid_data = (
         data.get("company_name") or 
         data.get("current_price") or 
@@ -40,20 +40,20 @@ async def get_fundamental_data(symbol: str):
     )
     
     if "error" in data and not has_valid_data:
-        # Hata durumunda minimal veri döndür (404 yerine)
+        # Hata durumunda minimal veri dÃ¶ndÃ¼r (404 yerine)
         return {
             "symbol": symbol.upper(),
             "company_name": f"{symbol.upper()}",
             "sector": "Bilinmiyor",
             "industry": None,
-            "error_message": f"{symbol} için temel analiz verisi bulunamadı",
+            "error_message": f"{symbol} iÃ§in temel analiz verisi bulunamadÄ±",
             "analysis_summary": {
                 "valuation": "Belirsiz",
                 "profitability": "Belirsiz", 
                 "growth": "Belirsiz",
                 "dividend": "Belirsiz",
                 "overall": "Veri Yok",
-                "notes": ["Yahoo Finance'dan veri alınamadı. Lütfen daha sonra tekrar deneyin."]
+                "notes": ["Yahoo Finance'dan veri alÄ±namadÄ±. LÃ¼tfen daha sonra tekrar deneyin."]
             }
         }
     
@@ -61,14 +61,14 @@ async def get_fundamental_data(symbol: str):
 
 
 @router.get("/{symbol}/valuation")
-async def get_valuation_ratios(symbol: str):
+def get_valuation_ratios(symbol: str):
     """
-    Değerleme oranlarını getir.
+    DeÄŸerleme oranlarÄ±nÄ± getir.
     
-    - F/K (P/E): Fiyat / Kazanç - Hissenin kaç yıllık kârına denk olduğunu gösterir
-    - PD/DD (P/B): Piyasa Değeri / Defter Değeri - 1'in altı ucuz kabul edilir
-    - F/S (P/S): Fiyat / Satış - Gelire göre değerleme
-    - PEG: F/K / Büyüme - 1'in altı cazip
+    - F/K (P/E): Fiyat / KazanÃ§ - Hissenin kaÃ§ yÄ±llÄ±k kÃ¢rÄ±na denk olduÄŸunu gÃ¶sterir
+    - PD/DD (P/B): Piyasa DeÄŸeri / Defter DeÄŸeri - 1'in altÄ± ucuz kabul edilir
+    - F/S (P/S): Fiyat / SatÄ±ÅŸ - Gelire gÃ¶re deÄŸerleme
+    - PEG: F/K / BÃ¼yÃ¼me - 1'in altÄ± cazip
     """
     analyzer = get_fundamental_analyzer()
     data = analyzer.get_fundamental_data(symbol.upper())
@@ -80,36 +80,36 @@ async def get_valuation_ratios(symbol: str):
         "valuation": {
             "pe_ratio": {
                 "value": data.get("pe_ratio"),
-                "label": "F/K (Fiyat/Kazanç)",
-                "description": "Hissenin kaç yıllık kârına eşdeğer olduğunu gösterir",
+                "label": "F/K (Fiyat/KazanÃ§)",
+                "description": "Hissenin kaÃ§ yÄ±llÄ±k kÃ¢rÄ±na eÅŸdeÄŸer olduÄŸunu gÃ¶sterir",
                 "interpretation": get_pe_interpretation(data.get("pe_ratio"))
             },
             "forward_pe": {
                 "value": data.get("forward_pe"),
-                "label": "İleriye Dönük F/K",
-                "description": "Gelecek kazanç tahminlerine göre F/K"
+                "label": "Ä°leriye DÃ¶nÃ¼k F/K",
+                "description": "Gelecek kazanÃ§ tahminlerine gÃ¶re F/K"
             },
             "pb_ratio": {
                 "value": data.get("pb_ratio"),
                 "label": "PD/DD (Piyasa D./Defter D.)",
-                "description": "1'in altında ise defter değerinin altında işlem görüyor",
+                "description": "1'in altÄ±nda ise defter deÄŸerinin altÄ±nda iÅŸlem gÃ¶rÃ¼yor",
                 "interpretation": get_pb_interpretation(data.get("pb_ratio"))
             },
             "ps_ratio": {
                 "value": data.get("ps_ratio"),
-                "label": "F/S (Fiyat/Satış)",
-                "description": "Her 1 TL satış için ödenen fiyat"
+                "label": "F/S (Fiyat/SatÄ±ÅŸ)",
+                "description": "Her 1 TL satÄ±ÅŸ iÃ§in Ã¶denen fiyat"
             },
             "peg_ratio": {
                 "value": data.get("peg_ratio"),
-                "label": "PEG Oranı",
-                "description": "F/K'nın büyümeye oranı, 1'in altı cazip",
+                "label": "PEG OranÄ±",
+                "description": "F/K'nÄ±n bÃ¼yÃ¼meye oranÄ±, 1'in altÄ± cazip",
                 "interpretation": get_peg_interpretation(data.get("peg_ratio"))
             },
             "enterprise_to_ebitda": {
                 "value": data.get("enterprise_to_ebitda"),
                 "label": "EV/EBITDA",
-                "description": "Şirket değeri / FAVÖK"
+                "description": "Åirket deÄŸeri / FAVÃ–K"
             }
         },
         "market_data": {
@@ -122,13 +122,13 @@ async def get_valuation_ratios(symbol: str):
 
 
 @router.get("/{symbol}/profitability")
-async def get_profitability_ratios(symbol: str):
+def get_profitability_ratios(symbol: str):
     """
-    Kârlılık oranlarını getir.
+    KÃ¢rlÄ±lÄ±k oranlarÄ±nÄ± getir.
     
-    - ROE: Özkaynak Kârlılığı - %15 üzeri iyi
-    - ROA: Aktif Kârlılık - Varlık kullanım etkinliği
-    - Kâr Marjı: Net kâr / Gelir
+    - ROE: Ã–zkaynak KÃ¢rlÄ±lÄ±ÄŸÄ± - %15 Ã¼zeri iyi
+    - ROA: Aktif KÃ¢rlÄ±lÄ±k - VarlÄ±k kullanÄ±m etkinliÄŸi
+    - KÃ¢r MarjÄ±: Net kÃ¢r / Gelir
     """
     analyzer = get_fundamental_analyzer()
     data = analyzer.get_fundamental_data(symbol.upper())
@@ -139,40 +139,40 @@ async def get_profitability_ratios(symbol: str):
         "profitability": {
             "roe": {
                 "value": data.get("roe"),
-                "label": "ROE (Özkaynak Kârlılığı)",
-                "description": "Her 100 TL özkaynak için kazanılan kâr",
-                "benchmark": "%15 üzeri iyi kabul edilir",
+                "label": "ROE (Ã–zkaynak KÃ¢rlÄ±lÄ±ÄŸÄ±)",
+                "description": "Her 100 TL Ã¶zkaynak iÃ§in kazanÄ±lan kÃ¢r",
+                "benchmark": "%15 Ã¼zeri iyi kabul edilir",
                 "interpretation": get_roe_interpretation(data.get("roe"))
             },
             "roa": {
                 "value": data.get("roa"),
-                "label": "ROA (Aktif Kârlılık)",
-                "description": "Her 100 TL varlık için kazanılan kâr",
-                "benchmark": "%5 üzeri iyi kabul edilir"
+                "label": "ROA (Aktif KÃ¢rlÄ±lÄ±k)",
+                "description": "Her 100 TL varlÄ±k iÃ§in kazanÄ±lan kÃ¢r",
+                "benchmark": "%5 Ã¼zeri iyi kabul edilir"
             },
             "profit_margin": {
                 "value": data.get("profit_margin"),
-                "label": "Net Kâr Marjı",
-                "description": "Her 100 TL gelirden kalan net kâr"
+                "label": "Net KÃ¢r MarjÄ±",
+                "description": "Her 100 TL gelirden kalan net kÃ¢r"
             },
             "operating_margin": {
                 "value": data.get("operating_margin"),
-                "label": "Faaliyet Kâr Marjı",
-                "description": "Faaliyet kârı / Gelir"
+                "label": "Faaliyet KÃ¢r MarjÄ±",
+                "description": "Faaliyet kÃ¢rÄ± / Gelir"
             },
             "gross_margin": {
                 "value": data.get("gross_margin"),
-                "label": "Brüt Kâr Marjı",
-                "description": "Brüt kâr / Gelir"
+                "label": "BrÃ¼t KÃ¢r MarjÄ±",
+                "description": "BrÃ¼t kÃ¢r / Gelir"
             }
         }
     }
 
 
 @router.get("/{symbol}/dividend")
-async def get_dividend_info(symbol: str):
+def get_dividend_info(symbol: str):
     """
-    Temettü bilgilerini getir.
+    TemettÃ¼ bilgilerini getir.
     """
     analyzer = get_fundamental_analyzer()
     data = analyzer.get_fundamental_data(symbol.upper())
@@ -183,33 +183,33 @@ async def get_dividend_info(symbol: str):
         "dividend": {
             "dividend_yield": {
                 "value": data.get("dividend_yield"),
-                "label": "Temettü Verimi",
-                "description": "Yıllık temettü / Hisse fiyatı",
+                "label": "TemettÃ¼ Verimi",
+                "description": "YÄ±llÄ±k temettÃ¼ / Hisse fiyatÄ±",
                 "interpretation": get_dividend_interpretation(data.get("dividend_yield"))
             },
             "dividend_rate": {
                 "value": data.get("dividend_rate"),
-                "label": "Yıllık Temettü",
-                "description": "Hisse başı yıllık temettü tutarı (TL)"
+                "label": "YÄ±llÄ±k TemettÃ¼",
+                "description": "Hisse baÅŸÄ± yÄ±llÄ±k temettÃ¼ tutarÄ± (TL)"
             },
             "payout_ratio": {
                 "value": data.get("payout_ratio"),
-                "label": "Temettü Dağıtım Oranı",
-                "description": "Net kârın ne kadarı temettü olarak dağıtılıyor"
+                "label": "TemettÃ¼ DaÄŸÄ±tÄ±m OranÄ±",
+                "description": "Net kÃ¢rÄ±n ne kadarÄ± temettÃ¼ olarak daÄŸÄ±tÄ±lÄ±yor"
             },
             "ex_dividend_date": {
                 "value": data.get("ex_dividend_date"),
-                "label": "Temettü Hak Ediş Tarihi",
-                "description": "Bu tarihten önce almış olmalısınız"
+                "label": "TemettÃ¼ Hak EdiÅŸ Tarihi",
+                "description": "Bu tarihten Ã¶nce almÄ±ÅŸ olmalÄ±sÄ±nÄ±z"
             }
         }
     }
 
 
 @router.get("/{symbol}/balance")
-async def get_balance_sheet_summary(symbol: str):
+def get_balance_sheet_summary(symbol: str):
     """
-    Bilanço özetini getir.
+    BilanÃ§o Ã¶zetini getir.
     """
     analyzer = get_fundamental_analyzer()
     data = analyzer.get_fundamental_data(symbol.upper())
@@ -225,7 +225,7 @@ async def get_balance_sheet_summary(symbol: str):
             },
             "total_debt": {
                 "value": data.get("total_debt"),
-                "label": "Toplam Borç",
+                "label": "Toplam BorÃ§",
                 "formatted": format_large_number(data.get("total_debt"))
             },
             "total_revenue": {
@@ -235,34 +235,34 @@ async def get_balance_sheet_summary(symbol: str):
             },
             "debt_to_equity": {
                 "value": data.get("debt_to_equity"),
-                "label": "Borç/Özkaynak",
-                "description": "1'in altı tercih edilir"
+                "label": "BorÃ§/Ã–zkaynak",
+                "description": "1'in altÄ± tercih edilir"
             },
             "current_ratio": {
                 "value": data.get("current_ratio"),
                 "label": "Cari Oran",
-                "description": "Kısa vadeli borçları ödeme kapasitesi, 1.5+ iyi"
+                "description": "KÄ±sa vadeli borÃ§larÄ± Ã¶deme kapasitesi, 1.5+ iyi"
             },
             "quick_ratio": {
                 "value": data.get("quick_ratio"),
-                "label": "Asit-Test Oranı",
-                "description": "Stoklar hariç likidite oranı"
+                "label": "Asit-Test OranÄ±",
+                "description": "Stoklar hariÃ§ likidite oranÄ±"
             },
             "book_value": {
                 "value": data.get("book_value"),
-                "label": "Hisse Başı Defter Değeri",
-                "description": "Şirket tasfiye edilse hisse başı değer"
+                "label": "Hisse BaÅŸÄ± Defter DeÄŸeri",
+                "description": "Åirket tasfiye edilse hisse baÅŸÄ± deÄŸer"
             }
         },
         "shares": {
             "shares_outstanding": {
                 "value": data.get("shares_outstanding"),
-                "label": "Toplam Hisse Sayısı",
+                "label": "Toplam Hisse SayÄ±sÄ±",
                 "formatted": format_large_number(data.get("shares_outstanding"))
             },
             "float_shares": {
                 "value": data.get("float_shares"),
-                "label": "Halka Açık Hisse",
+                "label": "Halka AÃ§Ä±k Hisse",
                 "formatted": format_large_number(data.get("float_shares"))
             }
         }
@@ -270,9 +270,9 @@ async def get_balance_sheet_summary(symbol: str):
 
 
 @router.get("/{symbol}/growth")
-async def get_growth_metrics(symbol: str):
+def get_growth_metrics(symbol: str):
     """
-    Büyüme metriklerini getir.
+    BÃ¼yÃ¼me metriklerini getir.
     """
     analyzer = get_fundamental_analyzer()
     data = analyzer.get_fundamental_data(symbol.upper())
@@ -283,41 +283,41 @@ async def get_growth_metrics(symbol: str):
         "growth": {
             "revenue_growth": {
                 "value": data.get("revenue_growth"),
-                "label": "Gelir Büyümesi (YoY)",
-                "description": "Yıllık gelir artışı"
+                "label": "Gelir BÃ¼yÃ¼mesi (YoY)",
+                "description": "YÄ±llÄ±k gelir artÄ±ÅŸÄ±"
             },
             "earnings_growth": {
                 "value": data.get("earnings_growth"),
-                "label": "Kâr Büyümesi (YoY)",
-                "description": "Yıllık kâr artışı"
+                "label": "KÃ¢r BÃ¼yÃ¼mesi (YoY)",
+                "description": "YÄ±llÄ±k kÃ¢r artÄ±ÅŸÄ±"
             },
             "earnings_quarterly_growth": {
                 "value": data.get("earnings_quarterly_growth"),
-                "label": "Çeyreklik Kâr Büyümesi",
-                "description": "Son çeyrek kâr artışı"
+                "label": "Ã‡eyreklik KÃ¢r BÃ¼yÃ¼mesi",
+                "description": "Son Ã§eyrek kÃ¢r artÄ±ÅŸÄ±"
             }
         },
         "eps": {
             "trailing_eps": {
                 "value": data.get("trailing_eps"),
-                "label": "Hisse Başı Kazanç (TTM)",
-                "description": "Son 12 ayın hisse başı kazancı"
+                "label": "Hisse BaÅŸÄ± KazanÃ§ (TTM)",
+                "description": "Son 12 ayÄ±n hisse baÅŸÄ± kazancÄ±"
             },
             "forward_eps": {
                 "value": data.get("forward_eps"),
                 "label": "Tahmini HBK",
-                "description": "Gelecek 12 ay için beklenen HBK"
+                "description": "Gelecek 12 ay iÃ§in beklenen HBK"
             }
         }
     }
 
 
 @router.get("/{symbol}/summary")
-async def get_fundamental_summary(symbol: str):
+def get_fundamental_summary(symbol: str):
     """
-    Temel analiz özet raporu.
+    Temel analiz Ã¶zet raporu.
     
-    Tüm önemli metriklerin özeti ve genel değerlendirme.
+    TÃ¼m Ã¶nemli metriklerin Ã¶zeti ve genel deÄŸerlendirme.
     """
     analyzer = get_fundamental_analyzer()
     data = analyzer.get_fundamental_data(symbol.upper())
@@ -349,63 +349,63 @@ async def get_fundamental_summary(symbol: str):
     }
 
 
-# Yardımcı fonksiyonlar
+# YardÄ±mcÄ± fonksiyonlar
 def get_pe_interpretation(pe: Optional[float]) -> str:
     if pe is None:
         return "Veri yok"
     if pe < 0:
-        return "Şirket zararda"
+        return "Åirket zararda"
     if pe < 10:
-        return "Ucuz - Düşük değerleme"
+        return "Ucuz - DÃ¼ÅŸÃ¼k deÄŸerleme"
     if pe < 20:
-        return "Normal - Makul değerleme"
+        return "Normal - Makul deÄŸerleme"
     if pe < 30:
-        return "Pahalı - Yüksek beklenti"
-    return "Çok pahalı - Dikkatli olun"
+        return "PahalÄ± - YÃ¼ksek beklenti"
+    return "Ã‡ok pahalÄ± - Dikkatli olun"
 
 
 def get_pb_interpretation(pb: Optional[float]) -> str:
     if pb is None:
         return "Veri yok"
     if pb < 1:
-        return "Defter değerinin altında - Potansiyel fırsat"
+        return "Defter deÄŸerinin altÄ±nda - Potansiyel fÄ±rsat"
     if pb < 3:
-        return "Normal aralıkta"
-    return "Yüksek - Prim ile işlem görüyor"
+        return "Normal aralÄ±kta"
+    return "YÃ¼ksek - Prim ile iÅŸlem gÃ¶rÃ¼yor"
 
 
 def get_peg_interpretation(peg: Optional[float]) -> str:
     if peg is None:
         return "Veri yok"
     if peg < 1:
-        return "Cazip - Büyümeye göre ucuz"
+        return "Cazip - BÃ¼yÃ¼meye gÃ¶re ucuz"
     if peg < 2:
         return "Normal"
-    return "Pahalı - Büyümeye göre yüksek fiyat"
+    return "PahalÄ± - BÃ¼yÃ¼meye gÃ¶re yÃ¼ksek fiyat"
 
 
 def get_roe_interpretation(roe: Optional[float]) -> str:
     if roe is None:
         return "Veri yok"
     if roe > 20:
-        return "Mükemmel - Çok yüksek kârlılık"
+        return "MÃ¼kemmel - Ã‡ok yÃ¼ksek kÃ¢rlÄ±lÄ±k"
     if roe > 15:
-        return "İyi - Sağlıklı kârlılık"
+        return "Ä°yi - SaÄŸlÄ±klÄ± kÃ¢rlÄ±lÄ±k"
     if roe > 10:
         return "Orta - Kabul edilebilir"
     if roe > 0:
-        return "Zayıf - Düşük kârlılık"
+        return "ZayÄ±f - DÃ¼ÅŸÃ¼k kÃ¢rlÄ±lÄ±k"
     return "Negatif - Zarar"
 
 
 def get_dividend_interpretation(div_yield: Optional[float]) -> str:
     if div_yield is None or div_yield == 0:
-        return "Temettü ödemiyor"
+        return "TemettÃ¼ Ã¶demiyor"
     if div_yield > 5:
-        return "Yüksek temettü - Gelir yatırımcıları için cazip"
+        return "YÃ¼ksek temettÃ¼ - Gelir yatÄ±rÄ±mcÄ±larÄ± iÃ§in cazip"
     if div_yield > 2:
-        return "Orta temettü"
-    return "Düşük temettü"
+        return "Orta temettÃ¼"
+    return "DÃ¼ÅŸÃ¼k temettÃ¼"
 
 
 def format_large_number(value) -> Optional[str]:

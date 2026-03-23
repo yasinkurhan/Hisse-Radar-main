@@ -16,7 +16,7 @@ router = APIRouter(prefix="/api/price", tags=["Fiyat Verileri"])
 
 
 @router.get("/periods")
-async def get_available_periods():
+def get_available_periods():
     """Kullanılabilir zaman dilimlerini listele"""
     return {
         "periods": PERIODS,
@@ -25,7 +25,7 @@ async def get_available_periods():
 
 
 @router.get("/{symbol}")
-async def get_price_history(
+def get_price_history(
     symbol: str,
     period: str = Query("1mo", description="Zaman dilimi"),
     interval: str = Query("1d", description="Veri aralığı")
@@ -74,7 +74,7 @@ async def get_price_history(
 
 
 @router.get("/{symbol}/latest")
-async def get_latest_price(symbol: str):
+def get_latest_price(symbol: str):
     """
     Hissenin en güncel fiyat verisini getir.
     """
@@ -98,7 +98,7 @@ async def get_latest_price(symbol: str):
 
 
 @router.get("/{symbol}/candles")
-async def get_candlestick_data(
+def get_candlestick_data(
     symbol: str,
     period: str = Query("3mo", description="Zaman dilimi"),
     interval: str = Query("1d", description="Veri aralığı")
@@ -135,7 +135,7 @@ async def get_candlestick_data(
 
 
 @router.get("/{symbol}/volume")
-async def get_volume_data(
+def get_volume_data(
     symbol: str,
     period: str = Query("3mo", description="Zaman dilimi"),
     interval: str = Query("1d", description="Veri aralığı")

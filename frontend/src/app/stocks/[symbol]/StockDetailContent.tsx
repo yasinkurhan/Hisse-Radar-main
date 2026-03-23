@@ -74,7 +74,7 @@ export default function StockDetailContent() {
           getLatestPrice(symbol)
         ]);
 
-        setStockInfo(info);
+        setStockInfo(info as any);
         setPriceData(price);
       } catch (err) {
         console.error('Hisse bilgileri yüklenemedi:', err);

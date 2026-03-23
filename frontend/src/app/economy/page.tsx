@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -48,17 +48,17 @@ export default function EconomyPage() {
         setLoading(true);
         try {
             const [bondsRes, tcmbRes, inflationRes, calendarRes, eurobondsRes, riskRes] = await Promise.all([
-                fetch('http://localhost:8001/api/economy/bonds').catch(() => null),
-                fetch('http://localhost:8001/api/economy/tcmb').catch(() => null),
-                fetch('http://localhost:8001/api/economy/inflation').catch(() => null),
-                fetch('http://localhost:8001/api/economy/calendar').catch(() => null),
-                fetch('http://localhost:8001/api/economy/eurobonds').catch(() => null),
-                fetch('http://localhost:8001/api/economy/risk-free-rate').catch(() => null),
+                fetch('http://localhost:8000/api/economy/bonds').catch(() => null),
+                fetch('http://localhost:8000/api/economy/tcmb').catch(() => null),
+                fetch('http://localhost:8000/api/economy/inflation').catch(() => null),
+                fetch('http://localhost:8000/api/economy/calendar').catch(() => null),
+                fetch('http://localhost:8000/api/economy/eurobonds').catch(() => null),
+                fetch('http://localhost:8000/api/economy/risk-free-rate').catch(() => null),
             ]);
 
             if (bondsRes?.ok) {
                 const data = await bondsRes.json();
-                setBonds(data.bonds || data);
+                setBonds(data.records || data.bonds || data);
             }
             if (tcmbRes?.ok) {
                 const data = await tcmbRes.json();
@@ -66,15 +66,15 @@ export default function EconomyPage() {
             }
             if (inflationRes?.ok) {
                 const data = await inflationRes.json();
-                setInflation(data.inflation || data);
+                setInflation(data.records || data.inflation || data);
             }
             if (calendarRes?.ok) {
                 const calData = await calendarRes.json();
-                setCalendar(Array.isArray(calData) ? calData : calData?.events || calData?.data || []);
+                setCalendar(Array.isArray(calData) ? calData : calData?.records || calData?.events || calData?.data || []);
             }
             if (eurobondsRes?.ok) {
                 const data = await eurobondsRes.json();
-                setEurobonds(data.eurobonds || data);
+                setEurobonds(data.records || data.eurobonds || data);
             }
             if (riskRes?.ok) {
                 const riskData = await riskRes.json();

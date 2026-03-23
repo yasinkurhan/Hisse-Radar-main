@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -52,7 +52,7 @@ export default function ScreenerPage() {
         setLoading(true);
         setActiveTemplate(template);
         try {
-            const res = await fetch(`http://localhost:8001/api/screener/stocks?template=${template}`);
+            const res = await fetch(`http://localhost:8000/api/screener/stocks?template=${template}`);
             if (res.ok) {
                 const data = await res.json();
                 const rows = data?.results || data?.stocks || (Array.isArray(data) ? data : []);
@@ -80,7 +80,7 @@ export default function ScreenerPage() {
             if (roeMin) params.append('roe_min', roeMin);
             if (pbMax) params.append('pb_max', pbMax);
 
-            const res = await fetch(`http://localhost:8001/api/screener/stocks?${params.toString()}`);
+            const res = await fetch(`http://localhost:8000/api/screener/stocks?${params.toString()}`);
             if (res.ok) {
                 const data = await res.json();
                 const rows = data?.results || data?.stocks || (Array.isArray(data) ? data : []);
@@ -103,7 +103,7 @@ export default function ScreenerPage() {
         setActiveTemplate('scan');
         try {
             const res = await fetch(
-                `http://localhost:8001/api/screener/scan?index=${scanIndex}&condition=${encodeURIComponent(scanCondition)}&interval=${scanInterval}`
+                `http://localhost:8000/api/screener/scan?index=${scanIndex}&condition=${encodeURIComponent(scanCondition)}&interval=${scanInterval}`
             );
             if (res.ok) {
                 const data = await res.json();

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -45,21 +45,21 @@ export default function FXPage() {
         try {
             // Döviz kurları
             const fxPromises = CURRENCIES.map(c =>
-                fetch(`http://localhost:8001/api/fx/current/${c.code}?t=${Date.now()}`, { cache: 'no-store' })
+                fetch(`http://localhost:8000/api/fx/current/${c.code}?t=${Date.now()}`, { cache: 'no-store' })
                     .then(r => r.ok ? r.json() : null)
                     .catch(() => null)
             );
 
             // Altın fiyatları
             const goldPromises = GOLD_TYPES.map(g =>
-                fetch(`http://localhost:8001/api/fx/gold?gold_type=${g.code}&t=${Date.now()}`, { cache: 'no-store' })
+                fetch(`http://localhost:8000/api/fx/gold?gold_type=${g.code}&t=${Date.now()}`, { cache: 'no-store' })
                     .then(r => r.ok ? r.json() : null)
                     .catch(() => null)
             );
 
             // Banka kurları (USD ve EUR)
             const bankPromises = ['USD', 'EUR'].map(c =>
-                fetch(`http://localhost:8001/api/fx/bank-rates/${c}?t=${Date.now()}`, { cache: 'no-store' })
+                fetch(`http://localhost:8000/api/fx/bank-rates/${c}?t=${Date.now()}`, { cache: 'no-store' })
                     .then(r => r.ok ? r.json() : null)
                     .catch(() => null)
             );

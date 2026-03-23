@@ -81,7 +81,7 @@ export default function TechnicalIndicators({ symbol }: TechnicalIndicatorsProps
           <div>
             <h3 className="text-lg font-semibold text-gray-900">Teknik Analiz Özeti</h3>
             <p className="text-sm text-gray-500 mt-1">
-              Güncel fiyat: ₺{data.current_price?.toFixed(2)}
+              Güncel fiyat: â‚º{data.current_price?.toFixed(2)}
             </p>
           </div>
           
@@ -206,15 +206,15 @@ export default function TechnicalIndicators({ symbol }: TechnicalIndicatorsProps
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Üst Bant</span>
-              <span className="font-mono">₺{data.indicators.bollinger.upper?.toFixed(2)}</span>
+              <span className="font-mono">â‚º{data.indicators.bollinger.upper?.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Orta (SMA20)</span>
-              <span className="font-mono">₺{data.indicators.bollinger.middle?.toFixed(2)}</span>
+              <span className="font-mono">â‚º{data.indicators.bollinger.middle?.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Alt Bant</span>
-              <span className="font-mono">₺{data.indicators.bollinger.lower?.toFixed(2)}</span>
+              <span className="font-mono">â‚º{data.indicators.bollinger.lower?.toFixed(2)}</span>
             </div>
           </div>
 

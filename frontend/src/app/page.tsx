@@ -196,7 +196,7 @@ export default function HomePage() {
           
           {/* Yeni Stok Detay Özellikleri */}
           <div className="mt-8 bg-white/5 rounded-xl p-4 sm:p-6 border border-white/10">
-            <h3 className="text-lg font-semibold text-center mb-4">✨ Yeni: Gelişmiş Stok Analizi</h3>
+            <h3 className="text-lg font-semibold text-center mb-4">✨ Yeni: Gelişmiş Hisse Analizi</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="text-center p-3 bg-white/5 rounded-lg">
                 <div className="text-2xl mb-1">🌍</div>
@@ -214,7 +214,7 @@ export default function HomePage() {
                 <div className="text-xs text-gray-400">AL/SAT/NÖTR sinyalleri</div>
               </div>
               <div className="text-center p-3 bg-white/5 rounded-lg">
-                <div className="text-2xl mb-1">📊</div>
+                <div className="text-2xl mb-1">⚡</div>
                 <div className="text-sm font-medium">Osilatör Analizi</div>
                 <div className="text-xs text-gray-400">RSI, MACD, Stochastic</div>
               </div>
@@ -303,19 +303,19 @@ export default function HomePage() {
               </p>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-center space-x-3">
-                  <span className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-sm">✓</span>
+                  <span className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-sm">âœ“</span>
                   <span>Formasyon tespiti (Çift dip, OBO, Üçgen)</span>
                 </li>
                 <li className="flex items-center space-x-3">
-                  <span className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-sm">✓</span>
+                  <span className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-sm">âœ“</span>
                   <span>Sektöre göre dinamik ağırlıklandırma</span>
                 </li>
                 <li className="flex items-center space-x-3">
-                  <span className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-sm">✓</span>
+                  <span className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-sm">âœ“</span>
                   <span>Piyasa koşuluna göre ayarlanan skorlar</span>
                 </li>
                 <li className="flex items-center space-x-3">
-                  <span className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-sm">✓</span>
+                  <span className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-sm">âœ“</span>
                   <span>Backtest ile sinyal başarı takibi</span>
                 </li>
               </ul>
@@ -324,7 +324,7 @@ export default function HomePage() {
                 className="inline-flex items-center space-x-2 px-6 py-3 bg-white text-purple-600 hover:bg-gray-100 rounded-lg font-semibold transition"
               >
                 <span>Analizi Başlat</span>
-                <span>→</span>
+                <span>â†’</span>
               </Link>
             </div>
             <div className="bg-white/10 rounded-xl p-6 backdrop-blur">
@@ -332,7 +332,7 @@ export default function HomePage() {
                 <div className="flex items-center justify-between bg-white/10 rounded-lg p-3">
                   <div>
                     <div className="font-semibold">Günlük Analiz</div>
-                    <div className="text-sm text-white/70">502 hisse • ~50 saniye</div>
+                    <div className="text-sm text-white/70">502 hisse â€¢ ~50 saniye</div>
                   </div>
                   <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
                     <Calendar className="w-5 h-5" />
@@ -411,7 +411,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
-              <span className="text-2xl">⚠️</span>
+              <span className="text-2xl">âš ï¸</span>
             </div>
             <div>
               <h4 className="font-semibold text-yellow-800 mb-1">Yasal Uyarı</h4>
@@ -442,7 +442,7 @@ export default function HomePage() {
               <Link href="/backtest" className="hover:text-white transition">Backtest</Link>
             </div>
             <div className="text-sm mt-4 md:mt-0">
-              © 2024 HisseRadar - Veriler borsapy ile İş Yatırım, TradingView, KAP, TCMB kaynaklarından sağlanmaktadır
+              Â© 2024 HisseRadar - Veriler borsapy ile İş Yatırım, TradingView, KAP, TCMB kaynaklarından sağlanmaktadır
             </div>
           </div>
         </div>

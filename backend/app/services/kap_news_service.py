@@ -48,12 +48,22 @@ class KAPService:
     def __init__(self, db_path: str = None):
         self.db_path = db_path or str(Path(__file__).parent.parent / "data" / "kap_news.db")
         self._init_database()
-    
+
+    def _connect(self):
+        """Optimize edilmiş SQLite bağlantısı döndür (per-connection PRAGMA'lar ile)"""
+        conn = sqlite3.connect(self.db_path, check_same_thread=False)
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("PRAGMA synchronous=NORMAL")
+        conn.execute("PRAGMA cache_size=-32000")  # 32 MB
+        conn.execute("PRAGMA temp_store=MEMORY")
+        conn.execute("PRAGMA mmap_size=67108864")  # 64 MB
+        return conn
+
     def _init_database(self):
         """SQLite veritabanını oluştur"""
         Path(self.db_path).parent.mkdir(parents=True, exist_ok=True)
         
-        conn = sqlite3.connect(self.db_path)
+        conn = self._connect()
         cursor = conn.cursor()
         
         # KAP haberleri tablosu
@@ -99,7 +109,19 @@ class KAPService:
         cursor.execute('''
             CREATE INDEX IF NOT EXISTS idx_kap_date ON kap_news(publish_date)
         ''')
+        # Bileşik index: symbol + tarih birlikte sorgulanan en sık desen
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_kap_symbol_date ON kap_news(symbol, publish_date DESC)
+        ''')
         
+        conn.commit()
+
+        # WAL modu: okuma ve yazma birbirini bloklamaz (en kritik SQLite optimizasyonu)
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("PRAGMA synchronous=NORMAL")  # WAL ile güvenli, çok daha hızlı
+        conn.execute("PRAGMA cache_size=-32000")   # 32 MB sayfa önbelleği
+        conn.execute("PRAGMA temp_store=MEMORY")   # Geçici tablolar RAM'de
+        conn.execute("PRAGMA mmap_size=67108864")  # 64 MB memory-mapped I/O
         conn.commit()
         conn.close()
         
@@ -114,7 +136,7 @@ class KAPService:
         text = f"{title} {summary}"
         
         # Gelişmiş SentimentAnalyzer kullan
-        result = SentimentAnalyzer.analyze_text(text)
+        result = SentimentAnalyzer.analyze_text(text, self._categorize_news(title))
         
         return {
             "score": result["score"],
@@ -241,7 +263,7 @@ class KAPService:
     
     def save_news_to_db(self, news_list: List[Dict[str, Any]]) -> int:
         """Haberleri veritabanına kaydet (tarihler ISO formatına normalize edilir)"""
-        conn = sqlite3.connect(self.db_path)
+        conn = self._connect()
         cursor = conn.cursor()
         
         saved_count = 0
@@ -281,7 +303,7 @@ class KAPService:
     
     def fix_existing_dates(self) -> int:
         """Mevcut DB'deki DD.MM.YYYY formatındaki tarihleri ISO formatına dönüştür"""
-        conn = sqlite3.connect(self.db_path)
+        conn = self._connect()
         cursor = conn.cursor()
         
         # DD.MM.YYYY formatında olan tüm kayıtları bul
@@ -303,9 +325,9 @@ class KAPService:
             print(f"DB tarih düzeltme: {fixed}/{len(rows)} kayıt güncellendi")
         return fixed
     
-    def get_news_for_symbol(self, symbol: str, limit: int = 20, days: int = 30) -> List[Dict[str, Any]]:
+    def get_news_for_symbol(self, symbol: str, limit: int = 50, days: int = 90) -> List[Dict[str, Any]]:
         """Veritabanından hisse haberlerini getir"""
-        conn = sqlite3.connect(self.db_path)
+        conn = self._connect()
         cursor = conn.cursor()
         
         cutoff_date = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
@@ -342,7 +364,7 @@ class KAPService:
     
     def get_all_recent_news(self, limit: int = 100, days: int = 7) -> List[Dict[str, Any]]:
         """Tüm hisselerin son haberlerini getir"""
-        conn = sqlite3.connect(self.db_path)
+        conn = self._connect()
         cursor = conn.cursor()
         
         cutoff_date = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
@@ -379,7 +401,7 @@ class KAPService:
     
     def get_news_statistics(self) -> Dict[str, Any]:
         """Haber istatistikleri"""
-        conn = sqlite3.connect(self.db_path)
+        conn = self._connect()
         cursor = conn.cursor()
         
         # Toplam haber sayısı
@@ -430,7 +452,7 @@ class KAPService:
     
     def get_sentiment_summary(self, days: int = 30, min_news: int = 1) -> List[Dict[str, Any]]:
         """Hisse bazlı KAP sentiment özeti"""
-        conn = sqlite3.connect(self.db_path)
+        conn = self._connect()
         cursor = conn.cursor()
         
         cutoff_date = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
@@ -611,7 +633,7 @@ class DailyNewsCollector:
         duration = (datetime.now() - start_time).total_seconds()
         
         # Log kaydet
-        conn = sqlite3.connect(self.kap_service.db_path)
+        conn = self.kap_service._connect()
         cursor = conn.cursor()
         
         cursor.execute('''
@@ -649,7 +671,7 @@ class DailyNewsCollector:
     
     def get_collection_history(self, days: int = 30) -> List[Dict[str, Any]]:
         """Haber toplama geçmişi"""
-        conn = sqlite3.connect(self.kap_service.db_path)
+        conn = self.kap_service._connect()
         cursor = conn.cursor()
         
         cutoff_date = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")

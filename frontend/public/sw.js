@@ -1,6 +1,6 @@
-// HisseRadar Service Worker v1.2.0 - Forced Update
-const CACHE_NAME = 'hisseradar-v1.2';
-const RUNTIME_CACHE = 'hisseradar-runtime';
+// HisseRadar Service Worker v1.3.0 - Cache Busting Update
+const CACHE_NAME = 'hisseradar-v1.3';
+const RUNTIME_CACHE = 'hisseradar-runtime-v1.3';
 
 // Önbelleğe alınacak statik dosyalar
 const STATIC_ASSETS = [

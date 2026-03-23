@@ -104,7 +104,7 @@ class SentimentAnalyzer:
     # Olumsuzlama ekleri ve kelimeleri
     NEGATION_WORDS = ["değil", "yok", "etmedi", "olmadı", "sağlanamadı", "gerçekleşmedi", "beklenmiyor", "yoktur", "değildir"]
     
-    # KAP kategorileri ve sentiment etkileri
+    # KAP kategorileri ve sentiment etkileri (Şablon / Kategori Bazlı Puanlama)
     KAP_CATEGORIES = {
         "FR": {"name": "Finansal Rapor", "sentiment_modifier": 0},
         "ODA": {"name": "Özel Durum Açıklaması", "sentiment_modifier": 0},
@@ -112,16 +112,35 @@ class SentimentAnalyzer:
         "OZET": {"name": "Özet Bilgi", "sentiment_modifier": 0},
         "IY": {"name": "İç Yönerge", "sentiment_modifier": 0},
         "GK": {"name": "Genel Kurul", "sentiment_modifier": 0.1},
-        "TA": {"name": "Temettü Açıklaması", "sentiment_modifier": 0.4},
-        "SA": {"name": "Sermaye Artırımı", "sentiment_modifier": 0.3},
-        "HALKA_ARZ": {"name": "Halka Arz", "sentiment_modifier": 0.2},
-        "PAY_ALIM": {"name": "Pay Geri Alım", "sentiment_modifier": 0.4},
-        "SATIŞ": {"name": "Pay Satış Bilgi Formu", "sentiment_modifier": -0.2},
+        "TA": {"name": "Temettü Açıklaması", "sentiment_modifier": 0.5},
+        "SA": {"name": "Sermaye Artırımı", "sentiment_modifier": 0.4},
+        "HALKA_ARZ": {"name": "Halka Arz", "sentiment_modifier": 0.3},
+        "PAY_ALIM": {"name": "Pay Geri Alım", "sentiment_modifier": 0.5},
+        "SATIŞ": {"name": "Pay Satış Bilgi Formu", "sentiment_modifier": -0.3},
+    }
+    
+    # Kural Tabanlı Şablonlar (Özellikle bürokratik KAP dili için)
+    RULE_BASED_PATTERNS = {
+        "bedelsiz sermaye": 1.5,
+        "temettü dağıtım": 1.2,
+        "kar payı dağıtım": 1.2,
+        "geri alım programı": 1.3,
+        "yeni iş ilişkisi": 1.0,
+        "ihale": 0.8,
+        "ihalesi kazanılmıştır": 1.2,
+        "hedef fiyat yukarı yönlü": 1.1,
+        "kapasite artış": 0.9,
+        "üretim duruşu": -1.0,
+        "spk idari para cezası": -1.2,
+        "grev kararı": -1.2,
+        "finansal duran varlık satışı": 0.4,
+        "finansal duran varlık edinimi": 0.6,
+        "patron satışı": -0.8
     }
     
     @staticmethod
-    def analyze_text(text: str) -> Dict[str, Any]:
-        """Metin sentiment analizi (Gelişmiş)"""
+    def analyze_text(text: str, category: str = None) -> Dict[str, Any]:
+        """Metin sentiment analizi (Gelişmiş - Kural Tabanlı & Hibrit)"""
         if not text:
             return {
                 "sentiment": SentimentType.NEUTRAL,
@@ -138,7 +157,22 @@ class SentimentAnalyzer:
         total_score = 0
         matched_keywords = []
         
-        # Pozitif kelimeleri ara
+        # 1. Kategori Bazlı Temel Çarpan Eklemesi
+        if category and category in SentimentAnalyzer.KAP_CATEGORIES:
+            total_score += SentimentAnalyzer.KAP_CATEGORIES[category]["sentiment_modifier"] * 2.0
+            
+        # 2. Ön Tanımlı Resmi Şablon (Pattern) Kontrolü (Hibrit Sistemin Çekirdeği)
+        for pattern, weight in SentimentAnalyzer.RULE_BASED_PATTERNS.items():
+            if pattern in text_lower:
+                total_score += weight
+                matched_keywords.append({
+                    "word": pattern,
+                    "weight": weight,
+                    "type": "positive" if weight > 0 else "negative",
+                    "negated": False
+                })
+        
+        # 3. Kelime Bazlı Normalizasyon (Pozitif)
         for phrase, weight in SentimentAnalyzer.POSITIVE_WORDS.items():
             if phrase in text_lower:
                 # Olumsuzlama kontrolü (negation check)

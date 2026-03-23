@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -42,7 +42,7 @@ export default function StockList({ showSectorFilter = true, limit }: StockListP
   useEffect(() => {
     const fetchStocks = async () => {
       try {
-        const response = await fetch('http://localhost:8001/api/stocks/');
+        const response = await fetch('http://localhost:8000/api/stocks/');
         const data = await response.json();
         setStocks(data.stocks);
         setSectors(data.sectors);

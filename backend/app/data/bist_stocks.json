@@ -575,6 +575,12 @@
                   "indexes": []
             },
             {
+                  "symbol": "BASCM",
+                  "name": "BASCM",
+                  "sector": "Diğer",
+                  "indexes": []
+            },
+            {
                   "symbol": "BASGZ",
                   "name": "Basgas Enerji",
                   "sector": "Enerji",
@@ -801,6 +807,12 @@
                   ]
             },
             {
+                  "symbol": "BRMEN",
+                  "name": "BRMEN",
+                  "sector": "Diğer",
+                  "indexes": []
+            },
+            {
                   "symbol": "BRSAN",
                   "name": "Borusan Mannesmann",
                   "sector": "Metal Ana",
@@ -963,6 +975,12 @@
                   "indexes": [
                         "KATILIM"
                   ]
+            },
+            {
+                  "symbol": "CMENT",
+                  "name": "CMENT",
+                  "sector": "Diğer",
+                  "indexes": []
             },
             {
                   "symbol": "CONSE",
@@ -1383,6 +1401,14 @@
                   "indexes": []
             },
             {
+                  "symbol": "EMPAE",
+                  "name": "EMPAE",
+                  "sector": "Diğer",
+                  "indexes": [
+                        "KATILIM"
+                  ]
+            },
+            {
                   "symbol": "ENDAE",
                   "name": "ENDAE",
                   "sector": "Diğer",
@@ -1645,6 +1671,14 @@
                   "symbol": "GENIL",
                   "name": "Gen İlaç",
                   "sector": "İlaç",
+                  "indexes": [
+                        "KATILIM"
+                  ]
+            },
+            {
+                  "symbol": "GENKM",
+                  "name": "GENKM",
+                  "sector": "Diğer",
                   "indexes": [
                         "KATILIM"
                   ]
@@ -2013,6 +2047,12 @@
                   "symbol": "INGRM",
                   "name": "Ingram",
                   "sector": "Teknoloji",
+                  "indexes": []
+            },
+            {
+                  "symbol": "INTEK",
+                  "name": "INTEK",
+                  "sector": "Diğer",
                   "indexes": []
             },
             {
@@ -2599,6 +2639,14 @@
                   "indexes": []
             },
             {
+                  "symbol": "LXGYO",
+                  "name": "LXGYO",
+                  "sector": "Diğer",
+                  "indexes": [
+                        "KATILIM"
+                  ]
+            },
+            {
                   "symbol": "LYDHO",
                   "name": "LYDHO",
                   "sector": "Diğer",
@@ -2682,6 +2730,14 @@
                   "sector": "Tekstil",
                   "indexes": [
                         "BIST100",
+                        "KATILIM"
+                  ]
+            },
+            {
+                  "symbol": "MCARD",
+                  "name": "MCARD",
+                  "sector": "Diğer",
+                  "indexes": [
                         "KATILIM"
                   ]
             },
@@ -2772,6 +2828,12 @@
                   "symbol": "MIATK",
                   "name": "Mia Teknoloji",
                   "sector": "Teknoloji",
+                  "indexes": []
+            },
+            {
+                  "symbol": "MMCAS",
+                  "name": "MMCAS",
+                  "sector": "Diğer",
                   "indexes": []
             },
             {
@@ -3277,6 +3339,18 @@
                   "indexes": []
             },
             {
+                  "symbol": "QNBFK",
+                  "name": "QNBFK",
+                  "sector": "Diğer",
+                  "indexes": []
+            },
+            {
+                  "symbol": "QNBTR",
+                  "name": "QNBTR",
+                  "sector": "Diğer",
+                  "indexes": []
+            },
+            {
                   "symbol": "QUAGR",
                   "name": "QUA Granite",
                   "sector": "Taş ve Toprağa Dayalı",
@@ -3659,6 +3733,12 @@
                   "indexes": [
                         "KATILIM"
                   ]
+            },
+            {
+                  "symbol": "SVGYO",
+                  "name": "SVGYO",
+                  "sector": "Diğer",
+                  "indexes": []
             },
             {
                   "symbol": "TABGD",
@@ -4149,6 +4229,12 @@
                   "symbol": "YAYLA",
                   "name": "Yayla Agro Gıda",
                   "sector": "Gıda ve İçecek",
+                  "indexes": []
+            },
+            {
+                  "symbol": "YBTAS",
+                  "name": "YBTAS",
+                  "sector": "Diğer",
                   "indexes": []
             },
             {

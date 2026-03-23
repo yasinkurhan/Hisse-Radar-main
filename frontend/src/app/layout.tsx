@@ -156,16 +156,16 @@ export default function RootLayout({
                           🏢 PRO Piyasa
                         </Link>
                         <Link href="/economy" className="block px-4 py-2.5 text-slate-300 hover:bg-slate-700 hover:text-white">
-                          🏦 Ekonomi
+                          🏛️ Ekonomi
                         </Link>
                         <Link href="/fx" className="block px-4 py-2.5 text-slate-300 hover:bg-slate-700 hover:text-white">
-                          💱 Döviz & Altın
+                          🱱 Döviz & Altın
                         </Link>
                         <Link href="/screener" className="block px-4 py-2.5 text-slate-300 hover:bg-slate-700 hover:text-white">
                           🔍 Hisse Tarama
                         </Link>
                         <Link href="/viop" className="block px-4 py-2.5 text-slate-300 hover:bg-slate-700 hover:text-white">
-                          📊 VIOP
+                          📊 VİOP
                         </Link>
                         <Link href="/heatmap" className="block px-4 py-2.5 text-slate-300 hover:bg-slate-700 hover:text-white">
                           🗺️ Isı Haritası

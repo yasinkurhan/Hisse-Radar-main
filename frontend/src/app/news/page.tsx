@@ -1,7 +1,8 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
+import MacroSentimentPanel from '@/components/MacroSentimentPanel';
 
 interface KAPNotification {
   title: string;
@@ -112,7 +113,7 @@ export default function NewsPage() {
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'kap' | 'news' | 'sentiment'>('kap');
+  const [activeTab, setActiveTab] = useState<'kap' | 'news' | 'sentiment' | 'makro'>('kap');
   const [searchSymbol, setSearchSymbol] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
   const [selectedSentiment, setSelectedSentiment] = useState<string>('ALL');
@@ -123,7 +124,7 @@ export default function NewsPage() {
       const ts = Date.now();
       const refreshParam = refresh ? '&refresh=true' : '';
       const res = await fetch(
-        `http://localhost:8001/api/news/kap?limit=500&days=90&t=${ts}${refreshParam}`,
+        `http://localhost:8000/api/news/kap?limit=500&days=90&t=${ts}${refreshParam}`,
         { cache: 'no-store' }
       );
       if (res.ok) {
@@ -155,8 +156,8 @@ export default function NewsPage() {
     try {
       const ts = Date.now();
       const [marketRes, sentimentRes] = await Promise.all([
-        fetch(`http://localhost:8001/api/news/real/market?t=${ts}`, { cache: 'no-store' }).catch(() => null),
-        fetch(`http://localhost:8001/api/news/kap/sentiment?days=90&min_news=1&t=${ts}`, { cache: 'no-store' }).catch(() => null),
+        fetch(`http://localhost:8000/api/news/real/market?t=${ts}`, { cache: 'no-store' }).catch(() => null),
+        fetch(`http://localhost:8000/api/news/kap/sentiment?days=90&min_news=1&t=${ts}`, { cache: 'no-store' }).catch(() => null),
       ]);
       if (marketRes?.ok) {
         const data = await marketRes.json();
@@ -192,7 +193,7 @@ export default function NewsPage() {
     if (collectionStatus?.is_running) {
       statusIntervalRef.current = setInterval(async () => {
         try {
-          const res = await fetch(`http://localhost:8001/api/news/kap/collection-status?t=${Date.now()}`, { cache: 'no-store' });
+          const res = await fetch(`http://localhost:8000/api/news/kap/collection-status?t=${Date.now()}`, { cache: 'no-store' });
           if (res.ok) {
             const status = await res.json();
             setCollectionStatus(status);
@@ -298,11 +299,23 @@ export default function NewsPage() {
           )}
 
           {/* Tabs */}
-          <div className="flex gap-1 mt-3">
-            {(['kap', 'news', 'sentiment'] as const).map(tab => (
+          <div className="flex gap-1 mt-3 overflow-x-auto">
+            {(['kap', 'news', 'sentiment', 'makro'] as const).map(tab => (
               <button key={tab} onClick={() => setActiveTab(tab)}
-                className={`px-4 py-2 rounded-t-lg text-sm font-medium transition-colors ${activeTab === tab ? 'bg-[#131722] text-white border-t-2 border-blue-500' : 'text-gray-400 hover:text-white hover:bg-gray-700/50'}`}>
-                {tab === 'kap' ? `📋 KAP (${filteredKap.length})` : tab === 'news' ? `📰 Haberler (${allNews.length})` : '📈 Sentiment'}
+                className={`px-4 py-2 rounded-t-lg text-sm font-medium transition-colors whitespace-nowrap ${
+                  activeTab === tab
+                    ? tab === 'makro'
+                      ? 'bg-[#131722] text-white border-t-2 border-purple-500'
+                      : 'bg-[#131722] text-white border-t-2 border-blue-500'
+                    : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+                }`}>
+                {tab === 'kap'
+                  ? `📋 KAP (${filteredKap.length})`
+                  : tab === 'news'
+                  ? `📰 Haberler (${allNews.length})`
+                  : tab === 'sentiment'
+                  ? '📈 Sentiment'
+                  : '🌐 Makro Gündem'}
               </button>
             ))}
           </div>
@@ -433,6 +446,23 @@ export default function NewsPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {/* Makro Gündem Tab */}
+        {activeTab === 'makro' && (
+          <div className="max-w-3xl mx-auto">
+            <div className="mb-4">
+              <h2 className="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                <span>🌐</span>
+                <span>Küresel & Yerel Makro Gündem</span>
+              </h2>
+              <p className="text-xs text-slate-500 mt-1">
+                Google News kaynaklı anlık haber analizi. Jeopolitik riskler, merkez bankası kararları,
+                enerji fiyatları ve diğer makro faktörlerin BIST&apos;e etkisi değerlendiriliyor.
+              </p>
+            </div>
+            <MacroSentimentPanel />
           </div>
         )}
       </div>

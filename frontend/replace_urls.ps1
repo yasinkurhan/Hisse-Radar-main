@@ -1,0 +1,1 @@
+﻿$files = Get-ChildItem -Path "src" -Recurse -Filter "*.ts*"; foreach ($file in $files) { $content = Get-Content $file.FullName; $content -replace "8001", "8000" | Set-Content $file.FullName -Encoding UTF8 }

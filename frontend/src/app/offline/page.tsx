@@ -103,12 +103,12 @@ export default function OfflinePage() {
 
         {/* Tips */}
         <div className="mt-8 text-left bg-gray-800/30 rounded-xl p-4">
-          <h3 className="text-white font-semibold mb-2 text-sm">💡 İpuçları</h3>
+          <h3 className="text-white font-semibold mb-2 text-sm">�� İpuçları</h3>
           <ul className="text-gray-400 text-xs space-y-1">
-            <li>• WiFi veya mobil veri bağlantınızı kontrol edin</li>
-            <li>• Uçak modunun kapalı olduğundan emin olun</li>
-            <li>• Yönlendiricinizi yeniden başlatmayı deneyin</li>
-            <li>• Daha önce ziyaret ettiğiniz sayfalar önbellekte olabilir</li>
+            <li>â€¢ WiFi veya mobil veri bağlantınızı kontrol edin</li>
+            <li>â€¢ Uçak modunun kapalı olduğundan emin olun</li>
+            <li>â€¢ Yönlendiricinizi yeniden başlatmayı deneyin</li>
+            <li>â€¢ Daha önce ziyaret ettiğiniz sayfalar önbellekte olabilir</li>
           </ul>
         </div>
       </div>

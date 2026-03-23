@@ -126,7 +126,7 @@ export default function AIPrediction({ symbol }: AIPredictionProps) {
       ctx.fillStyle = '#94a3b8';
       ctx.font = '12px Inter, system-ui, sans-serif';
       ctx.textAlign = 'right';
-      ctx.fillText(`₺${price.toFixed(2)}`, padding.left - 10, y + 4);
+      ctx.fillText(`â‚º${price.toFixed(2)}`, padding.left - 10, y + 4);
     }
     ctx.setLineDash([]);
 
@@ -401,7 +401,7 @@ export default function AIPrediction({ symbol }: AIPredictionProps) {
     ctx.fillStyle = '#8b5cf6';
     ctx.font = 'bold 11px Inter, system-ui, sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText(`₺${lastPrediction.predicted_price.toFixed(2)}`, width - padding.right + 8, targetY + 4);
+    ctx.fillText(`â‚º${lastPrediction.predicted_price.toFixed(2)}`, width - padding.right + 8, targetY + 4);
   };
 
   const getSignalColor = (signal: string) => {
@@ -530,7 +530,7 @@ export default function AIPrediction({ symbol }: AIPredictionProps) {
             <Target className="w-3 h-3" />
             <span>Hedef Fiyat</span>
           </div>
-          <p className="text-lg font-bold text-white">₺{summary.target_price_7d.toFixed(2)}</p>
+          <p className="text-lg font-bold text-white">â‚º{summary.target_price_7d.toFixed(2)}</p>
           <p className={`text-xs ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
             {isPositive ? '+' : ''}{changePercent.toFixed(2)}%
           </p>
@@ -558,8 +558,8 @@ export default function AIPrediction({ symbol }: AIPredictionProps) {
             <Shield className="w-3 h-3" />
             <span>Stop Loss</span>
           </div>
-          <p className="text-lg font-bold text-red-400">₺{ai_signal.stop_loss.toFixed(2)}</p>
-          <p className="text-xs text-slate-400">Destek: ₺{support_resistance.support_1.toFixed(2)}</p>
+          <p className="text-lg font-bold text-red-400">â‚º{ai_signal.stop_loss.toFixed(2)}</p>
+          <p className="text-xs text-slate-400">Destek: â‚º{support_resistance.support_1.toFixed(2)}</p>
         </div>
 
         <div className="bg-slate-700/50 rounded-lg p-3">
@@ -567,8 +567,8 @@ export default function AIPrediction({ symbol }: AIPredictionProps) {
             <TrendingUp className="w-3 h-3" />
             <span>Kar Al</span>
           </div>
-          <p className="text-lg font-bold text-green-400">₺{ai_signal.take_profit.toFixed(2)}</p>
-          <p className="text-xs text-slate-400">Direnç: ₺{support_resistance.resistance_1.toFixed(2)}</p>
+          <p className="text-lg font-bold text-green-400">â‚º{ai_signal.take_profit.toFixed(2)}</p>
+          <p className="text-xs text-slate-400">Direnç: â‚º{support_resistance.resistance_1.toFixed(2)}</p>
         </div>
       </div>
 

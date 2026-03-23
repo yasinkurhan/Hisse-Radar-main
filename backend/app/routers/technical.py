@@ -1,4 +1,4 @@
-"""
+﻿"""
 HisseRadar Teknik Analiz Router
 ================================
 RSI, MACD, Bollinger Bands, MA, EMA API'leri
@@ -16,19 +16,19 @@ router = APIRouter(prefix="/api/technical", tags=["Teknik Analiz"])
 
 
 @router.get("/{symbol}")
-async def get_technical_indicators(
+def get_technical_indicators(
     symbol: str,
     period: str = Query("6mo", description="Zaman dilimi"),
-    interval: str = Query("1d", description="Veri aralığı")
+    interval: str = Query("1d", description="Veri aralÄ±ÄŸÄ±")
 ):
     """
-    Tüm teknik göstergeleri getir.
+    TÃ¼m teknik gÃ¶stergeleri getir.
     
-    - **symbol**: Hisse sembolü (örn: THYAO)
-    - **period**: Zaman dilimi (varsayılan: 6mo)
-    - **interval**: Veri aralığı (varsayılan: 1d)
+    - **symbol**: Hisse sembolÃ¼ (Ã¶rn: THYAO)
+    - **period**: Zaman dilimi (varsayÄ±lan: 6mo)
+    - **interval**: Veri aralÄ±ÄŸÄ± (varsayÄ±lan: 1d)
     
-    Dönen göstergeler:
+    DÃ¶nen gÃ¶stergeler:
     - RSI (14 periyot)
     - MACD (12, 26, 9)
     - Bollinger Bands (20, 2)
@@ -41,7 +41,7 @@ async def get_technical_indicators(
     if df.empty:
         raise HTTPException(
             status_code=404,
-            detail=f"{symbol} için veri bulunamadı"
+            detail=f"{symbol} iÃ§in veri bulunamadÄ±"
         )
     
     # Teknik analiz yap
@@ -57,19 +57,19 @@ async def get_technical_indicators(
 
 
 @router.get("/{symbol}/rsi")
-async def get_rsi(
+def get_rsi(
     symbol: str,
     period: str = Query("6mo", description="Zaman dilimi"),
-    interval: str = Query("1d", description="Veri aralığı"),
+    interval: str = Query("1d", description="Veri aralÄ±ÄŸÄ±"),
     rsi_period: int = Query(14, ge=2, le=50, description="RSI periyodu")
 ):
     """
-    RSI (Relative Strength Index) göstergesini getir.
+    RSI (Relative Strength Index) gÃ¶stergesini getir.
     
     RSI Yorumlama:
-    - > 70: Aşırı alım bölgesi (satış sinyali olabilir)
-    - < 30: Aşırı satım bölgesi (alış sinyali olabilir)
-    - 50 civarı: Nötr bölge
+    - > 70: AÅŸÄ±rÄ± alÄ±m bÃ¶lgesi (satÄ±ÅŸ sinyali olabilir)
+    - < 30: AÅŸÄ±rÄ± satÄ±m bÃ¶lgesi (alÄ±ÅŸ sinyali olabilir)
+    - 50 civarÄ±: NÃ¶tr bÃ¶lge
     """
     fetcher = get_data_fetcher()
     df = fetcher.get_price_history(symbol.upper(), period=period, interval=interval)
@@ -77,13 +77,13 @@ async def get_rsi(
     if df.empty:
         raise HTTPException(
             status_code=404,
-            detail=f"{symbol} için veri bulunamadı"
+            detail=f"{symbol} iÃ§in veri bulunamadÄ±"
         )
     
     analyzer = TechnicalAnalyzer(df)
     rsi = analyzer.calculate_rsi(period=rsi_period)
     
-    # Listeye çevir
+    # Listeye Ã§evir
     data = []
     for timestamp, value in rsi.items():
         if value is not None and not (isinstance(value, float) and value != value):  # NaN check
@@ -92,7 +92,7 @@ async def get_rsi(
                 "value": round(float(value), 2)
             })
     
-    # Son değer ve sinyal
+    # Son deÄŸer ve sinyal
     last_value = rsi.iloc[-1] if len(rsi) > 0 else None
     signal = analyzer.get_rsi_signal(last_value)
     
@@ -112,22 +112,22 @@ async def get_rsi(
 
 
 @router.get("/{symbol}/macd")
-async def get_macd(
+def get_macd(
     symbol: str,
     period: str = Query("6mo", description="Zaman dilimi"),
-    interval: str = Query("1d", description="Veri aralığı"),
-    fast_period: int = Query(12, ge=2, le=50, description="Hızlı EMA periyodu"),
-    slow_period: int = Query(26, ge=2, le=100, description="Yavaş EMA periyodu"),
+    interval: str = Query("1d", description="Veri aralÄ±ÄŸÄ±"),
+    fast_period: int = Query(12, ge=2, le=50, description="HÄ±zlÄ± EMA periyodu"),
+    slow_period: int = Query(26, ge=2, le=100, description="YavaÅŸ EMA periyodu"),
     signal_period: int = Query(9, ge=2, le=50, description="Sinyal periyodu")
 ):
     """
-    MACD (Moving Average Convergence Divergence) göstergesini getir.
+    MACD (Moving Average Convergence Divergence) gÃ¶stergesini getir.
     
     MACD Yorumlama:
-    - MACD çizgisi sinyal çizgisini yukarı keserse: Alış sinyali
-    - MACD çizgisi sinyal çizgisini aşağı keserse: Satış sinyali
-    - Histogram pozitif: Yukarı momentum
-    - Histogram negatif: Aşağı momentum
+    - MACD Ã§izgisi sinyal Ã§izgisini yukarÄ± keserse: AlÄ±ÅŸ sinyali
+    - MACD Ã§izgisi sinyal Ã§izgisini aÅŸaÄŸÄ± keserse: SatÄ±ÅŸ sinyali
+    - Histogram pozitif: YukarÄ± momentum
+    - Histogram negatif: AÅŸaÄŸÄ± momentum
     """
     fetcher = get_data_fetcher()
     df = fetcher.get_price_history(symbol.upper(), period=period, interval=interval)
@@ -135,7 +135,7 @@ async def get_macd(
     if df.empty:
         raise HTTPException(
             status_code=404,
-            detail=f"{symbol} için veri bulunamadı"
+            detail=f"{symbol} iÃ§in veri bulunamadÄ±"
         )
     
     analyzer = TechnicalAnalyzer(df)
@@ -145,7 +145,7 @@ async def get_macd(
         signal_period=signal_period
     )
     
-    # Listeye çevir
+    # Listeye Ã§evir
     data = []
     for i, timestamp in enumerate(df.index):
         macd_val = macd["macd"].iloc[i]
@@ -162,7 +162,7 @@ async def get_macd(
     
     # Sinyal belirleme
     last_hist = macd["histogram"].iloc[-1] if len(macd["histogram"]) > 0 else 0
-    signal = "Yükseliş" if last_hist > 0 else "Düşüş"
+    signal = "YÃ¼kseliÅŸ" if last_hist > 0 else "DÃ¼ÅŸÃ¼ÅŸ"
     
     return {
         "symbol": symbol.upper(),
@@ -178,21 +178,21 @@ async def get_macd(
 
 
 @router.get("/{symbol}/bollinger")
-async def get_bollinger_bands(
+def get_bollinger_bands(
     symbol: str,
     period: str = Query("6mo", description="Zaman dilimi"),
-    interval: str = Query("1d", description="Veri aralığı"),
+    interval: str = Query("1d", description="Veri aralÄ±ÄŸÄ±"),
     bb_period: int = Query(20, ge=5, le=50, description="Bollinger periyodu"),
-    std_dev: float = Query(2.0, ge=0.5, le=4.0, description="Standart sapma çarpanı")
+    std_dev: float = Query(2.0, ge=0.5, le=4.0, description="Standart sapma Ã§arpanÄ±")
 ):
     """
-    Bollinger Bands göstergesini getir.
+    Bollinger Bands gÃ¶stergesini getir.
     
     Bollinger Yorumlama:
-    - Fiyat üst banda dokunursa: Potansiyel direnç, aşırı alım
-    - Fiyat alt banda dokunursa: Potansiyel destek, aşırı satım
-    - Bantlar daralırsa: Volatilite düşük, breakout beklentisi
-    - Bantlar genişlerse: Yüksek volatilite
+    - Fiyat Ã¼st banda dokunursa: Potansiyel direnÃ§, aÅŸÄ±rÄ± alÄ±m
+    - Fiyat alt banda dokunursa: Potansiyel destek, aÅŸÄ±rÄ± satÄ±m
+    - Bantlar daralÄ±rsa: Volatilite dÃ¼ÅŸÃ¼k, breakout beklentisi
+    - Bantlar geniÅŸlerse: YÃ¼ksek volatilite
     """
     fetcher = get_data_fetcher()
     df = fetcher.get_price_history(symbol.upper(), period=period, interval=interval)
@@ -200,13 +200,13 @@ async def get_bollinger_bands(
     if df.empty:
         raise HTTPException(
             status_code=404,
-            detail=f"{symbol} için veri bulunamadı"
+            detail=f"{symbol} iÃ§in veri bulunamadÄ±"
         )
     
     analyzer = TechnicalAnalyzer(df)
     bb = analyzer.calculate_bollinger_bands(period=bb_period, std_dev=std_dev)
     
-    # Listeye çevir
+    # Listeye Ã§evir
     data = []
     for i, timestamp in enumerate(df.index):
         upper = bb["upper"].iloc[i]
@@ -227,11 +227,11 @@ async def get_bollinger_bands(
     last_lower = bb["lower"].iloc[-1]
     
     if last_close >= last_upper:
-        position = "Üst Bant Üzerinde"
+        position = "Ãœst Bant Ãœzerinde"
     elif last_close <= last_lower:
-        position = "Alt Bant Altında"
+        position = "Alt Bant AltÄ±nda"
     else:
-        position = "Bantlar Arasında"
+        position = "Bantlar ArasÄ±nda"
     
     return {
         "symbol": symbol.upper(),
@@ -246,19 +246,19 @@ async def get_bollinger_bands(
 
 
 @router.get("/{symbol}/ma")
-async def get_moving_averages(
+def get_moving_averages(
     symbol: str,
     period: str = Query("1y", description="Zaman dilimi"),
-    interval: str = Query("1d", description="Veri aralığı")
+    interval: str = Query("1d", description="Veri aralÄ±ÄŸÄ±")
 ):
     """
-    Hareketli ortalamaları getir (SMA ve EMA).
+    Hareketli ortalamalarÄ± getir (SMA ve EMA).
     
     Hareketli Ortalama Yorumlama:
-    - Fiyat > SMA50 > SMA200: Güçlü yükseliş trendi
-    - Fiyat < SMA50 < SMA200: Güçlü düşüş trendi
-    - Golden Cross (SMA50 > SMA200): Uzun vadeli alış sinyali
-    - Death Cross (SMA50 < SMA200): Uzun vadeli satış sinyali
+    - Fiyat > SMA50 > SMA200: GÃ¼Ã§lÃ¼ yÃ¼kseliÅŸ trendi
+    - Fiyat < SMA50 < SMA200: GÃ¼Ã§lÃ¼ dÃ¼ÅŸÃ¼ÅŸ trendi
+    - Golden Cross (SMA50 > SMA200): Uzun vadeli alÄ±ÅŸ sinyali
+    - Death Cross (SMA50 < SMA200): Uzun vadeli satÄ±ÅŸ sinyali
     """
     fetcher = get_data_fetcher()
     df = fetcher.get_price_history(symbol.upper(), period=period, interval=interval)
@@ -266,13 +266,13 @@ async def get_moving_averages(
     if df.empty:
         raise HTTPException(
             status_code=404,
-            detail=f"{symbol} için veri bulunamadı"
+            detail=f"{symbol} iÃ§in veri bulunamadÄ±"
         )
     
     analyzer = TechnicalAnalyzer(df)
     mas = analyzer.calculate_all_moving_averages()
     
-    # Listeye çevir
+    # Listeye Ã§evir
     data = []
     for i, timestamp in enumerate(df.index):
         entry = {"time": int(timestamp.timestamp())}
@@ -289,7 +289,7 @@ async def get_moving_averages(
     # Trend analizi
     trend = analyzer._determine_trend(mas)
     
-    # Son değerler
+    # Son deÄŸerler
     current = {}
     for key, series in mas.items():
         last_val = series.iloc[-1]
@@ -306,14 +306,14 @@ async def get_moving_averages(
 
 
 @router.get("/{symbol}/summary")
-async def get_technical_summary(
+def get_technical_summary(
     symbol: str,
     period: str = Query("6mo", description="Zaman dilimi")
 ):
     """
-    Teknik analiz özet raporu.
+    Teknik analiz Ã¶zet raporu.
     
-    Tüm göstergelerin son değerlerini ve sinyallerini içerir.
+    TÃ¼m gÃ¶stergelerin son deÄŸerlerini ve sinyallerini iÃ§erir.
     """
     fetcher = get_data_fetcher()
     df = fetcher.get_price_history(symbol.upper(), period=period, interval="1d")
@@ -321,7 +321,7 @@ async def get_technical_summary(
     if df.empty:
         raise HTTPException(
             status_code=404,
-            detail=f"{symbol} için veri bulunamadı"
+            detail=f"{symbol} iÃ§in veri bulunamadÄ±"
         )
     
     analyzer = TechnicalAnalyzer(df)
@@ -350,44 +350,44 @@ async def get_technical_summary(
     
     # RSI sinyali
     if last_rsi and last_rsi > 70:
-        signals.append({"indicator": "RSI", "signal": "Satış", "reason": "Aşırı alım bölgesi"})
+        signals.append({"indicator": "RSI", "signal": "SatÄ±ÅŸ", "reason": "AÅŸÄ±rÄ± alÄ±m bÃ¶lgesi"})
     elif last_rsi and last_rsi < 30:
-        signals.append({"indicator": "RSI", "signal": "Alış", "reason": "Aşırı satım bölgesi"})
+        signals.append({"indicator": "RSI", "signal": "AlÄ±ÅŸ", "reason": "AÅŸÄ±rÄ± satÄ±m bÃ¶lgesi"})
     else:
-        signals.append({"indicator": "RSI", "signal": "Nötr", "reason": "Normal bölge"})
+        signals.append({"indicator": "RSI", "signal": "NÃ¶tr", "reason": "Normal bÃ¶lge"})
     
     # MACD sinyali
     if last_macd_hist > 0:
-        signals.append({"indicator": "MACD", "signal": "Alış", "reason": "Pozitif momentum"})
+        signals.append({"indicator": "MACD", "signal": "AlÄ±ÅŸ", "reason": "Pozitif momentum"})
     else:
-        signals.append({"indicator": "MACD", "signal": "Satış", "reason": "Negatif momentum"})
+        signals.append({"indicator": "MACD", "signal": "SatÄ±ÅŸ", "reason": "Negatif momentum"})
     
     # Bollinger sinyali
     if last_close >= last_upper:
-        signals.append({"indicator": "Bollinger", "signal": "Satış", "reason": "Üst banda temas"})
+        signals.append({"indicator": "Bollinger", "signal": "SatÄ±ÅŸ", "reason": "Ãœst banda temas"})
     elif last_close <= last_lower:
-        signals.append({"indicator": "Bollinger", "signal": "Alış", "reason": "Alt banda temas"})
+        signals.append({"indicator": "Bollinger", "signal": "AlÄ±ÅŸ", "reason": "Alt banda temas"})
     else:
-        signals.append({"indicator": "Bollinger", "signal": "Nötr", "reason": "Bantlar arasında"})
+        signals.append({"indicator": "Bollinger", "signal": "NÃ¶tr", "reason": "Bantlar arasÄ±nda"})
     
     # Trend sinyali
-    if "Yükseliş" in trend:
-        signals.append({"indicator": "Trend", "signal": "Alış", "reason": trend})
-    elif "Düşüş" in trend:
-        signals.append({"indicator": "Trend", "signal": "Satış", "reason": trend})
+    if "YÃ¼kseliÅŸ" in trend:
+        signals.append({"indicator": "Trend", "signal": "AlÄ±ÅŸ", "reason": trend})
+    elif "DÃ¼ÅŸÃ¼ÅŸ" in trend:
+        signals.append({"indicator": "Trend", "signal": "SatÄ±ÅŸ", "reason": trend})
     else:
-        signals.append({"indicator": "Trend", "signal": "Nötr", "reason": trend})
+        signals.append({"indicator": "Trend", "signal": "NÃ¶tr", "reason": trend})
     
-    # Genel değerlendirme
-    buy_signals = sum(1 for s in signals if s["signal"] == "Alış")
-    sell_signals = sum(1 for s in signals if s["signal"] == "Satış")
+    # Genel deÄŸerlendirme
+    buy_signals = sum(1 for s in signals if s["signal"] == "AlÄ±ÅŸ")
+    sell_signals = sum(1 for s in signals if s["signal"] == "SatÄ±ÅŸ")
     
     if buy_signals > sell_signals:
-        overall = "Alış"
+        overall = "AlÄ±ÅŸ"
     elif sell_signals > buy_signals:
-        overall = "Satış"
+        overall = "SatÄ±ÅŸ"
     else:
-        overall = "Nötr"
+        overall = "NÃ¶tr"
     
     return {
         "symbol": symbol.upper(),
@@ -399,13 +399,13 @@ async def get_technical_summary(
             },
             "macd": {
                 "histogram": round(float(last_macd_hist), 4) if last_macd_hist else None,
-                "signal": "Yükseliş" if last_macd_hist > 0 else "Düşüş"
+                "signal": "YÃ¼kseliÅŸ" if last_macd_hist > 0 else "DÃ¼ÅŸÃ¼ÅŸ"
             },
             "bollinger": {
                 "upper": round(float(last_upper), 2),
                 "middle": round(float(last_middle), 2),
                 "lower": round(float(last_lower), 2),
-                "position": "Üst" if last_close >= last_upper else ("Alt" if last_close <= last_lower else "Orta")
+                "position": "Ãœst" if last_close >= last_upper else ("Alt" if last_close <= last_lower else "Orta")
             },
             "trend": trend
         },
@@ -418,25 +418,25 @@ async def get_technical_summary(
 
 
 @router.get("/{symbol}/patterns")
-async def get_chart_patterns(
+def get_chart_patterns(
     symbol: str,
     period: str = Query("6mo", description="Zaman dilimi"),
-    interval: str = Query("1d", description="Veri aralığı")
+    interval: str = Query("1d", description="Veri aralÄ±ÄŸÄ±")
 ):
     """
-    Grafik formasyonlarını tespit et (Flama, Üçgen, Baş-Omuz vb.)
+    Grafik formasyonlarÄ±nÄ± tespit et (Flama, ÃœÃ§gen, BaÅŸ-Omuz vb.)
     
-    - **symbol**: Hisse sembolü (örn: THYAO)
-    - **period**: Zaman dilimi (varsayılan: 6mo)
-    - **interval**: Veri aralığı (varsayılan: 1d)
+    - **symbol**: Hisse sembolÃ¼ (Ã¶rn: THYAO)
+    - **period**: Zaman dilimi (varsayÄ±lan: 6mo)
+    - **interval**: Veri aralÄ±ÄŸÄ± (varsayÄ±lan: 1d)
     
     Tespit edilen formasyonlar:
-    - 🚩 Flama (Flag): Güçlü trend sonrası dar konsolidasyon
-    - 📐 Üçgen (Triangle): Yükselen, düşen, simetrik üçgenler
-    - 👤 Baş-Omuz (Head & Shoulders): Trend dönüş formasyonu
-    - 🔄 İkili Tepe/Dip (Double Top/Bottom): Direnç/destek testleri
-    - 📊 Kanal (Channel): Paralel trend çizgileri
-    - 📉 Kama (Wedge): Daralan kanal formasyonu
+    - ğŸš© Flama (Flag): GÃ¼Ã§lÃ¼ trend sonrasÄ± dar konsolidasyon
+    - ğŸ“ ÃœÃ§gen (Triangle): YÃ¼kselen, dÃ¼ÅŸen, simetrik Ã¼Ã§genler
+    - ğŸ‘¤ BaÅŸ-Omuz (Head & Shoulders): Trend dÃ¶nÃ¼ÅŸ formasyonu
+    - ğŸ”„ Ä°kili Tepe/Dip (Double Top/Bottom): DirenÃ§/destek testleri
+    - ğŸ“Š Kanal (Channel): Paralel trend Ã§izgileri
+    - ğŸ“‰ Kama (Wedge): Daralan kanal formasyonu
     """
     fetcher = get_data_fetcher()
     df = fetcher.get_price_history(symbol.upper(), period=period, interval=interval)
@@ -444,7 +444,7 @@ async def get_chart_patterns(
     if df.empty:
         raise HTTPException(
             status_code=404,
-            detail=f"{symbol} için veri bulunamadı"
+            detail=f"{symbol} iÃ§in veri bulunamadÄ±"
         )
     
     # Pattern detection

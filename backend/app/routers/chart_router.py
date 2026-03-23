@@ -14,7 +14,7 @@ router = APIRouter(
 
 
 @router.get("/ohlc/{symbol}")
-async def get_ohlc_data(
+def get_ohlc_data(
     symbol: str,
     period: str = Query("3mo", description="Veri periyodu: 1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, max"),
     interval: str = Query("1d", description="Veri aralığı: 1m, 5m, 15m, 30m, 1h, 1d, 1wk, 1mo")

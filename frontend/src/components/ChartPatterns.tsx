@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, Triangle, Flag, Activity, BarChart3, Target, Layers, Zap, Gem, ArrowUpDown, CandlestickChart } from 'lucide-react';
@@ -81,7 +81,7 @@ export default function ChartPatterns({ symbol, period = '6mo' }: ChartPatternsP
       setLoading(true);
       setError(null);
       const response = await fetch(
-        `http://localhost:8001/api/technical/${symbol}/patterns?period=${period}`
+        `http://localhost:8000/api/technical/${symbol}/patterns?period=${period}`
       );
       if (!response.ok) throw new Error('Formasyon verisi alınamadı');
       const data = await response.json();

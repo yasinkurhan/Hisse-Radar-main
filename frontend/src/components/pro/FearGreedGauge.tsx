@@ -50,7 +50,7 @@ export default function FearGreedGauge({ data, compact = false }: FearGreedGauge
   return (
     <div className="bg-surface rounded-lg p-6">
       <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-        <span>😱</span> Korku & Açgözlülük Endeksi
+        <span>�ܱ</span> Korku & Açgözlülük Endeksi
       </h3>
 
       {/* Main Gauge */}
@@ -106,11 +106,11 @@ export default function FearGreedGauge({ data, compact = false }: FearGreedGauge
       <div className={`p-4 rounded-lg border mb-6 ${getStatusBgClass(data.status)}`}>
         <div className="flex items-center justify-center gap-3">
           <span className="text-3xl">
-            {data.status === 'extreme_fear' && '😱'}
-            {data.status === 'fear' && '😰'}
-            {data.status === 'neutral' && '😐'}
-            {data.status === 'greed' && '😏'}
-            {data.status === 'extreme_greed' && '🤑'}
+            {data.status === 'extreme_fear' && '�ܱ'}
+            {data.status === 'fear' && '�ܰ'}
+            {data.status === 'neutral' && '�ܐ'}
+            {data.status === 'greed' && '�܏'}
+            {data.status === 'extreme_greed' && '�'}
           </span>
           <div className="text-center">
             <div className="text-2xl font-bold">{data.status_tr}</div>
@@ -159,7 +159,7 @@ export default function FearGreedGauge({ data, compact = false }: FearGreedGauge
 
       {/* Interpretation */}
       <div className="mt-6 p-4 bg-card rounded-lg">
-        <h4 className="font-semibold mb-2">📊 Yorum</h4>
+        <h4 className="font-semibold mb-2">�` Yorum</h4>
         <p className="text-sm text-muted">
           {data.status === 'extreme_fear' && (
             'Piyasada aşırı korku hakim. Tarihsel olarak bu seviyeler alım fırsatı sunabilir, ancak düşüş devam edebilir.'

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * HisseRadar PWA Utilities
  * Service Worker, Push Notifications, Offline Support
  */
@@ -66,7 +66,7 @@ export async function subscribeToPush(registration: ServiceWorkerRegistration): 
     
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+      applicationServerKey: urlBase64ToUint8Array(vapidPublicKey) as any
     });
 
     console.log('[PWA] Push subscription oluşturuldu');
@@ -101,7 +101,7 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
 // Subscription'ı backend'e kaydet
 async function savePushSubscription(subscription: PushSubscription): Promise<void> {
   try {
-    await fetch('http://localhost:8001/api/user/push-subscription', {
+    await fetch('http://localhost:8000/api/user/push-subscription', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(subscription.toJSON())
@@ -120,7 +120,7 @@ export function showLocalNotification(
     return;
   }
 
-  const defaultOptions: NotificationOptions = {
+  const defaultOptions: any = {
     icon: '/icons/icon-192x192.png',
     badge: '/icons/badge-72x72.png',
     vibrate: [100, 50, 100],

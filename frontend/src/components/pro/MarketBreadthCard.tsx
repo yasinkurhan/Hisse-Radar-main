@@ -38,7 +38,7 @@ export default function MarketBreadthCard({ data }: MarketBreadthCardProps) {
   return (
     <div className="bg-surface rounded-lg p-6">
       <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-        <span>📊</span> Piyasa Genişliği
+        <span>�`</span> Piyasa Genişliği
       </h3>
 
       {/* Signal Badge */}
@@ -149,31 +149,31 @@ export default function MarketBreadthCard({ data }: MarketBreadthCardProps) {
 
       {/* Interpretation */}
       <div className="mt-6 p-4 bg-card rounded-lg">
-        <h4 className="font-semibold mb-2">📖 Piyasa Genişliği Yorumu</h4>
+        <h4 className="font-semibold mb-2">� Piyasa Genişliği Yorumu</h4>
         <div className="text-sm text-muted space-y-1">
           {adRatio > 2 && (
-            <p className="text-up">✓ A/D oranı çok güçlü - Geniş tabanlı yükseliş</p>
+            <p className="text-up">âœ“ A/D oranı çok güçlü - Geniş tabanlı yükseliş</p>
           )}
           {adRatio > 1 && adRatio <= 2 && (
-            <p className="text-up">✓ A/D oranı pozitif - Piyasa genelinde yükseliş</p>
+            <p className="text-up">âœ“ A/D oranı pozitif - Piyasa genelinde yükseliş</p>
           )}
           {adRatio < 1 && adRatio >= 0.5 && (
-            <p className="text-down">✗ A/D oranı negatif - Piyasa genelinde düşüş</p>
+            <p className="text-down">âœ— A/D oranı negatif - Piyasa genelinde düşüş</p>
           )}
           {adRatio < 0.5 && (
-            <p className="text-down">✗ A/D oranı çok zayıf - Geniş tabanlı satış</p>
+            <p className="text-down">âœ— A/D oranı çok zayıf - Geniş tabanlı satış</p>
           )}
           {newHighs > newLows * 2 && (
-            <p className="text-up">✓ Yeni zirveler yeni diplerden fazla - Boğa piyasası</p>
+            <p className="text-up">âœ“ Yeni zirveler yeni diplerden fazla - Boğa piyasası</p>
           )}
           {newLows > newHighs * 2 && (
-            <p className="text-down">✗ Yeni dipler yeni zirvelerden fazla - Ayı piyasası</p>
+            <p className="text-down">âœ— Yeni dipler yeni zirvelerden fazla - Ayı piyasası</p>
           )}
           {pctSma200 < 30 && (
-            <p className="text-yellow-400">⚠ Çoğu hisse 200 günlük MA altında - Aşırı satım olabilir</p>
+            <p className="text-yellow-400">âš  Çoğu hisse 200 günlük MA altında - Aşırı satım olabilir</p>
           )}
           {pctSma200 > 70 && (
-            <p className="text-yellow-400">⚠ Çoğu hisse 200 günlük MA üstünde - Aşırı alım olabilir</p>
+            <p className="text-yellow-400">âš  Çoğu hisse 200 günlük MA üstünde - Aşırı alım olabilir</p>
           )}
         </div>
       </div>

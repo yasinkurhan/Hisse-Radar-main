@@ -15,8 +15,8 @@ router = APIRouter(prefix="/api/kap", tags=["kap-news"])
 @router.get("/news/{symbol}")
 async def get_symbol_news(
     symbol: str,
-    limit: int = Query(default=20, ge=1, le=100),
-    days: int = Query(default=30, ge=1, le=365)
+    limit: int = Query(default=50, ge=1, le=200),
+    days: int = Query(default=90, ge=1, le=365)
 ):
     """
     Belirli bir hisse için KAP haberlerini getir

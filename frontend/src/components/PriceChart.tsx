@@ -299,7 +299,7 @@ export default function PriceChart({
 
       {/* Bilgi */}
       <div className="text-xs text-slate-400 text-center">
-        💡 Grafiği yakınlaştırmak için kaydırın, sürükleyerek hareket ettirin
+        �� Grafiği yakınlaştırmak için kaydırın, sürükleyerek hareket ettirin
       </div>
     </div>
   );

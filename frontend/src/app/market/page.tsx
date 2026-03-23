@@ -115,10 +115,10 @@ export default function MarketOverviewPage() {
                 'bg-yellow-500/10 border-yellow-500/20'
               }`}>
                 <div className="text-3xl mb-2">
-                  {marketData.market_regime === 'trending_up' && '📈'}
-                  {marketData.market_regime === 'trending_down' && '📉'}
-                  {marketData.market_regime === 'volatile' && '🌊'}
-                  {marketData.market_regime === 'ranging' && '↔️'}
+                  {marketData.market_regime === 'trending_up' && '��'}
+                  {marketData.market_regime === 'trending_down' && '�0'}
+                  {marketData.market_regime === 'volatile' && '�`'}
+                  {marketData.market_regime === 'ranging' && 'â†”ï¸'}
                 </div>
                 <div className={`text-xl font-bold ${
                   marketData.market_regime === 'trending_up' ? 'text-up' :
@@ -164,7 +164,7 @@ export default function MarketOverviewPage() {
                     'bg-yellow-500/10 border-yellow-500/20'
                   }`}>
                     <div className="text-3xl mb-2">
-                      {isBullish ? '🟢' : isBearish ? '🔴' : '🟡'}
+                      {isBullish ? '🟢' : isBearish ? '��' : '🟡'}
                     </div>
                     <div className={`text-xl font-bold ${
                       isBullish ? 'text-up' : isBearish ? 'text-down' : 'text-yellow-400'
@@ -196,7 +196,7 @@ export default function MarketOverviewPage() {
         {/* Quick Stats */}
         {marketData?.breadth && (
           <div className="bg-surface rounded-lg p-6">
-            <h3 className="text-lg font-semibold mb-4">📊 Hızlı İstatistikler</h3>
+            <h3 className="text-lg font-semibold mb-4">�` Hızlı İstatistikler</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
               <div className="bg-card rounded-lg p-4 text-center">
                 <div className="text-2xl font-bold text-up">{marketData.breadth.advancing}</div>

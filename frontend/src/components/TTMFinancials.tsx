@@ -239,7 +239,7 @@ export default function TTMFinancials({ symbol }: TTMFinancialsProps) {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            📊 TTM (Son 12 Ay)
+            �` TTM (Son 12 Ay)
           </button>
         )}
         {hasUFRS && (

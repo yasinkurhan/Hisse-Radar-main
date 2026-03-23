@@ -205,8 +205,10 @@ class AISignalCombiner:
             # Sinyal değerini al
             signal_value = AISignalCombiner.SIGNAL_VALUES.get(signal.signal, 50)
             
-            # Güç ve güvenle ayarla
-            adjusted_value = signal_value * (signal.strength / 100) * signal.confidence
+            # Güç ve güvenle ayarla (yumuşatılmış formül: kök ile başkılamayı azalt)
+            strength_factor = (signal.strength / 100) ** 0.5  # Kök ile yumuşatma
+            confidence_factor = 0.4 + 0.6 * signal.confidence  # Min %40 etki
+            adjusted_value = signal_value * strength_factor * confidence_factor
             
             weighted_score += adjusted_value * weight
             total_weight += weight

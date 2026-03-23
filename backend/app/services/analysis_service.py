@@ -45,31 +45,53 @@ class AnalysisService:
             with open(data_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 self._stocks = data.get("stocks", [])
+                # O(n) linear scan yerine O(1) dict lookup
+                self._stocks_map: Dict[str, Dict] = {s["symbol"]: s for s in self._stocks}
         except FileNotFoundError:
             self._stocks = []
+            self._stocks_map = {}
 
     def _calculate_rsi(self, prices: pd.Series, period: int = 14) -> float:
+        """Wilder's Smoothed RSI (endüstri standardı EMA tabanlı)"""
         if len(prices) < period + 1:
             return 50.0
         delta = prices.diff()
-        gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
-        loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
-        rs = gain / loss
+        gain = delta.where(delta > 0, 0)
+        loss = -delta.where(delta < 0, 0)
+        # Wilder EMA (alpha = 1/period) - SMA yerine
+        avg_gain = gain.ewm(alpha=1/period, adjust=False).mean()
+        avg_loss = loss.ewm(alpha=1/period, adjust=False).mean()
+        rs = avg_gain / avg_loss
         rsi = 100 - (100 / (1 + rs))
         return float(rsi.iloc[-1]) if not pd.isna(rsi.iloc[-1]) else 50.0
 
     def _calculate_macd(self, prices: pd.Series) -> Dict[str, float]:
         if len(prices) < 26:
-            return {"macd": 0, "signal": 0, "histogram": 0}
+            return {"macd": 0, "signal": 0, "histogram": 0, "crossover_bars": 0, "is_fresh_cross": False}
         ema12 = prices.ewm(span=12, adjust=False).mean()
         ema26 = prices.ewm(span=26, adjust=False).mean()
         macd_line = ema12 - ema26
         signal_line = macd_line.ewm(span=9, adjust=False).mean()
         histogram = macd_line - signal_line
+        
+        # Crossover tespiti: histogram'ın işaret değiştirdiği son bar sayısı
+        hist_values = histogram.dropna().values
+        crossover_bars = 0
+        if len(hist_values) >= 2:
+            current_sign = hist_values[-1] > 0
+            for i in range(len(hist_values) - 2, -1, -1):
+                if (hist_values[i] > 0) == current_sign:
+                    crossover_bars += 1
+                else:
+                    break
+        is_fresh_cross = crossover_bars <= 3  # Son 3 barda kesişim = taze
+        
         return {
             "macd": float(macd_line.iloc[-1]),
             "signal": float(signal_line.iloc[-1]),
-            "histogram": float(histogram.iloc[-1])
+            "histogram": float(histogram.iloc[-1]),
+            "crossover_bars": crossover_bars,
+            "is_fresh_cross": is_fresh_cross
         }
 
     def _calculate_bollinger_bands(self, prices: pd.Series, period: int = 20) -> Dict[str, float]:
@@ -134,6 +156,342 @@ class AnalysisService:
             "ratio": round(float(ratio), 2)
         }
 
+    # ================================================================
+    # YENİ: Gelişmiş Analiz Metotları
+    # ================================================================
+
+    def _calculate_support_resistance(self, high: pd.Series, low: pd.Series, close: pd.Series) -> Dict[str, Any]:
+        """Pivot point bazlı destek/direnç seviyeleri hesapla"""
+        if len(close) < 5:
+            cp = float(close.iloc[-1]) if len(close) > 0 else 0
+            return {"support1": cp, "support2": cp, "resistance1": cp, "resistance2": cp, "pivot": cp}
+
+        h = float(high.iloc[-2])
+        l = float(low.iloc[-2])
+        c = float(close.iloc[-2])
+        pivot = (h + l + c) / 3
+        r1 = 2 * pivot - l
+        s1 = 2 * pivot - h
+        r2 = pivot + (h - l)
+        s2 = pivot - (h - l)
+        return {
+            "pivot": round(pivot, 2),
+            "resistance1": round(r1, 2),
+            "resistance2": round(r2, 2),
+            "support1": round(s1, 2),
+            "support2": round(s2, 2)
+        }
+
+    def _calculate_fibonacci_levels(self, high: pd.Series, low: pd.Series, close: pd.Series) -> Dict[str, Any]:
+        """Son 60 günlük swing high/low'dan Fibonacci retracement seviyeleri"""
+        lookback = min(60, len(close))
+        if lookback < 10:
+            cp = float(close.iloc[-1]) if len(close) > 0 else 0
+            return {"fib_0": cp, "fib_236": cp, "fib_382": cp, "fib_500": cp, "fib_618": cp, "fib_786": cp, "fib_100": cp, "trend": "yatay"}
+
+        recent_high = float(high.iloc[-lookback:].max())
+        recent_low = float(low.iloc[-lookback:].min())
+        diff = recent_high - recent_low
+        current = float(close.iloc[-1])
+
+        # Trend yönü: son 20 günün ortalaması vs son 60 günün ortalaması
+        sma20 = float(close.iloc[-20:].mean()) if len(close) >= 20 else current
+        sma60 = float(close.iloc[-lookback:].mean())
+        trend = "yukselis" if sma20 > sma60 else ("dusus" if sma20 < sma60 * 0.98 else "yatay")
+
+        if trend == "yukselis":
+            # Yükselişte: low'dan yukarı hesapla
+            levels = {
+                "fib_0": round(recent_low, 2),
+                "fib_236": round(recent_low + diff * 0.236, 2),
+                "fib_382": round(recent_low + diff * 0.382, 2),
+                "fib_500": round(recent_low + diff * 0.500, 2),
+                "fib_618": round(recent_low + diff * 0.618, 2),
+                "fib_786": round(recent_low + diff * 0.786, 2),
+                "fib_100": round(recent_high, 2),
+            }
+        else:
+            # Düşüşte: high'dan aşağı hesapla
+            levels = {
+                "fib_0": round(recent_high, 2),
+                "fib_236": round(recent_high - diff * 0.236, 2),
+                "fib_382": round(recent_high - diff * 0.382, 2),
+                "fib_500": round(recent_high - diff * 0.500, 2),
+                "fib_618": round(recent_high - diff * 0.618, 2),
+                "fib_786": round(recent_high - diff * 0.786, 2),
+                "fib_100": round(recent_low, 2),
+            }
+        levels["trend"] = trend
+        return levels
+
+    def _calculate_relative_strength(self, symbol: str, close: pd.Series) -> Dict[str, Any]:
+        """Hissenin BIST100'e göre göreceli gücünü hesapla"""
+        try:
+            fetcher = get_borsapy_fetcher()
+            xu100_df = fetcher.get_history("XU100", period="3mo", interval="1d")
+            if xu100_df is None or xu100_df.empty or len(xu100_df) < 20:
+                return {"rs_score": 50, "rs_label": "Veri Yok", "vs_index": 0}
+
+            xu100_close = xu100_df["close"]
+            # Son 20 gün performans karşılaştırması
+            period = min(20, len(close), len(xu100_close))
+            stock_return = (float(close.iloc[-1]) / float(close.iloc[-period]) - 1) * 100
+            index_return = (float(xu100_close.iloc[-1]) / float(xu100_close.iloc[-period]) - 1) * 100
+            vs_index = round(stock_return - index_return, 2)
+
+            # RS skoru: 0-100 arası, 50 = endeksle eşit
+            rs_raw = vs_index
+            rs_score = max(0, min(100, 50 + rs_raw * 3))
+
+            if vs_index > 5:
+                rs_label = "Çok Güçlü"
+            elif vs_index > 2:
+                rs_label = "Güçlü"
+            elif vs_index > -2:
+                rs_label = "Nötr"
+            elif vs_index > -5:
+                rs_label = "Zayıf"
+            else:
+                rs_label = "Çok Zayıf"
+
+            return {
+                "rs_score": round(rs_score, 1),
+                "rs_label": rs_label,
+                "vs_index": vs_index,
+                "stock_return_20d": round(stock_return, 2),
+                "index_return_20d": round(index_return, 2)
+            }
+        except Exception:
+            return {"rs_score": 50, "rs_label": "Veri Yok", "vs_index": 0}
+
+    def _get_weekly_trend(self, symbol: str) -> Dict[str, Any]:
+        """Multi-Timeframe: Haftalık trend yönünü kontrol et"""
+        try:
+            fetcher = get_borsapy_fetcher()
+            df_w = fetcher.get_history(symbol, period="6mo", interval="1wk")
+            if df_w is None or df_w.empty or len(df_w) < 10:
+                return {"trend": "belirsiz", "alignment": 0}
+
+            close_w = df_w["close"]
+            sma10_w = close_w.rolling(10).mean().iloc[-1]
+            sma20_w = close_w.rolling(20).mean().iloc[-1] if len(close_w) >= 20 else sma10_w
+            current_w = float(close_w.iloc[-1])
+            rsi_w = self._calculate_rsi(close_w, 14)
+
+            if current_w > sma10_w and sma10_w > sma20_w:
+                trend = "yukselis"
+            elif current_w < sma10_w and sma10_w < sma20_w:
+                trend = "dusus"
+            else:
+                trend = "yatay"
+
+            return {
+                "trend": trend,
+                "rsi_weekly": round(rsi_w, 1),
+                "above_sma10": bool(current_w > sma10_w),
+                "alignment": 1 if trend == "yukselis" else (-1 if trend == "dusus" else 0)
+            }
+        except Exception:
+            return {"trend": "belirsiz", "alignment": 0}
+
+    def _calculate_confidence(self, rsi, macd, bollinger, stochastic, mas, current_price, vol_analysis) -> Dict[str, Any]:
+        """Gösterge uyumu bazlı güven skoru hesapla"""
+        signals = []
+
+        # RSI sinyali
+        if rsi < 30: signals.append(1)
+        elif rsi < 40: signals.append(0.5)
+        elif rsi > 70: signals.append(-1)
+        elif rsi > 60: signals.append(-0.5)
+        else: signals.append(0)
+
+        # MACD sinyali
+        if macd["histogram"] > 0 and macd["macd"] > macd["signal"]:
+            signals.append(1)
+        elif macd["histogram"] < 0 and macd["macd"] < macd["signal"]:
+            signals.append(-1)
+        elif macd["histogram"] > 0:
+            signals.append(0.5)
+        elif macd["histogram"] < 0:
+            signals.append(-0.5)
+        else:
+            signals.append(0)
+
+        # Bollinger sinyali
+        bb_pos = bollinger["position"]
+        if bb_pos < 0.2: signals.append(1)
+        elif bb_pos > 0.8: signals.append(-1)
+        elif bb_pos < 0.4: signals.append(0.3)
+        elif bb_pos > 0.6: signals.append(-0.3)
+        else: signals.append(0)
+
+        # Stochastic sinyali
+        if stochastic["k"] < 20: signals.append(1)
+        elif stochastic["k"] > 80: signals.append(-1)
+        else: signals.append(0)
+
+        # MA trend sinyali
+        sma20 = mas.get("sma20")
+        sma50 = mas.get("sma50")
+        if sma20 and sma50:
+            if current_price > sma20 > sma50: signals.append(1)
+            elif current_price < sma20 < sma50: signals.append(-1)
+            elif current_price > sma20: signals.append(0.5)
+            elif current_price < sma20: signals.append(-0.5)
+            else: signals.append(0)
+
+        # Hacim onayı
+        if vol_analysis["ratio"] > 1.5:
+            signals.append(0.5 if sum(signals) > 0 else -0.5)
+
+        # Uyum hesapla
+        if not signals:
+            return {"confidence": 50, "agreement": 0, "level": "düşük"}
+
+        positive = sum(1 for s in signals if s > 0)
+        negative = sum(1 for s in signals if s < 0)
+        total = len(signals)
+        dominant = max(positive, negative)
+        agreement = round(dominant / total * 100, 1)
+
+        # Güven seviyesi
+        avg_signal = sum(signals) / total
+        confidence = round(50 + avg_signal * 30 + (agreement - 50) * 0.3, 1)
+        confidence = max(10, min(95, confidence))
+
+        if agreement >= 80:
+            level = "çok yüksek"
+        elif agreement >= 60:
+            level = "yüksek"
+        elif agreement >= 40:
+            level = "orta"
+        else:
+            level = "düşük"
+
+        return {
+            "confidence": confidence,
+            "agreement": agreement,
+            "level": level,
+            "bullish_count": positive,
+            "bearish_count": negative,
+            "neutral_count": total - positive - negative
+        }
+
+    def _generate_signal_reasons(self, rsi, macd, bollinger, mas, stochastic, current_price,
+                                  vol_analysis, weekly_trend, support_resistance, relative_strength,
+                                  confidence_data, signal, analysis_type="daily", tv_signals=None) -> List[str]:
+        """Sinyal için okunabilir sebepler üret"""
+        reasons = []
+
+        # RSI
+        if rsi < 30:
+            reasons.append(f"RSI {rsi:.0f} — aşırı satım bölgesinde (güçlü AL)")
+        elif rsi < 40:
+            reasons.append(f"RSI {rsi:.0f} — satım bölgesine yakın")
+        elif rsi > 70:
+            reasons.append(f"RSI {rsi:.0f} — aşırı alım bölgesinde (güçlü SAT)")
+        elif rsi > 60:
+            reasons.append(f"RSI {rsi:.0f} — alım bölgesine yakın")
+
+        # MACD
+        if macd["histogram"] > 0 and macd["macd"] > macd["signal"]:
+            reasons.append("MACD yukarı kesişim — yükseliş momentumu")
+        elif macd["histogram"] < 0 and macd["macd"] < macd["signal"]:
+            reasons.append("MACD aşağı kesişim — düşüş momentumu")
+
+        # Bollinger
+        bb_pos = bollinger["position"]
+        if bb_pos < 0.15:
+            reasons.append("Fiyat alt Bollinger bandının altında — sıçrama beklentisi")
+        elif bb_pos > 0.85:
+            reasons.append("Fiyat üst Bollinger bandının üstünde — geri çekilme riski")
+
+        # MA Trend
+        sma20 = mas.get("sma20")
+        sma50 = mas.get("sma50")
+        sma200 = mas.get("sma200")
+        if sma20 and sma50:
+            if current_price > sma20 > sma50:
+                reasons.append("Fiyat > SMA20 > SMA50 — güçlü yükseliş trendi")
+            elif current_price < sma20 < sma50:
+                reasons.append("Fiyat < SMA20 < SMA50 — güçlü düşüş trendi")
+        if sma200:
+            if current_price > sma200:
+                reasons.append("SMA200 üzerinde — uzun vadeli yükseliş")
+            else:
+                reasons.append("SMA200 altında — uzun vadeli düşüş baskısı")
+
+        # Stochastic
+        if stochastic["k"] < 20 and stochastic["d"] < 20:
+            reasons.append(f"Stochastic K={stochastic['k']:.0f} — aşırı satım")
+        elif stochastic["k"] > 80 and stochastic["d"] > 80:
+            reasons.append(f"Stochastic K={stochastic['k']:.0f} — aşırı alım")
+
+        # Hacim
+        if vol_analysis["ratio"] > 2.0:
+            reasons.append(f"Hacim ortalamanın {vol_analysis['ratio']:.1f}x üzerinde — güçlü ilgi")
+        elif vol_analysis["ratio"] > 1.5:
+            reasons.append(f"Hacim ortalamanın {vol_analysis['ratio']:.1f}x üzerinde")
+
+        # Haftalık trend uyumu (MTF)
+        wt = weekly_trend.get("trend", "belirsiz")
+        if wt == "yukselis" and signal in ("GUCLU_AL", "AL"):
+            reasons.append("Haftalık trend yükseliş — çoklu zaman dilimi uyumu ✓")
+        elif wt == "dusus" and signal in ("GUCLU_SAT", "SAT"):
+            reasons.append("Haftalık trend düşüş — çoklu zaman dilimi uyumu ✓")
+        elif wt == "yukselis" and signal in ("GUCLU_SAT", "SAT"):
+            reasons.append("⚠ Haftalık trend yükseliş ama günlük SAT sinyali — dikkat")
+        elif wt == "dusus" and signal in ("GUCLU_AL", "AL"):
+            reasons.append("⚠ Haftalık trend düşüş ama günlük AL sinyali — dikkat")
+
+        # Destek/Direnç
+        sr = support_resistance
+        if sr.get("support1"):
+            dist_s1 = ((current_price - sr["support1"]) / current_price) * 100
+            if 0 < dist_s1 < 2:
+                reasons.append(f"Destek1 ({sr['support1']:.2f}) yakınında — %{dist_s1:.1f} uzakta")
+            dist_r1 = ((sr["resistance1"] - current_price) / current_price) * 100
+            if 0 < dist_r1 < 2:
+                reasons.append(f"Direnç1 ({sr['resistance1']:.2f}) yakınında — %{dist_r1:.1f} uzakta")
+
+        # Göreceli güç
+        rs = relative_strength
+        if rs.get("vs_index", 0) > 5:
+            reasons.append(f"Endekse göre +%{rs['vs_index']:.1f} güçlü — göreceli güç yüksek")
+        elif rs.get("vs_index", 0) < -5:
+            reasons.append(f"Endekse göre %{rs['vs_index']:.1f} zayıf — göreceli güç düşük")
+
+        # MACD Crossover Tazeli̇ği̇
+        if macd.get("is_fresh_cross") and macd["histogram"] != 0:
+            if macd["histogram"] > 0:
+                reasons.append(f"MACD taze yukarı kesişim ({macd.get('crossover_bars', 0)} bar) — güçlü momentum")
+            else:
+                reasons.append(f"MACD taze aşağı kesişim ({macd.get('crossover_bars', 0)} bar) — düşüş baskısı")
+
+        # TradingView Sinyalleri
+        if tv_signals and isinstance(tv_signals, dict):
+            try:
+                summary = tv_signals.get("summary", {})
+                if summary:
+                    rec = summary.get("recommendation", "")
+                    buy_c = summary.get("buy", 0) or 0
+                    sell_c = summary.get("sell", 0) or 0
+                    if rec:
+                        tv_map = {"STRONG_BUY": "Güçlü AL", "BUY": "AL", "NEUTRAL": "Nötr", "SELL": "SAT", "STRONG_SELL": "Güçlü SAT"}
+                        tv_label = tv_map.get(rec.upper(), rec)
+                        reasons.append(f"TradingView: {tv_label} ({buy_c} AL / {sell_c} SAT)")
+            except Exception:
+                pass
+
+        # Güven
+        conf = confidence_data
+        if conf.get("agreement", 0) >= 80:
+            reasons.append(f"Gösterge uyumu %{conf['agreement']:.0f} — çok yüksek güven")
+        elif conf.get("agreement", 0) >= 60:
+            reasons.append(f"Gösterge uyumu %{conf['agreement']:.0f} — yüksek güven")
+
+        return reasons[:10]  # Max 10 sebep
+
     def _fetch_sentiment_sync(self, symbol: str, stock_name: str = None) -> Dict[str, Any]:
         """
         Senkron olarak sentiment verisi çek.
@@ -148,7 +506,7 @@ class AnalysisService:
             try:
                 from .kap_news_service import get_kap_service
                 kap_service = get_kap_service()
-                kap_news = kap_service.get_news_for_symbol(symbol, limit=20, days=30)
+                kap_news = kap_service.get_news_for_symbol(symbol, limit=50, days=90)
             except Exception:
                 pass
 
@@ -197,7 +555,7 @@ class AnalysisService:
             from urllib.parse import quote
 
             if not stock_name:
-                stock_info = next((s for s in self._stocks if s["symbol"] == symbol), None)
+                stock_info = self._stocks_map.get(symbol)
                 stock_name = stock_info["name"] if stock_info else symbol
             search_query = f"{stock_name} hisse borsa"
             encoded_query = quote(search_query)
@@ -263,54 +621,169 @@ class AnalysisService:
                 "source": "error"
             }
 
-    def _calculate_score(self, rsi, macd, bollinger, mas, stochastic, current_price, vol_analysis, sentiment_data: Dict = None) -> int:
+    def _calculate_score(self, rsi, macd, bollinger, mas, stochastic, current_price, vol_analysis, sentiment_data: Dict = None, analysis_type: str = "daily", weekly_trend: Dict = None, relative_strength: Dict = None, tv_signals: Dict = None) -> int:
         score = 50
-        if rsi < 30:
-            score += 15
-        elif rsi < 40:
-            score += 8
-        elif rsi > 70:
-            score -= 15
-        elif rsi > 60:
-            score -= 8
-        if macd["histogram"] > 0 and macd["macd"] > macd["signal"]:
-            score += 15
-        elif macd["histogram"] < 0 and macd["macd"] < macd["signal"]:
-            score -= 15
-        elif macd["histogram"] > 0:
-            score += 7
-        elif macd["histogram"] < 0:
-            score -= 7
-        if bollinger["position"] < 0.2:
-            score += 10
-        elif bollinger["position"] > 0.8:
-            score -= 10
-        elif bollinger["position"] < 0.4:
-            score += 5
-        elif bollinger["position"] > 0.6:
-            score -= 5
-        if mas.get("sma20") and mas.get("sma50"):
-            if current_price > mas["sma20"] > mas["sma50"]:
+
+        if analysis_type == "weekly":
+            # ── HAFTALIK: trend takibi ağırlıklı ──────────────────────────
+            # RSI: haftalık mumlarda 35/65 daha anlamlı eşik
+            if rsi < 35:
+                score += 12
+            elif rsi < 45:
+                score += 6
+            elif rsi > 65:
+                score -= 12
+            elif rsi > 55:
+                score -= 6
+
+            # MACD: haftalıkta güçlü crossover önemli (+20/-20)
+            if macd["histogram"] > 0 and macd["macd"] > macd["signal"]:
+                score += 20
+            elif macd["histogram"] < 0 and macd["macd"] < macd["signal"]:
+                score -= 20
+            elif macd["histogram"] > 0:
+                score += 8
+            elif macd["histogram"] < 0:
+                score -= 8
+
+            # Bollinger: haftalıkta daha az gürültü, düşük ağırlık
+            if bollinger["position"] < 0.15:
+                score += 7
+            elif bollinger["position"] > 0.85:
+                score -= 7
+            elif bollinger["position"] < 0.35:
+                score += 3
+            elif bollinger["position"] > 0.65:
+                score -= 3
+
+            # MA hizalaması: haftalıkta EN ÖNEMLI gösterge (+18/-18)
+            if mas.get("sma20") and mas.get("sma50"):
+                if current_price > mas["sma20"] > mas["sma50"]:
+                    score += 18
+                elif current_price < mas["sma20"] < mas["sma50"]:
+                    score -= 18
+                elif current_price > mas["sma20"]:
+                    score += 7
+                elif current_price < mas["sma20"]:
+                    score -= 7
+            # SMA200 kriteri haftalıkta ekstra önemli
+            if mas.get("sma200"):
+                if current_price > mas["sma200"]:
+                    score += 5
+                else:
+                    score -= 5
+
+            # Stochastic: haftalıkta daha az ağırlık
+            if stochastic["k"] < 20 and stochastic["d"] < 20:
+                score += 6
+            elif stochastic["k"] > 80 and stochastic["d"] > 80:
+                score -= 6
+
+            # Hacim: haftalık toplu hacim — yön-bağımsız onaylama
+            if vol_analysis["ratio"] > 2.0:
+                deviation = score - 50
+                score += int(deviation * 0.08)
+
+        else:
+            # ── GÜNLÜK: kısa vadeli momentum ağırlıklı ───────────────────
+            if rsi < 30:
+                score += 15
+            elif rsi < 40:
+                score += 8
+            elif rsi > 70:
+                score -= 15
+            elif rsi > 60:
+                score -= 8
+
+            if macd["histogram"] > 0 and macd["macd"] > macd["signal"]:
+                # Taze kesişim daha güçlü sinyal
+                if macd.get("is_fresh_cross"):
+                    score += 18  # Taze yukarı kesişim = güçlü momentum
+                else:
+                    score += 10  # Eski kesişim = zayıflıyor olabilir
+            elif macd["histogram"] < 0 and macd["macd"] < macd["signal"]:
+                if macd.get("is_fresh_cross"):
+                    score -= 18  # Taze aşağı kesişim = güçlü düşüş
+                else:
+                    score -= 10
+            elif macd["histogram"] > 0:
+                score += 5
+            elif macd["histogram"] < 0:
+                score -= 5
+
+            if bollinger["position"] < 0.2:
                 score += 10
-            elif current_price < mas["sma20"] < mas["sma50"]:
+            elif bollinger["position"] > 0.8:
                 score -= 10
-            elif current_price > mas["sma20"]:
+            elif bollinger["position"] < 0.4:
                 score += 5
-            elif current_price < mas["sma20"]:
+            elif bollinger["position"] > 0.6:
                 score -= 5
-        if stochastic["k"] < 20 and stochastic["d"] < 20:
-            score += 10
-        elif stochastic["k"] > 80 and stochastic["d"] > 80:
-            score -= 10
-        elif stochastic["k"] < 30:
-            score += 5
-        elif stochastic["k"] > 70:
-            score -= 5
-        if vol_analysis["ratio"] > 1.5:
-            if score > 50:
+
+            if mas.get("sma20") and mas.get("sma50"):
+                if current_price > mas["sma20"] > mas["sma50"]:
+                    score += 10
+                elif current_price < mas["sma20"] < mas["sma50"]:
+                    score -= 10
+                elif current_price > mas["sma20"]:
+                    score += 5
+                elif current_price < mas["sma20"]:
+                    score -= 5
+
+            if stochastic["k"] < 20 and stochastic["d"] < 20:
+                score += 10
+            elif stochastic["k"] > 80 and stochastic["d"] > 80:
+                score -= 10
+            elif stochastic["k"] < 30:
                 score += 5
-            else:
+            elif stochastic["k"] > 70:
                 score -= 5
+
+            # Hacim: yön-bağımsız onaylama — sadece mevcut yönü güçlendir
+            if vol_analysis["ratio"] > 2.0:
+                # Çok yüksek hacim: mevcut yönü kuvvetlendir
+                deviation = score - 50
+                score += int(deviation * 0.15)  # Mevcut yönün %15'i kadar güçlendir
+            elif vol_analysis["ratio"] > 1.5:
+                deviation = score - 50
+                score += int(deviation * 0.08)
+        
+        # TRADINGVIEW TEKNİK SİNYALLERİ (en güvenilir profesyonel gösterge)
+        if tv_signals and isinstance(tv_signals, dict):
+            try:
+                summary = tv_signals.get("summary", {})
+                recommendation = summary.get("recommendation", "").upper() if summary else ""
+                buy_count = summary.get("buy", 0) or 0
+                sell_count = summary.get("sell", 0) or 0
+                neutral_count = summary.get("neutral", 0) or 0
+                total = buy_count + sell_count + neutral_count
+                
+                if total > 0:
+                    # TradingView consensus: max ±12 puan
+                    if recommendation in ("STRONG_BUY",):
+                        score += 12
+                    elif recommendation in ("BUY",):
+                        score += 8
+                    elif recommendation in ("STRONG_SELL",):
+                        score -= 12
+                    elif recommendation in ("SELL",):
+                        score -= 8
+                    # NEUTRAL durumda puan ekleme
+                    
+                    # Buy/Sell oranı bonusu (max ±5 puan)
+                    if total >= 10:
+                        buy_ratio = buy_count / total
+                        sell_ratio = sell_count / total
+                        if buy_ratio > 0.7:
+                            score += 5
+                        elif buy_ratio > 0.55:
+                            score += 2
+                        elif sell_ratio > 0.7:
+                            score -= 5
+                        elif sell_ratio > 0.55:
+                            score -= 2
+            except Exception:
+                pass
         
         # SENTIMENT ETKİSİ (Haber Analizi)
         # Sentiment skoru -1 ile +1 arasında, toplam skora %10-15 katkı yapabilir
@@ -336,6 +809,33 @@ class AnalysisService:
                     sentiment_impact -= 2
                 
                 score += sentiment_impact
+        
+        # MULTI-TIMEFRAME UYUMU (Haftalık trend ile günlük sinyal uyumu)
+        if weekly_trend and weekly_trend.get("alignment", 0) != 0:
+            alignment = weekly_trend["alignment"]
+            # Yükseliş trendinde AL sinyali güçlenir
+            if alignment > 0 and score > 55:
+                score += 5
+            # Düşüş trendinde SAT sinyali güçlenir
+            elif alignment < 0 and score < 45:
+                score -= 5
+            # Ters uyum zayıflatır
+            elif alignment > 0 and score < 45:
+                score += 3  # Haftalık yükseliş kısmen kurtarır
+            elif alignment < 0 and score > 55:
+                score -= 3  # Haftalık düşüş kısmen zayıflatır
+
+        # GÖRECELİ GÜÇ BONUSU (Endekse göre performans)
+        if relative_strength and relative_strength.get("vs_index", 0) != 0:
+            vs = relative_strength["vs_index"]
+            if vs > 5:
+                score += 3
+            elif vs > 2:
+                score += 1
+            elif vs < -5:
+                score -= 3
+            elif vs < -2:
+                score -= 1
         
         return max(0, min(100, score))
 
@@ -456,17 +956,31 @@ class AnalysisService:
             "timeframe": "1 gün" if analysis_type == "daily" else "1 hafta (Pzt-Cum)"
         }
 
-    def _determine_signal(self, score, rsi, macd, bollinger) -> str:
-        if score >= 70:
-            return "GUCLU_AL"
-        elif score >= 60:
-            return "AL"
-        elif score <= 30:
-            return "GUCLU_SAT"
-        elif score <= 40:
-            return "SAT"
+    def _determine_signal(self, score, rsi, macd, bollinger, analysis_type: str = "daily") -> str:
+        if analysis_type == "weekly":
+            # Haftalık: daha yüksek eşik - trend onayı gerektirir
+            if score >= 72:
+                return "GUCLU_AL"
+            elif score >= 62:
+                return "AL"
+            elif score <= 28:
+                return "GUCLU_SAT"
+            elif score <= 38:
+                return "SAT"
+            else:
+                return "TUT"
         else:
-            return "TUT"
+            # Günlük: standart eşikler
+            if score >= 70:
+                return "GUCLU_AL"
+            elif score >= 60:
+                return "AL"
+            elif score <= 30:
+                return "GUCLU_SAT"
+            elif score <= 40:
+                return "SAT"
+            else:
+                return "TUT"
 
     def _analyze_single_stock(self, symbol: str, period: str = "3mo", interval: str = "1d", analysis_type: str = "daily", retry_count: int = 3, include_sentiment: bool = True) -> Optional[Dict[str, Any]]:
         """Tek bir hisse için analiz yap - retry mekanizması ve sentiment ile"""
@@ -502,7 +1016,25 @@ class AnalysisService:
                 atr = self._calculate_atr(high, low, close)
                 vol_analysis = self._calculate_volume_analysis(volume)
                 
-                stock_info = next((s for s in self._stocks if s["symbol"] == symbol), {})
+                stock_info = self._stocks_map.get(symbol, {})
+                
+                # Gelişmiş analiz hesaplamaları
+                support_resistance = self._calculate_support_resistance(high, low, close)
+                fibonacci = self._calculate_fibonacci_levels(high, low, close)
+                confidence_data = self._calculate_confidence(rsi, macd, bollinger, stochastic, mas, current_price, vol_analysis)
+
+                # Multi-Timeframe & Göreceli Güç (sadece günlük analizde)
+                weekly_trend = {"trend": "belirsiz", "alignment": 0}
+                relative_strength = {"rs_score": 50, "rs_label": "Veri Yok", "vs_index": 0}
+                if analysis_type == "daily":
+                    try:
+                        weekly_trend = self._get_weekly_trend(symbol)
+                    except Exception:
+                        pass
+                    try:
+                        relative_strength = self._calculate_relative_strength(symbol, close)
+                    except Exception:
+                        pass
                 
                 # Sentiment verisi çek (opsiyonel - analiz hızı için kapatılabilir)
                 sentiment_data = None
@@ -513,9 +1045,24 @@ class AnalysisService:
                         print(f"Sentiment hatası ({symbol}): {se}")
                         sentiment_data = {"has_data": False, "score": 0, "label": "Veri Yok"}
                 
-                score = self._calculate_score(rsi, macd, bollinger, mas, stochastic, current_price, vol_analysis, sentiment_data)
+                # TradingView teknik analiz sinyalleri (borsapy üzerinden)
+                tv_signals = None
+                try:
+                    tv_interval = "1d" if analysis_type == "daily" else "1W"
+                    tv_signals = fetcher.get_ta_signals(symbol, interval=tv_interval)
+                except Exception:
+                    pass
+                
+                score = self._calculate_score(rsi, macd, bollinger, mas, stochastic, current_price, vol_analysis, sentiment_data, analysis_type, weekly_trend, relative_strength, tv_signals)
                 potential = self._calculate_potential(current_price, bollinger, mas, atr, analysis_type)
-                signal = self._determine_signal(score, rsi, macd, bollinger)
+                signal = self._determine_signal(score, rsi, macd, bollinger, analysis_type)
+                
+                # Sinyal sebeplerini üret
+                reasons = self._generate_signal_reasons(
+                    rsi, macd, bollinger, mas, stochastic, current_price,
+                    vol_analysis, weekly_trend, support_resistance, relative_strength,
+                    confidence_data, signal, analysis_type, tv_signals
+                )
                 
                 return {
                     "symbol": symbol,
@@ -529,14 +1076,21 @@ class AnalysisService:
                     "potential": potential,
                     "indicators": {
                         "rsi": round(rsi, 2),
-                        "macd": {k: round(v, 4) for k, v in macd.items()},
+                        "macd": {k: round(v, 4) if isinstance(v, (int, float)) else v for k, v in macd.items()},
                         "bollinger": {k: round(v, 4) if isinstance(v, float) else v for k, v in bollinger.items()},
                         "stochastic": {k: round(v, 2) for k, v in stochastic.items()},
                         "atr": round(atr, 4),
                         "volume": vol_analysis
                     },
                     "moving_averages": {k: round(v, 2) if v else None for k, v in mas.items()},
-                    "sentiment": sentiment_data if sentiment_data else {"has_data": False, "score": 0, "label": "Veri Yok"}
+                    "sentiment": sentiment_data if sentiment_data else {"has_data": False, "score": 0, "label": "Veri Yok"},
+                    "tv_signals": tv_signals if tv_signals else None,
+                    "confidence": confidence_data,
+                    "weekly_trend": weekly_trend,
+                    "relative_strength": relative_strength,
+                    "support_resistance": support_resistance,
+                    "fibonacci": fibonacci,
+                    "reasons": reasons
                 }
             except Exception as e:
                 last_error = str(e)
@@ -616,7 +1170,13 @@ class AnalysisService:
                 "potential_loss": abs(potential.get("stop_loss_percent", -5)),
                 "timeframe": potential.get("timeframe", "1 gün")
             },
-            "reasons": []
+            "confidence": stock.get("confidence", {"confidence": 50, "agreement": 0, "level": "düşük"}),
+            "weekly_trend": stock.get("weekly_trend", {"trend": "belirsiz", "alignment": 0}),
+            "relative_strength": stock.get("relative_strength", {"rs_score": 50, "rs_label": "Veri Yok", "vs_index": 0}),
+            "support_resistance": stock.get("support_resistance", {}),
+            "fibonacci": stock.get("fibonacci", {}),
+            "reasons": stock.get("reasons", []),
+            "tags": stock.get("indexes", [])
         }
 
     def _record_signals_to_backtest(self, results: List[Dict], analysis_type: str) -> None:
@@ -658,7 +1218,7 @@ class AnalysisService:
             print(f"Batch {batch_num}/{total_batches} isleniyor ({len(batch)} hisse)...")
             
             # Her batch icin paralel islem
-            with ThreadPoolExecutor(max_workers=3) as executor:
+            with ThreadPoolExecutor(max_workers=3) as executor:  # 8'den 3'e dusurduk: API rate limiti yuzunden 429 almamak icin
                 futures = {
                     executor.submit(self._analyze_single_stock, s["symbol"], period, interval, analysis_type, 3, include_sentiment): s["symbol"]
                     for s in batch
@@ -825,11 +1385,12 @@ class AnalysisService:
         oversold = len([r for r in rsi_values if r < 30])
         overbought = len([r for r in rsi_values if r > 70])
         
-        # Sentiment istatistikleri
-        sentiment_scores = [r.get("sentiment", {}).get("score", 0) for r in formatted[:30] if r.get("sentiment", {}).get("has_data")]
+        # Sentiment istatistikleri (KAP DB haberi olan TÜM hisseler)
+        sentiment_scores = [r.get("sentiment", {}).get("score", 0) for r in formatted if r.get("sentiment", {}).get("has_data")]
         avg_sentiment = sum(sentiment_scores) / len(sentiment_scores) if sentiment_scores else 0
         positive_sentiment_count = len([s for s in sentiment_scores if s > 0.1])
         negative_sentiment_count = len([s for s in sentiment_scores if s < -0.1])
+        sentiment_count = len(sentiment_scores)
 
         # Piyasa ozeti
         bullish_pct = (buy_signals / analyzed * 100) if analyzed > 0 else 0
@@ -857,7 +1418,8 @@ class AnalysisService:
                 "overbought_count": overbought,
                 "avg_sentiment": round(avg_sentiment, 3) if include_sentiment else None,
                 "positive_sentiment_stocks": positive_sentiment_count if include_sentiment else None,
-                "negative_sentiment_stocks": negative_sentiment_count if include_sentiment else None
+                "negative_sentiment_stocks": negative_sentiment_count if include_sentiment else None,
+                "sentiment_count": sentiment_count if include_sentiment else 0
             },
             "top_picks": top_picks,
             "all_results": formatted
@@ -916,11 +1478,12 @@ class AnalysisService:
         oversold = len([r for r in rsi_values if r < 30])
         overbought = len([r for r in rsi_values if r > 70])
         
-        # Sentiment istatistikleri
-        sentiment_scores = [r.get("sentiment", {}).get("score", 0) for r in formatted[:30] if r.get("sentiment", {}).get("has_data")]
+        # Sentiment istatistikleri (KAP DB haberi olan TÜM hisseler)
+        sentiment_scores = [r.get("sentiment", {}).get("score", 0) for r in formatted if r.get("sentiment", {}).get("has_data")]
         avg_sentiment = sum(sentiment_scores) / len(sentiment_scores) if sentiment_scores else 0
         positive_sentiment_count = len([s for s in sentiment_scores if s > 0.1])
         negative_sentiment_count = len([s for s in sentiment_scores if s < -0.1])
+        sentiment_count = len(sentiment_scores)
 
         # Piyasa ozeti
         bullish_pct = (buy_signals / analyzed * 100) if analyzed > 0 else 0
@@ -948,7 +1511,8 @@ class AnalysisService:
                 "overbought_count": overbought,
                 "avg_sentiment": round(avg_sentiment, 3) if include_sentiment else None,
                 "positive_sentiment_stocks": positive_sentiment_count if include_sentiment else None,
-                "negative_sentiment_stocks": negative_sentiment_count if include_sentiment else None
+                "negative_sentiment_stocks": negative_sentiment_count if include_sentiment else None,
+                "sentiment_count": sentiment_count if include_sentiment else 0
             },
             "top_picks": top_picks,
             "all_results": formatted

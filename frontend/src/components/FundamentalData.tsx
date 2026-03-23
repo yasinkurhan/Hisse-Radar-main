@@ -90,7 +90,7 @@ export default function FundamentalDataComponent({ symbol }: FundamentalDataProp
           <div>
             <h3 className="text-xl font-bold text-gray-900">{data.company_name}</h3>
             <p className="text-sm text-gray-500 mt-1">
-              {data.sector} {data.industry && `• ${data.industry}`}
+              {data.sector} {data.industry && `â€¢ ${data.industry}`}
             </p>
           </div>
           
@@ -143,7 +143,7 @@ export default function FundamentalDataComponent({ symbol }: FundamentalDataProp
               <h5 className="text-sm font-medium text-blue-800 mb-2">Önemli Notlar:</h5>
               <ul className="text-sm text-blue-700 space-y-1">
                 {summary.notes.map((note, index) => (
-                  <li key={index}>• {note}</li>
+                  <li key={index}>â€¢ {note}</li>
                 ))}
               </ul>
             </div>
@@ -243,13 +243,13 @@ export default function FundamentalDataComponent({ symbol }: FundamentalDataProp
             <div className="flex justify-between">
               <span className="text-gray-500 text-sm">52H En Yüksek</span>
               <span className="font-mono font-medium text-green-600">
-                {data.week_52_high ? `₺${data.week_52_high.toFixed(2)}` : '-'}
+                {data.week_52_high ? `â‚º${data.week_52_high.toFixed(2)}` : '-'}
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500 text-sm">52H En Düşük</span>
               <span className="font-mono font-medium text-red-600">
-                {data.week_52_low ? `₺${data.week_52_low.toFixed(2)}` : '-'}
+                {data.week_52_low ? `â‚º${data.week_52_low.toFixed(2)}` : '-'}
               </span>
             </div>
             <div className="flex justify-between">
@@ -280,17 +280,17 @@ export default function FundamentalDataComponent({ symbol }: FundamentalDataProp
             <div className="flex justify-between">
               <span className="text-gray-500 text-sm">Yıllık Temettü</span>
               <span className="font-mono font-medium text-gray-900 dark:text-white">
-                {data.dividend_rate ? `₺${data.dividend_rate.toFixed(2)}` : '-'}
+                {data.dividend_rate ? `â‚º${data.dividend_rate.toFixed(2)}` : '-'}
               </span>
             </div>
           </div>
           
           <p className="mt-4 text-xs text-gray-500">
             {data.dividend_yield && data.dividend_yield > 5 
-              ? '💰 Yüksek temettü verimi - Gelir yatırımcıları için cazip'
+              ? '�� Yüksek temettü verimi - Gelir yatırımcıları için cazip'
               : data.dividend_yield && data.dividend_yield > 0
-              ? '📊 Düzenli temettü ödemesi yapıyor'
-              : '⚠️ Temettü bilgisi mevcut değil'
+              ? '�` Düzenli temettü ödemesi yapıyor'
+              : 'âš ï¸ Temettü bilgisi mevcut değil'
             }
           </p>
         </div>

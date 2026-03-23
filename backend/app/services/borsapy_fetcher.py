@@ -15,7 +15,7 @@ from cachetools import TTLCache
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 
 
-def _call_with_timeout(func, timeout=15):
+def _call_with_timeout(func, timeout=8):  # 15s→8s: daha çabuk vazgeç, cevap gelmeyen kaynakları bekleme
     """borsapy property çağrısını timeout ile sar. Sadece timeout durumunda None döner."""
     with ThreadPoolExecutor(max_workers=1) as executor:
         future = executor.submit(func)
@@ -338,22 +338,33 @@ class BorsapyFetcher:
         except Exception:
             return None
     
-    def get_kap_news(self, symbol: str, force_refresh: bool = False) -> Optional[list]:
-        """KAP bildirimleri - her zaman list döndürür"""
+    def get_kap_news(self, symbol: str, force_refresh: bool = False, limit: int = 100) -> Optional[list]:
+        """KAP bildirimleri - varsayılan limit 100 (borsapy default 20'yi aşar)"""
         try:
             import pandas as pd
             symbol = symbol.upper().strip().replace(".IS", "")
-            
-            # force_refresh ise cache'den sil ve yeniden oluştur
+
+            # force_refresh ise cache'den sil
             if force_refresh and symbol in self._ticker_cache:
                 del self._ticker_cache[symbol]
-            
+
             ticker = self._get_ticker(symbol)
-            result = ticker.news
-            
+
+            # KAP provider'ı direkt yüksek limit ile çağır (default 20 yerine)
+            try:
+                from borsapy._providers.kap import get_kap_provider
+                kap_provider = get_kap_provider()
+                result = kap_provider.get_disclosures(symbol, limit=limit)
+                # Başarılı ama boşsa ticker.news'e fallback
+                if result is None or (hasattr(result, 'empty') and result.empty):
+                    result = ticker.news
+            except Exception:
+                # Fallback: ticker.news (limit=20)
+                result = ticker.news
+
             if result is None:
                 return None
-            
+
             # DataFrame ise dict listesine çevir
             if isinstance(result, pd.DataFrame):
                 if result.empty:
@@ -470,6 +481,8 @@ class BorsapyFetcher:
              oscillators: {...}, moving_averages: {...}}
         """
         try:
+            import time
+            time.sleep(1.2) # TRADINGVIEW RATE LIMIT (429) KORUMASI
             ticker = self._get_ticker(symbol)
             return ticker.ta_signals(interval=interval)
         except Exception:
@@ -887,6 +900,8 @@ class BorsapyFetcher:
     def get_ta_signals(self, symbol: str, interval: str = "1d") -> Dict[str, Any]:
         """TradingView teknik analiz sinyalleri"""
         try:
+            import time
+            time.sleep(1.2) # Rate limit korumasi
             ticker = self._get_ticker(symbol)
             result = _call_with_timeout(lambda: ticker.ta_signals(interval=interval), timeout=15)
             if result is None:

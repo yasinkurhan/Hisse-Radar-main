@@ -128,12 +128,12 @@ export default function AnalystCard({ symbol }: AnalystCardProps) {
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-3">
               <p className="text-xs font-medium text-gray-400 mb-1">Güncel Fiyat</p>
-              <p className="text-xl font-bold text-white">₺{targets.current.toFixed(2)}</p>
+              <p className="text-xl font-bold text-white">â‚º{targets.current.toFixed(2)}</p>
             </div>
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-3">
               <p className="text-xs font-medium text-gray-400 mb-1">Ort. Hedef</p>
               <p className={`text-xl font-bold ${isUpside ? 'text-green-300' : 'text-red-300'}`}>
-                ₺{targets.mean.toFixed(2)}
+                â‚º{targets.mean.toFixed(2)}
               </p>
               {upsidePct && (
                 <div className={`flex items-center gap-1 text-xs font-semibold ${isUpside ? 'text-green-400' : 'text-red-400'}`}>
@@ -147,9 +147,9 @@ export default function AnalystCard({ symbol }: AnalystCardProps) {
           {/* Price Range Bar */}
           <div className="mb-4">
             <div className="flex justify-between text-xs font-medium text-gray-300 mb-2">
-              <span>En Düşük: ₺{targets.low.toFixed(2)}</span>
-              <span>Medyan: ₺{targets.median.toFixed(2)}</span>
-              <span>En Yüksek: ₺{targets.high.toFixed(2)}</span>
+              <span>En Düşük: â‚º{targets.low.toFixed(2)}</span>
+              <span>Medyan: â‚º{targets.median.toFixed(2)}</span>
+              <span>En Yüksek: â‚º{targets.high.toFixed(2)}</span>
             </div>
             <div className="relative h-3 bg-gray-700 rounded-full overflow-hidden">
               {/* Range bar */}
@@ -170,7 +170,7 @@ export default function AnalystCard({ symbol }: AnalystCardProps) {
             </div>
             <div className="flex justify-between text-xs mt-1">
               <span className="text-red-400">Düşüş</span>
-              <span className="text-white text-xs">▲ Güncel</span>
+              <span className="text-white text-xs">â–² Güncel</span>
               <span className="text-green-400">Yükseliş</span>
             </div>
           </div>

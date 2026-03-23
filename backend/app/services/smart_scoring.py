@@ -302,62 +302,225 @@ class BacktestEngine:
             self._calculate_performance()
     
     def _calculate_performance(self):
-        """Genel performans istatistiklerini hesapla"""
+        """Gelismis performans istatistiklerini hesapla"""
         completed = [s for s in self._history["signals"] if s["status"] == "completed"]
-        
+
         if not completed:
             return
-        
+
         total = len(completed)
+        profits = [s["profit_pct"] for s in completed]
         winners = [s for s in completed if s["profit_pct"] > 0]
-        losers = [s for s in completed if s["profit_pct"] <= 0]
+        losers  = [s for s in completed if s["profit_pct"] <= 0]
+
+        win_rate   = (len(winners) / total) * 100 if total > 0 else 0
+        avg_profit = sum(profits) / total if total > 0 else 0
+        avg_win    = sum(s["profit_pct"] for s in winners) / len(winners) if winners else 0
+        avg_loss   = sum(s["profit_pct"] for s in losers)  / len(losers)  if losers  else 0
+
+        # Profit Factor = toplam kazanç / toplam kayıp (mutlak değer)
+        gross_win  = sum(s["profit_pct"] for s in winners) if winners else 0
+        gross_loss = abs(sum(s["profit_pct"] for s in losers)) if losers else 0
+        profit_factor = round(gross_win / gross_loss, 2) if gross_loss > 0 else 0
+
+        # Expectancy = (WinRate * AvgWin) + (LossRate * AvgLoss)
+        loss_rate  = 1 - (win_rate / 100)
+        expectancy = round((win_rate / 100) * avg_win + loss_rate * avg_loss, 2)
+
+        # Sharpe Orani (risk-free %0 varsayimi)
+        if len(profits) > 1:
+            mean_r = avg_profit
+            std_r  = float(np.std(profits))
+            sharpe = round(mean_r / std_r, 2) if std_r > 0 else 0
+        else:
+            sharpe = 0
+
+        # Maksimum Drawdown (Sabit Pozisyon Büyüklüğü: Kasanın %10'u 1 işleme)
+        capital = 100.0
+        peak = capital
+        max_dd = 0.0
+        equity_curve = [100.0]
         
-        win_rate = (len(winners) / total) * 100 if total > 0 else 0
-        avg_profit = sum(s["profit_pct"] for s in completed) / total if total > 0 else 0
-        avg_win = sum(s["profit_pct"] for s in winners) / len(winners) if winners else 0
-        avg_loss = sum(s["profit_pct"] for s in losers) / len(losers) if losers else 0
-        
+        for p in profits:
+            # Aşırı yüksek hatalı verileri filtrele
+            if p < -50 or p > 300:
+                continue 
+                
+            # Her işleme kasanın %10'u ayrılıyor (10 birim sermaye riski)
+            trade_profit = 10.0 * (p / 100.0)
+            capital += trade_profit
+            
+            equity_curve.append(round(capital, 2))
+            
+            if capital > peak:
+                peak = capital
+            
+            if peak > 0:
+                dd = (peak - capital) / peak * 100
+                if dd > max_dd:
+                    max_dd = round(dd, 2)
+                    
+        final_capital = round(capital, 2)
+        total_return  = round(capital - 100.0, 2)
+
         # Sinyal tipine gore
-        al_signals = [s for s in completed if s["signal"] in ["GUCLU_AL", "AL"]]
+        al_signals  = [s for s in completed if s["signal"] in ["GUCLU_AL", "AL"]]
         sat_signals = [s for s in completed if s["signal"] in ["GUCLU_SAT", "SAT"]]
-        
-        al_win_rate = (len([s for s in al_signals if s["profit_pct"] > 0]) / len(al_signals) * 100) if al_signals else 0
-        sat_win_rate = (len([s for s in sat_signals if s["profit_pct"] > 0]) / len(sat_signals) * 100) if sat_signals else 0
-        
+        guclu_al    = [s for s in completed if s["signal"] == "GUCLU_AL"]
+
+        al_win_rate      = (len([s for s in al_signals  if s["profit_pct"] > 0]) / len(al_signals)  * 100) if al_signals  else 0
+        sat_win_rate     = (len([s for s in sat_signals if s["profit_pct"] > 0]) / len(sat_signals) * 100) if sat_signals else 0
+        guclu_al_win     = (len([s for s in guclu_al    if s["profit_pct"] > 0]) / len(guclu_al)    * 100) if guclu_al    else 0
+
         # Skor bazli performans
         high_score = [s for s in completed if s["score"] >= 70]
-        mid_score = [s for s in completed if 50 <= s["score"] < 70]
-        low_score = [s for s in completed if s["score"] < 50]
-        
+        mid_score  = [s for s in completed if 50 <= s["score"] < 70]
+        low_score  = [s for s in completed if s["score"] < 50]
+
         high_score_win = (len([s for s in high_score if s["profit_pct"] > 0]) / len(high_score) * 100) if high_score else 0
-        
+        mid_score_win  = (len([s for s in mid_score  if s["profit_pct"] > 0]) / len(mid_score)  * 100) if mid_score  else 0
+        low_score_win  = (len([s for s in low_score  if s["profit_pct"] > 0]) / len(low_score)  * 100) if low_score  else 0
+
+        # Cikis nedenine gore
+        kar_al_count    = len([s for s in completed if s.get("exit_reason") == "kar_al"])
+        zarar_kes_count = len([s for s in completed if s.get("exit_reason") == "zarar_kes"])
+        zaman_count     = len([s for s in completed if s.get("exit_reason") == "zaman_asimi"])
+
+        # Ortalama elde tutma suresi
+        days_list = [s.get("days_held", 0) for s in completed if s.get("days_held")]
+        avg_days  = round(sum(days_list) / len(days_list), 1) if days_list else 0
+
+        # Aylik performans
+        monthly = {}
+        for s in completed:
+            exit_d = s.get("exit_date", "")
+            if exit_d and len(exit_d) >= 7:
+                month_key = exit_d[:7]  # "2025-03"
+                if month_key not in monthly:
+                    monthly[month_key] = []
+                monthly[month_key].append(s["profit_pct"])
+        monthly_summary = [
+            {"month": k, "avg_profit": round(sum(v)/len(v), 2), "trade_count": len(v),
+             "win_count": len([x for x in v if x > 0])}
+            for k, v in sorted(monthly.items())
+        ]
+
+        # Hisse bazli ozet (ilk 10)
+        symbol_map = {}
+        for s in completed:
+            sym = s["symbol"]
+            if sym not in symbol_map:
+                symbol_map[sym] = []
+            symbol_map[sym].append(s["profit_pct"])
+        symbol_perf = sorted(
+            [{"symbol": k, "trades": len(v),
+              "avg_profit": round(sum(v)/len(v), 2),
+              "win_rate": round(len([x for x in v if x > 0])/len(v)*100, 1)}
+             for k, v in symbol_map.items()],
+            key=lambda x: x["avg_profit"], reverse=True
+        )
+
         self._history["performance"] = {
+            # Temel
             "total_signals": total,
             "win_rate": round(win_rate, 1),
             "avg_profit": round(avg_profit, 2),
             "avg_win": round(avg_win, 2),
             "avg_loss": round(avg_loss, 2),
+            # Ileri metrikler
+            "profit_factor": profit_factor,
+            "expectancy": expectancy,
+            "sharpe_ratio": sharpe,
+            "max_drawdown": round(max_dd, 2),
+            "total_return": total_return,
+            "final_capital_100k": round(final_capital * 1000, 0),  # 100K TL baslangic
+            # Sinyal turu
             "al_win_rate": round(al_win_rate, 1),
             "sat_win_rate": round(sat_win_rate, 1),
+            "guclu_al_win_rate": round(guclu_al_win, 1),
             "high_score_win_rate": round(high_score_win, 1),
+            "mid_score_win_rate": round(mid_score_win, 1),
+            "low_score_win_rate": round(low_score_win, 1),
+            # Cikis nedenler
+            "kar_al_count": kar_al_count,
+            "zarar_kes_count": zarar_kes_count,
+            "zaman_asimi_count": zaman_count,
+            # Ek istatistik
+            "avg_days_held": avg_days,
+            "equity_curve": equity_curve[-60:],  # Son 60 islem
+            "monthly_performance": monthly_summary[-12:],  # Son 12 ay
+            "top_symbols": symbol_perf[:10],
+            "worst_symbols": symbol_perf[-5:] if len(symbol_perf) >= 5 else [],
             "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M")
         }
-        
+
         self._save_history()
     
     def get_performance_stats(self) -> Dict[str, Any]:
         """Performans istatistiklerini getir"""
         return self._history.get("performance", {})
-    
+
     def get_active_signals(self) -> List[Dict]:
         """Aktif sinyalleri getir"""
         return [s for s in self._history["signals"] if s["status"] == "active"]
-    
+
     def get_recent_results(self, limit: int = 20) -> List[Dict]:
         """Son sonuclanan sinyalleri getir"""
         completed = [s for s in self._history["signals"] if s["status"] == "completed"]
         completed.sort(key=lambda x: x.get("exit_date", ""), reverse=True)
         return completed[:limit]
+
+    def get_symbol_breakdown(self) -> List[Dict]:
+        """Hisse bazli performans dokumu"""
+        completed = [s for s in self._history["signals"] if s["status"] == "completed"]
+        symbol_map: Dict[str, List] = {}
+        for s in completed:
+            sym = s["symbol"]
+            if sym not in symbol_map:
+                symbol_map[sym] = []
+            symbol_map[sym].append(s)
+
+        result = []
+        for sym, trades in symbol_map.items():
+            profits = [t["profit_pct"] for t in trades]
+            winners = [p for p in profits if p > 0]
+            result.append({
+                "symbol": sym,
+                "total_trades": len(trades),
+                "win_count": len(winners),
+                "win_rate": round(len(winners) / len(trades) * 100, 1),
+                "avg_profit": round(sum(profits) / len(profits), 2),
+                "total_profit": round(sum(profits), 2),
+                "best_trade": round(max(profits), 2),
+                "worst_trade": round(min(profits), 2),
+                "avg_days": round(sum(t.get("days_held", 0) for t in trades) / len(trades), 1),
+                "last_signal": sorted(trades, key=lambda x: x.get("exit_date", ""))[-1].get("exit_date", "")
+            })
+
+        result.sort(key=lambda x: x["total_profit"], reverse=True)
+        return result
+
+    def get_exit_reason_breakdown(self) -> Dict[str, Any]:
+        """Cikis sebebine gore analiz"""
+        completed = [s for s in self._history["signals"] if s["status"] == "completed"]
+        reasons = {}
+        for s in completed:
+            r = s.get("exit_reason", "bilinmiyor")
+            if r not in reasons:
+                reasons[r] = {"count": 0, "profits": []}
+            reasons[r]["count"] += 1
+            reasons[r]["profits"].append(s["profit_pct"])
+
+        breakdown = {}
+        for r, data in reasons.items():
+            profits = data["profits"]
+            breakdown[r] = {
+                "count": data["count"],
+                "avg_profit": round(sum(profits) / len(profits), 2),
+                "win_rate": round(len([p for p in profits if p > 0]) / len(profits) * 100, 1),
+                "total_profit": round(sum(profits), 2)
+            }
+        return breakdown
     
     def run_historical_backtest(self, symbol: str, df: pd.DataFrame, signal_func) -> Dict[str, Any]:
         """
@@ -445,48 +608,86 @@ class MarketConditionAnalyzer:
     @staticmethod
     def analyze_market_condition(bist100_data: pd.DataFrame) -> Dict[str, Any]:
         """
-        BIST100 verisine gore genel piyasa kosulunu belirle
+        BIST100 verisine gore genel piyasa kosulunu belirle.
+        Frontend'in beklediği format: condition(bullish/bearish/neutral),
+        trend, volatility, recommendation, details(rsi, trend_direction, above_sma20, above_sma50)
         """
         if len(bist100_data) < 50:
-            return {"condition": "neutral", "strength": 50, "description": "Yetersiz veri"}
-        
+            return {
+                "condition": "neutral",
+                "trend": "Yatay",
+                "volatility": "Normal",
+                "recommendation": "Yetersiz veri, dikkatli olun.",
+                "details": {"rsi": 50, "trend_direction": "neutral", "above_sma20": False, "above_sma50": False}
+            }
+
         close = bist100_data["Close"]
-        
-        # Son 20 gunluk trend
+
+        # Son 20/50 gün SMA
         sma20 = close.rolling(20).mean().iloc[-1]
         sma50 = close.rolling(50).mean().iloc[-1]
         current = close.iloc[-1]
-        
-        # Son 10 gunluk momentum
+
+        # Son 10 günlük momentum
         momentum = ((current - close.iloc[-10]) / close.iloc[-10]) * 100
-        
-        # Karar
+
+        # RSI hesapla (14 periyot)
+        delta = close.diff()
+        gain = delta.where(delta > 0, 0.0).rolling(14).mean()
+        loss = (-delta.where(delta < 0, 0.0)).rolling(14).mean()
+        last_loss = loss.iloc[-1]
+        last_gain = gain.iloc[-1]
+        if last_loss == 0:
+            rsi = 100.0
+        else:
+            rs = last_gain / last_loss
+            rsi = 100 - (100 / (1 + rs))
+
+        # Volatilite (son 20 günlük std / ort)
+        volatility_pct = (close.pct_change().rolling(20).std().iloc[-1] or 0) * 100
+        if volatility_pct > 2:
+            volatility = "Yüksek"
+        elif volatility_pct > 1:
+            volatility = "Orta"
+        else:
+            volatility = "Düşük"
+
+        # Piyasa koşulu ve trend
         if current > sma20 > sma50 and momentum > 2:
-            condition = "bull"
-            strength = min(80, 50 + momentum * 3)
-            description = "Guclu yukselis trendi"
+            condition = "bullish"
+            trend = "Güçlü Yükseliş"
+            trend_direction = "up"
+            recommendation = "Piyasa güçlü yükseliş trendinde. AL sinyallerine daha yüksek güven."
         elif current < sma20 < sma50 and momentum < -2:
-            condition = "bear"
-            strength = max(20, 50 + momentum * 3)
-            description = "Guclu dusus trendi"
+            condition = "bearish"
+            trend = "Güçlü Düşüş"
+            trend_direction = "down"
+            recommendation = "Piyasa güçlü düşüş trendinde. Yeni AL pozisyonlarından kaçının."
         elif current > sma20:
-            condition = "bull"
-            strength = 60
-            description = "Hafif yukselis trendi"
+            condition = "bullish"
+            trend = "Hafif Yükseliş"
+            trend_direction = "up"
+            recommendation = "Piyasa hafif pozitif. Seçici AL fırsatları değerlendirilebilir."
         elif current < sma20:
-            condition = "bear"
-            strength = 40
-            description = "Hafif dusus trendi"
+            condition = "bearish"
+            trend = "Hafif Düşüş"
+            trend_direction = "down"
+            recommendation = "Piyasa zayıf seyirde. Dikkatli olun, stop-loss seviyelerine uyun."
         else:
             condition = "neutral"
-            strength = 50
-            description = "Yatay piyasa"
-        
+            trend = "Yatay"
+            trend_direction = "neutral"
+            recommendation = "Piyasa yatay seyrediyor. Net bir yön oluşana kadar bekleyin."
+
         return {
             "condition": condition,
-            "strength": round(strength),
-            "description": description,
-            "momentum_10d": round(momentum, 2),
-            "above_sma20": bool(current > sma20),
-            "above_sma50": bool(current > sma50)
+            "trend": trend,
+            "volatility": volatility,
+            "recommendation": recommendation,
+            "details": {
+                "rsi": round(float(rsi), 1),
+                "trend_direction": trend_direction,
+                "above_sma20": bool(current > sma20),
+                "above_sma50": bool(current > sma50)
+            }
         }
